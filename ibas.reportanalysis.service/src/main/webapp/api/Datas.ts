@@ -6,8 +6,20 @@
  * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
  */
 
+
+import {
+    strings,
+    MODULE_REPOSITORY_NAME_TEMPLATE,
+} from "ibas/index";
+
+/** 模块-标识 */
+export const CONSOLE_ID: string = "0dda2ecb-af63-4a3d-b087-aa3dda8179b4";
+/** 模块-名称 */
+export const CONSOLE_NAME: string = "ReportAnalysis";
+/** 模块-版本 */
+export const CONSOLE_VERSION: string = "0.1.0";
 /** 业务仓库名称 */
-export const BO_REPOSITORY_REPORTANALYSIS: string = "BORepositoryReportAnalysis";
+export const BO_REPOSITORY_REPORTANALYSIS: string = strings.format(MODULE_REPOSITORY_NAME_TEMPLATE, CONSOLE_NAME);
 /** 业务对象编码-报表 */
 export const BO_CODE_REPORT: string = "${Company}_RA_REPORT";
 /** 业务对象编码-报表簿 */

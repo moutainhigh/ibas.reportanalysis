@@ -732,7 +732,7 @@ public class ReportBook extends BusinessObject<ReportBook> implements IReportBoo
 	protected void initialize() {
 		super.initialize();// 基类初始化，不可去除
 		this.setReportBookItems(new ReportBookItems(this));
-		this.setObjectCode(BUSINESS_OBJECT_CODE);
+		this.setObjectCode(MyConfiguration.applyVariables(BUSINESS_OBJECT_CODE));
 
 	}
 

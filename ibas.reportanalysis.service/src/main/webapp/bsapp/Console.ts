@@ -7,6 +7,7 @@
  */
 
 import * as ibas from "ibas/index";
+import { CONSOLE_ID, CONSOLE_NAME, CONSOLE_VERSION } from "../api/index";
 import { ReportFunc, ReportChooseServiceMapping } from "./report/index";
 import { ReportBookFunc, ReportBookChooseServiceMapping, ReportBookLinkServiceMapping } from "./reportbook/index";
 import { UserReportPageFunc, UserReportBookFunc } from "./users/index";
@@ -15,18 +16,12 @@ import { BORepositoryReportAnalysis } from "../borep/BORepositories";
 
 /** 模块控制台 */
 export class Console extends ibas.ModuleConsole {
-    /** 模块-标识 */
-    static CONSOLE_ID: string = "0dda2ecb-af63-4a3d-b087-aa3dda8179b4";
-    /** 模块-名称 */
-    static CONSOLE_NAME: string = "ReportAnalysis";
-    /** 模块-版本 */
-    static CONSOLE_VERSION: string = "0.1.0";
     /** 构造函数 */
     constructor() {
         super();
-        this.id = Console.CONSOLE_ID;
-        this.name = Console.CONSOLE_NAME;
-        this.version = Console.CONSOLE_VERSION;
+        this.id = CONSOLE_ID;
+        this.name = CONSOLE_NAME;
+        this.version = CONSOLE_VERSION;
         this.copyright = ibas.i18n.prop("shell_license");
     }
     private _navigation: ibas.IViewNavigation;
@@ -156,7 +151,7 @@ export class ConsoleUsers extends ibas.ModuleConsole {
     /** 设置报表仓库地址 */
     setRepository(address: string): boolean {
         address = ibas.urls.normalize(address);
-        let repositoryName: string = ibas.strings.format(ibas.MODULE_REPOSITORY_NAME_TEMPLATE, Console.CONSOLE_NAME);
+        let repositoryName: string = ibas.strings.format(ibas.MODULE_REPOSITORY_NAME_TEMPLATE, CONSOLE_NAME);
         let configName: string = ibas.strings.format(ibas.CONFIG_ITEM_TEMPLATE_REMOTE_REPOSITORY_ADDRESS, repositoryName);
         ibas.config.set(configName, address);
         ibas.logger.log(ibas.emMessageLevel.DEBUG, "repository: register [{0}]'s default address [{1}].", repositoryName, address);
