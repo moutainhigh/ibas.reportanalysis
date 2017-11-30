@@ -51,14 +51,14 @@ export abstract class ReportViewApp<T extends IReportViewView> extends ibas.Appl
     run(...args: any[]): void {
         try {
             if (ibas.objects.instanceOf(this.report, bo.UserReport)) {
-                super.run();
+                super.run.apply(this, args);
                 return;
             } else if (arguments.length === 1) {
                 let report: bo.UserReport = arguments[0];
                 if (ibas.objects.instanceOf(report, bo.UserReport)) {
                     this.report = report;
                     this.description = ibas.strings.format("{0} - {1}", this.description, this.report.name);
-                    super.run();
+                    super.run.apply(this, args);
                     return;
                 }
             }
