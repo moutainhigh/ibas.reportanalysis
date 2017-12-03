@@ -44,6 +44,7 @@ export class Console extends ibas.ModuleConsole {
     run(): void {
         // 加载语言-框架默认
         ibas.i18n.load(this.rootUrl + "resources/languages/reportanalysis.json");
+        ibas.i18n.load(this.rootUrl + "resources/languages/enums.json");
         ibas.i18n.load(this.rootUrl + "resources/languages/bo/report.json");
         ibas.i18n.load(this.rootUrl + "resources/languages/bo/reportbook.json");
         // 设置资源属性
@@ -102,6 +103,7 @@ export class ConsoleUsers extends ibas.ModuleConsole {
     run(): void {
         // 加载语言-框架默认
         ibas.i18n.load(this.rootUrl + "resources/languages/reportanalysis.json");
+        ibas.i18n.load(this.rootUrl + "resources/languages/enums.json");
         ibas.i18n.load(this.rootUrl + "resources/languages/bo/report.json");
         ibas.i18n.load(this.rootUrl + "resources/languages/bo/reportbook.json");
         // 设置资源属性
