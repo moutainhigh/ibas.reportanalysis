@@ -10,12 +10,13 @@ import {
     FetchCaller,
     SaveCaller,
     MethodCaller,
-    IOperationResult
+    IOperationResult,
+    IBORepositoryApplication
 } from "ibas/index";
 import * as bo from "./bo/index"
 
 /** ReportAnalysis 业务仓库 */
-export interface IBORepositoryReportAnalysis {
+export interface IBORepositoryReportAnalysis extends IBORepositoryApplication {
     /**
      * 获取地址
      */
