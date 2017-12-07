@@ -99,7 +99,7 @@ export class ReportBookListApp extends ibas.BOListApplication<IReportBookListVie
         app.run(data);
     }
     /** 删除数据，参数：目标数据集合 */
-    protected deleteData(data: bo.ReportBook): void {
+    protected deleteData(data: bo.ReportBook | bo.ReportBook[]): void {
         // 检查目标数据
         if (ibas.objects.isNull(data)) {
             this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
@@ -110,11 +110,12 @@ export class ReportBookListApp extends ibas.BOListApplication<IReportBookListVie
         let beDeleteds: ibas.ArrayList<bo.ReportBook> = new ibas.ArrayList<bo.ReportBook>();
         if (data instanceof Array) {
             for (let item of data) {
-                if (ibas.objects.instanceOf(item, bo.ReportBook)) {
-                    item.delete();
-                    beDeleteds.add(item);
-                }
+                item.delete();
+                beDeleteds.add(item);
             }
+        } else {
+            data.delete();
+            beDeleteds.add(data);
         }
         // 没有选择删除的对象
         if (beDeleteds.length === 0) {
