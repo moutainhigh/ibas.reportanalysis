@@ -28,7 +28,7 @@ export abstract class ReportViewApp<T extends IReportViewView> extends ibas.Appl
     protected viewShowed(): void {
         // 视图加载完成
         if (ibas.objects.isNull(this.report.parameters)
-            || this.report.parameters.firstOrDefault((item: bo.UserReportParameter) => {
+            || this.report.parameters.firstOrDefault((item) => {
                 if (item.category !== bo.emReportParameterType.PRESET) {
                     return true;
                 }

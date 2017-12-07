@@ -56,7 +56,7 @@ export class UserReportPageApp extends ibas.Application<IUserReportPageView> {
             // 刷新指标
             this.runReportKpi(report);
             // 激活关联报表
-            let parameter: bo.UserReportParameter = report.parameters.firstOrDefault((item: bo.UserReportParameter) => {
+            let parameter: bo.UserReportParameter = report.parameters.firstOrDefault((item) => {
                 return item.name === PARAMETER_NAME_ASSOCIATED_REPORT;
             });
             if (!ibas.objects.isNull(parameter)) {
