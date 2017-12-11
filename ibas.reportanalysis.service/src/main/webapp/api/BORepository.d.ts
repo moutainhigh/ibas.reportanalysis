@@ -46,14 +46,9 @@ export interface IBORepositoryReportAnalysis extends IBORepositoryApplication {
 /**
  * 用户相关调用者
  */
-export interface UserMethodsCaller<P> extends MethodCaller {
+export interface UserMethodsCaller<P> extends MethodCaller<P> {
     /** 用户 */
     user: string;
     /** 平台 */
     platform?: string;
-    /**
-     * 调用完成
-     * @param opRslt 结果
-     */
-    onCompleted(opRslt: IOperationResult<P>): void;
 }

@@ -120,12 +120,7 @@ ibas.boFactory.register(BO_REPOSITORY_REPORTANALYSIS, BORepositoryReportAnalysis
 /**
  * 用户相关调用者
  */
-export interface IRunUserReportCaller extends ibas.MethodCaller {
+export interface IRunUserReportCaller extends ibas.MethodCaller<ibas.DataTable> {
     /** 用户 */
     report: bo.UserReport;
-    /**
-     * 调用完成
-     * @param opRslt 结果
-     */
-    onCompleted(opRslt: ibas.IOperationResult<ibas.DataTable>): void;
 }
