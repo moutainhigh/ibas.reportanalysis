@@ -96,6 +96,7 @@ export class SystemReportViewView extends ReportViewView implements ISystemRepor
         this.form.destroyContent();
         this.tableResult = new sap.ui.table.Table("", {
             enableSelectAll: true,
+            selectionBehavior: sap.ui.table.SelectionBehavior.Row,
             visibleRowCount: ibas.config.get(openui5.utils.CONFIG_ITEM_LIST_TABLE_VISIBLE_ROW_COUNT, 15),
             visibleRowCountMode: sap.ui.table.VisibleRowCountMode.Interactive,
             editable: false,
@@ -222,6 +223,7 @@ export class SystemReportViewTabView extends ReportViewTabView implements ISyste
         this.form.destroyContent();
         this.tableResult = new sap.ui.table.Table("", {
             enableSelectAll: true,
+            selectionBehavior: sap.ui.table.SelectionBehavior.Row,
             visibleRowCount: ibas.config.get(openui5.utils.CONFIG_ITEM_LIST_TABLE_VISIBLE_ROW_COUNT, 15),
             visibleRowCountMode: sap.ui.table.VisibleRowCountMode.Interactive,
             editable: false,

@@ -155,7 +155,7 @@ export class ReportEditView extends ibas.BOEditView implements IReportEditView {
         });
         this.form.addContent(new sap.ui.core.Title("", { text: ibas.i18n.prop("reportanalysis_title_parameters") }));
         this.tableReportParameter = new sap.ui.table.Table("", {
-            extension: new sap.m.Toolbar("", {
+            toolbar: new sap.m.Toolbar("", {
                 content: [
                     new sap.m.Button("", {
                         text: ibas.i18n.prop("shell_data_add"),
@@ -179,6 +179,7 @@ export class ReportEditView extends ibas.BOEditView implements IReportEditView {
                 ]
             }),
             enableSelectAll: false,
+            selectionBehavior: sap.ui.table.SelectionBehavior.Row,
             visibleRowCount: 6,
             rows: "{/rows}",
             columns: [
