@@ -15,4 +15,8 @@ export interface IReportViewer extends ibas.IApplication<ibas.IView> {
     report: bo.UserReport;
     /** 运行报表 */
     runReport(): void;
+    /** 运行 */
+    run(): void;
+    /** 运行 */
+    run(report: bo.UserReport): void;
 }

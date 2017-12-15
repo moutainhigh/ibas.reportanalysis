@@ -51,7 +51,9 @@ export class ReportBookEditApp extends ibas.BOEditApplication<IReportBookEditVie
         this.view.showReportBookItems(this.editData.reportBookItems.filterDeleted());
     }
     /** 运行,覆盖原方法 */
-    run(...args: any[]): void {
+    run(): void;
+    run(data: bo.ReportBook): void;
+    run(): void {
         let that: this = this;
         if (ibas.objects.instanceOf(arguments[0], bo.ReportBook)) {
             // 尝试重新查询编辑对象
@@ -86,7 +88,7 @@ export class ReportBookEditApp extends ibas.BOEditApplication<IReportBookEditVie
                 return;
             }
         }
-        super.run.apply(this, args);
+        super.run.apply(this, arguments);
     }
     /** 待编辑的数据 */
     protected editData: bo.ReportBook;
@@ -230,7 +232,6 @@ export class ReportBookEditApp extends ibas.BOEditApplication<IReportBookEditVie
     chooseReportBookItemReport(caller: bo.ReportBookItem): void {
         let that: this = this;
         ibas.servicesManager.runChooseService<bo.Report>({
-            caller: caller,
             boCode: bo.Report.BUSINESS_OBJECT_CODE,
             criteria: [
                 new ibas.Condition(bo.Report.PROPERTY_ACTIVATED_NAME, ibas.emConditionOperation.EQUAL, "Y")
