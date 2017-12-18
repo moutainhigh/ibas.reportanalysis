@@ -260,7 +260,7 @@ export class ReportEditApp extends ibas.BOEditApplication<IReportEditView, bo.Re
         this.busy(true);
         let that: this = this;
         let boRepository: BORepositoryReportAnalysis = new BORepositoryReportAnalysis();
-        boRepository.uploadReport({
+        boRepository.upload({
             fileData: data,
             onCompleted(opRslt: ibas.IOperationResult<ibas.FileData>): void {
                 try {

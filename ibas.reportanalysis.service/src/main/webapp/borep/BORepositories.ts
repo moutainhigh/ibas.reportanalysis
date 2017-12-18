@@ -18,38 +18,43 @@ export class BORepositoryReportAnalysis extends ibas.BORepositoryApplication imp
     protected createConverter(): ibas.IDataConverter {
         return new DataConverter4ra;
     }
-    /**
-     * 获取地址
-     */
-    toUrl(report: bo.Report): string {
+    /** 获取报表地址 */
+    toUrl(report: bo.Report): string;
+    /** 获取文件地址 */
+    toUrl(file: string): string;
+    toUrl(): string {
         if (!this.address.endsWith("/")) { this.address += "/"; }
         let url: string = this.address.replace("/services/rest/data/", "/services/rest/file/");
-        url += ibas.strings.format("{0}?token={1}", report.address, this.token);
+        if (ibas.objects.instanceOf(arguments[0], bo.Report)) {
+            url += ibas.strings.format("{0}?token={1}", arguments[0].address, this.token);
+        } else {
+            url += ibas.strings.format("{0}?token={1}", arguments[0], this.token);
+        }
         return encodeURI(url);
     }
     /**
      * 上传报表文件
      * @param caller 调用者
      */
-    uploadReport(caller: ibas.UploadFileCaller<ibas.FileData>): void {
+    upload(caller: ibas.UploadFileCaller<ibas.FileData>): void {
         if (!this.address.endsWith("/")) { this.address += "/"; }
         let fileRepository: ibas.FileRepositoryUploadAjax = new ibas.FileRepositoryUploadAjax();
         fileRepository.address = this.address.replace("/services/rest/data/", "/services/rest/file/");
         fileRepository.token = this.token;
         fileRepository.converter = this.createConverter();
-        fileRepository.upload("uploadReport", caller);
+        fileRepository.upload("upload", caller);
     }
     /**
      * 读取报表文件
      * @param caller 调用者
      */
-    loadReport(caller: ibas.DownloadFileCaller<Blob>): void {
+    download(caller: ibas.DownloadFileCaller<Blob>): void {
         if (!this.address.endsWith("/")) { this.address += "/"; }
         let fileRepository: ibas.FileRepositoryDownloadAjax = new ibas.FileRepositoryDownloadAjax();
         fileRepository.address = this.address.replace("/services/rest/data/", "/services/rest/file/");
         fileRepository.token = this.token;
         fileRepository.converter = this.createConverter();
-        fileRepository.download("loadReport", caller);
+        fileRepository.download("download", caller);
     }
 	/**
 	 * 查询用户报表

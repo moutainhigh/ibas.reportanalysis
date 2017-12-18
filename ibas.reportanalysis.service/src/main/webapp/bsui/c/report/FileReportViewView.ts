@@ -37,67 +37,26 @@ let showResults: Function = function (table: ibas.DataTable, page: sap.m.Page): 
     if (datas.length === 1) {
         let data: any = datas[0];
         if (data.Key === "${Url}") {
-            let criteria: ibas.ICriteria = new ibas.Criteria();
-            let condition: ibas.ICondition = criteria.conditions.create();
-            condition.alias = ibas.CRITERIA_CONDITION_ALIAS_FILE_NAME;
-            condition.value = data.Value;
-            let boRepository: BORepositoryReportAnalysis = new BORepositoryReportAnalysis();
-            boRepository.loadReport({
-                criteria: criteria,
-                onCompleted(opRslt: ibas.IOperationResult<Blob>): void {
-                    let blob: Blob = opRslt.resultObjects.firstOrDefault();
-                    if (!ibas.objects.isNull(blob)) {
-                        if (data.Value.endsWith(".swf")) {
-                            let fileReader: FileReader = new FileReader();
-                            fileReader.onload = function (e: ProgressEvent): void {
-                                let dataUrl: string = (<any>e.target).result;
-                                let datas: string[] = dataUrl.split(","),
-                                    mime: string = "data:application/x-shockwave-flash",
-                                    // atob() 函数用来解码一个已经被base-64编码过的数据
-                                    decodedDatas: string = atob(datas[1]),
-                                    length: number = decodedDatas.length,
-                                    uint8Array: Uint8Array = new Uint8Array(length);
-                                while (length--) {
-                                    uint8Array[length] = decodedDatas.charCodeAt(length);
-                                }
-                                let newBlob: Blob = new Blob([uint8Array], { type: mime });
-                                // 成功获取
-                                let url: string = window.URL.createObjectURL(newBlob);
-                                page.addContent(new sap.ui.core.HTML("", {
-                                    content: ibas.strings.format("<embed src='{0}' type='application/x-shockwave-flash' \
-                                    style= 'width:100%; \
-                                    height:-webkit-fill-available;height: -moz-fill-available; \
-                                    height: -moz-available;height: fill-available;' />", url)
-                                }));
-                            };
-                            fileReader.readAsDataURL(blob);
-                        } else {
-                            // 成功获取
-                            let url: string = window.URL.createObjectURL(blob);
-                            page.addContent(
-                                new sap.ui.core.HTML("", {
-                                    content: ibas.strings.format(
-                                        `<iframe src="{0}" width="{1}" height="{2}" frameborder="no" border="0" scrolling="no"></iframe>`,
-                                        url,
-                                        getWindowWidth(true),
-                                        getWindowHeight(true)),
-                                    preferDOM: false,
-                                    sanitizeContent: true,
-                                    visible: true,
-                                })
-                            );
-                        }
-                    } else {
-                        // 获取失败
-                        page.addContent(new sap.m.MessagePage("", {
-                            showHeader: false,
-                            showNavButton: false,
-                        }));
-                    }
-                }
-            });
+            if (data.Value.endsWith(".swf")) {
+                let boRepository: BORepositoryReportAnalysis = new BORepositoryReportAnalysis();
+                let url: string = boRepository.toUrl(data.Value);
+                // 忽略缓存
+                url = url + (url.indexOf("?") > 0 ? "&" : "?") + "_=" + ibas.dates.now().getTime().toString();
+                page.addContent(new sap.ui.core.HTML("", {
+                    content: ibas.strings.format("<embed src='{0}' type='application/x-shockwave-flash' \
+                    style= 'width:100%; \
+                    height:-webkit-fill-available;height: -moz-fill-available; \
+                    height: -moz-available;height: fill-available;' />", url)
+                }));
+                return;
+            }
         }
     }
+    // 获取失败
+    page.addContent(new sap.m.MessagePage("", {
+        showHeader: false,
+        showNavButton: false,
+    }));
 };
 /**
  * 视图-Report

@@ -134,10 +134,10 @@ export class ReportEditView extends ibas.BOEditView implements IReportEditView {
                             return;
                         }
                         let fileData: FormData = new FormData();
-                        fileData.append("file", event.getParameters().files[0]);
-                        fileData.append("name", event.getParameters().newValue);
+                        fileData.append("file", event.getParameters().files[0], encodeURI(event.getParameters().newValue));
                         that.application.viewShower.messages({
                             type: ibas.emMessageType.QUESTION,
+                            title: that.application.description,
                             actions: [
                                 ibas.emMessageAction.YES,
                                 ibas.emMessageAction.NO
