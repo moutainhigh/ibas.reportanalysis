@@ -9,7 +9,7 @@
 import * as ibas from "ibas/index";
 import * as bo from "../../borep/bo/index";
 import { BORepositoryReportAnalysis } from "../../borep/BORepositories";
-import { BO_CODE_USER, IUser, BO_CODE_ROLE, IRole } from "../../3rdparty/initialfantasy/index";
+import { BO_CODE_USER, IUser, BO_CODE_ROLE, IRole } from "3rdparty/initialfantasy/index";
 
 /** 应用-报表簿 */
 export class ReportBookEditApp extends ibas.BOEditApplication<IReportBookEditView, bo.ReportBook> {

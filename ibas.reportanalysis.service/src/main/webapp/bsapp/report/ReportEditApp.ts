@@ -9,7 +9,7 @@
 import * as ibas from "ibas/index";
 import * as bo from "../../borep/bo/index";
 import { BORepositoryReportAnalysis } from "../../borep/BORepositories";
-import { BO_CODE_SYSTEM_VARIABLE } from "../../3rdparty/initialfantasy/index";
+import { BO_CODE_SYSTEM_VARIABLE } from "3rdparty/initialfantasy/index";
 
 /** 应用-报表 */
 export class ReportEditApp extends ibas.BOEditApplication<IReportEditView, bo.Report> {
