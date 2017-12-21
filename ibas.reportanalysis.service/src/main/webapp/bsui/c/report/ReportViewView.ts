@@ -121,8 +121,7 @@ function drawParameterUIs(form: sap.ui.layout.form.SimpleForm, parameters: bo.Us
         let input: sap.ui.core.Control;
         if (item.category === bo.emReportParameterType.DATETIME) {
             input = new sap.m.DatePicker("", {
-                width: "60%",
-                valueFormat: "yyyy-MM-dd",
+                width: "60%",                
             });
             input.bindProperty("value", {
                 path: "/value"
