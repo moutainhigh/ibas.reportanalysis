@@ -172,7 +172,7 @@ export class ReportEditView extends ibas.BOEditView implements IReportEditView {
                         press: function (): void {
                             that.fireViewEvents(that.removeReportParameterEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.ReportParameter>(that.tableReportParameter)
+                                openui5.utils.getSelecteds<bo.ReportParameter>(that.tableReportParameter)
                             );
                         }
                     })

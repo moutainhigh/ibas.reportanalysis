@@ -103,7 +103,7 @@ export class ReportBookListView extends ibas.BOListView implements IReportBookLi
                         press: function (): void {
                             that.fireViewEvents(that.viewDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.ReportBook>(that.table).firstOrDefault()
+                                openui5.utils.getSelecteds<bo.ReportBook>(that.table).firstOrDefault()
                             );
                         }
                     }),
@@ -115,7 +115,7 @@ export class ReportBookListView extends ibas.BOListView implements IReportBookLi
                         press: function (): void {
                             that.fireViewEvents(that.editDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.ReportBook>(that.table).firstOrDefault()
+                                openui5.utils.getSelecteds<bo.ReportBook>(that.table).firstOrDefault()
                             );
                         }
                     }),
@@ -127,7 +127,7 @@ export class ReportBookListView extends ibas.BOListView implements IReportBookLi
                         press: function (): void {
                             that.fireViewEvents(that.deleteDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.ReportBook>(that.table)
+                                openui5.utils.getSelecteds<bo.ReportBook>(that.table)
                             );
                         }
                     }),
@@ -226,6 +226,6 @@ export class ReportBookListView extends ibas.BOListView implements IReportBookLi
     }
     /** 获取选择的数据 */
     getSelecteds(): bo.ReportBook[] {
-        return openui5.utils.getTableSelecteds<bo.ReportBook>(this.table);
+        return openui5.utils.getSelecteds<bo.ReportBook>(this.table);
     }
 }

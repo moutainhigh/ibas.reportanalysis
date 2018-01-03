@@ -86,7 +86,7 @@ export class ReportBookEditView extends ibas.BOEditView implements IReportBookEd
                         press: function (): void {
                             that.fireViewEvents(that.removeReportBookItemEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.ReportBookItem>(that.tableReportBookItem)
+                                openui5.utils.getSelecteds<bo.ReportBookItem>(that.tableReportBookItem)
                             );
                         }
                     })

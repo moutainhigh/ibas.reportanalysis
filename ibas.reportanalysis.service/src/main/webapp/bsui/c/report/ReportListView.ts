@@ -102,7 +102,7 @@ export class ReportListView extends ibas.BOListView implements IReportListView {
                         press: function (): void {
                             that.fireViewEvents(that.viewDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.Report>(that.table).firstOrDefault()
+                                openui5.utils.getSelecteds<bo.Report>(that.table).firstOrDefault()
                             );
                         }
                     }),
@@ -113,7 +113,7 @@ export class ReportListView extends ibas.BOListView implements IReportListView {
                         press: function (): void {
                             that.fireViewEvents(that.editDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.Report>(that.table).firstOrDefault()
+                                openui5.utils.getSelecteds<bo.Report>(that.table).firstOrDefault()
                             );
                         }
                     }),
@@ -125,7 +125,7 @@ export class ReportListView extends ibas.BOListView implements IReportListView {
                         press: function (): void {
                             that.fireViewEvents(that.deleteDataEvent,
                                 // 获取表格选中的对象
-                                openui5.utils.getTableSelecteds<bo.Report>(that.table)
+                                openui5.utils.getSelecteds<bo.Report>(that.table)
                             );
                         }
                     }),
@@ -224,6 +224,6 @@ export class ReportListView extends ibas.BOListView implements IReportListView {
     }
     /** 获取选择的数据 */
     getSelecteds(): bo.Report[] {
-        return openui5.utils.getTableSelecteds<bo.Report>(this.table);
+        return openui5.utils.getSelecteds<bo.Report>(this.table);
     }
 }
