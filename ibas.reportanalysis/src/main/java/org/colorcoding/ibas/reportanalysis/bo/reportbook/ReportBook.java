@@ -14,6 +14,7 @@ import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.mapping.BOCode;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
+import org.colorcoding.ibas.bobas.ownership.IDataOwnership;
 import org.colorcoding.ibas.reportanalysis.MyConfiguration;
 import org.colorcoding.ibas.reportanalysis.data.emAssignedType;
 
@@ -25,7 +26,7 @@ import org.colorcoding.ibas.reportanalysis.data.emAssignedType;
 @XmlType(name = ReportBook.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @XmlRootElement(name = ReportBook.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @BOCode(ReportBook.BUSINESS_OBJECT_CODE)
-public class ReportBook extends BusinessObject<ReportBook> implements IReportBook {
+public class ReportBook extends BusinessObject<ReportBook> implements IReportBook, IDataOwnership {
 
 	/**
 	 * 序列化版本标记
