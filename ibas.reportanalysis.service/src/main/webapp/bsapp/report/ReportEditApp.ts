@@ -217,7 +217,7 @@ export class ReportEditApp extends ibas.BOEditApplication<IReportEditView, bo.Re
             boCode: bo.Report.BUSINESS_OBJECT_CODE,
             criteria: [
                 new ibas.Condition(bo.Report.PROPERTY_ACTIVATED_NAME,
-                    ibas.emConditionOperation.EQUAL, "Y"),
+                    ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES),
                 new ibas.Condition(bo.Report.PROPERTY_OBJECTKEY_NAME,
                     ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.objectKey)),
             ],
