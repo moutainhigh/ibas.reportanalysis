@@ -182,11 +182,6 @@ export class ReportListView extends ibas.BOListView implements IReportListView {
         });
         return this.page;
     }
-    /** 嵌入查询面板 */
-    embedded(view: any): void {
-        this.page.addHeaderContent(view);
-        this.page.setShowHeader(true);
-    }
     private page: sap.m.Page;
     private form: sap.ui.layout.form.SimpleForm;
     private table: sap.ui.table.Table;
