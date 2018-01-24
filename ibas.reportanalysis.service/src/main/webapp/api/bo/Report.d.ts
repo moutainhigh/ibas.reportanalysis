@@ -79,7 +79,7 @@ export interface IReport extends IBOSimple {
     /** 报表名称 */
     name: string;
 
-    /** 是否启用 */
+    /** 激活 */
     activated: emYesNo;
 
     /** 报表类型 */
