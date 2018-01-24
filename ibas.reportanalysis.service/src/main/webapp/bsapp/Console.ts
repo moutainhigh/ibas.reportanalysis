@@ -9,7 +9,7 @@
 import * as ibas from "ibas/index";
 import { CONSOLE_ID, CONSOLE_NAME, CONSOLE_VERSION } from "../api/index";
 import { ReportFunc, ReportChooseServiceMapping } from "./report/index";
-import { ReportBookFunc, ReportBookChooseServiceMapping, ReportBookLinkServiceMapping } from "./reportbook/index";
+import { ReportBookFunc, ReportBookChooseServiceMapping, } from "./reportbook/index";
 import { UserReportPageFunc, UserReportBookFunc } from "./users/index";
 import * as bo from "../borep/bo/index";
 import { BORepositoryReportAnalysis } from "../borep/BORepositories";

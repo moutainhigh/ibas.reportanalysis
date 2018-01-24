@@ -10,7 +10,6 @@ import * as ibas from "ibas/index";
 import * as bo from "../../borep/bo/index";
 import { BORepositoryReportAnalysis } from "../../borep/BORepositories";
 import { DataConverter4ra } from "../../borep/DataConverters";
-import { ReportBookViewApp } from "./ReportBookViewApp";
 import { ReportBookEditApp } from "./ReportBookEditApp";
 
 /** 列表应用-报表簿 */
@@ -81,11 +80,6 @@ export class ReportBookListApp extends ibas.BOListApplication<IReportBookListVie
             ));
             return;
         }
-        let app: ReportBookViewApp = new ReportBookViewApp();
-        app.navigation = this.navigation;
-        app.viewShower = this.viewShower;
-        app.run(data);
-
     }
     /** 编辑数据，参数：目标数据 */
     protected editData(data: bo.ReportBook): void {

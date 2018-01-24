@@ -41,9 +41,6 @@ export default class Navigation extends ibas.ViewNavigation {
             case reportbookApps.ReportBookChooseApp.APPLICATION_ID:
                 view = new reportbookViews.ReportBookChooseView();
                 break;
-            case reportbookApps.ReportBookViewApp.APPLICATION_ID:
-                view = new reportbookViews.ReportBookViewView();
-                break;
             case reportbookApps.ReportBookEditApp.APPLICATION_ID:
                 view = new reportbookViews.ReportBookEditView();
                 break;

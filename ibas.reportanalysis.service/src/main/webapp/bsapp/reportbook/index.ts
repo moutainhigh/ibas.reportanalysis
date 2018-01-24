@@ -10,5 +10,4 @@
 export * from "./ReportBookFunc";
 export * from "./ReportBookListApp";
 export * from "./ReportBookChooseApp";
-export * from "./ReportBookViewApp";
 export * from "./ReportBookEditApp";
