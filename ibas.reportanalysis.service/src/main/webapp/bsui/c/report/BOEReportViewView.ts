@@ -45,7 +45,7 @@ export class BOEReportViewView extends ReportViewView {
     /** 运行报表 */
     runReportEvent: Function;
     /** 绘制视图 */
-    darw(): any {
+    draw(): any {
         let that: this = this;
         this.form = new sap.ui.layout.form.SimpleForm("", {
             content: [
@@ -109,7 +109,7 @@ export class BOEReportViewTabView extends ReportViewTabView {
     /** 运行报表 */
     runReportEvent: Function;
     /** 绘制视图 */
-    darw(): any {
+    draw(): any {
         let that: this = this;
         this.form = new sap.ui.layout.form.SimpleForm("", {
             content: [

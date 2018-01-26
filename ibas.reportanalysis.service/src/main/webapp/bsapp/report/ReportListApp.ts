@@ -9,7 +9,7 @@
 import * as ibas from "ibas/index";
 import * as bo from "../../borep/bo/index";
 import { BORepositoryReportAnalysis } from "../../borep/BORepositories";
-import { DataConverter4ra } from "../../borep/DataConverters";
+import { DataConverter4RA } from "../../borep/DataConverters";
 import { ReportEditApp } from "./ReportEditApp";
 import { reportFactory } from "./ReportFactory";
 import { IReportViewer } from "./Report.d";
@@ -194,7 +194,7 @@ export class ReportListApp extends ibas.BOListApplication<IReportListView, bo.Re
         return [
             new ibas.BOListServiceProxy({
                 data: this.view.getSelecteds(),
-                converter: new DataConverter4ra(),
+                converter: new DataConverter4RA(),
             })
         ];
     }

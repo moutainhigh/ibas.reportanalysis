@@ -18,7 +18,7 @@ export abstract class ReportViewView extends ibas.View implements IReportViewVie
     /** 运行报表 */
     runReportEvent: Function;
     /** 绘制视图 */
-    darw(): any {
+    draw(): any {
         let that: this = this;
         this.form = new sap.ui.layout.form.SimpleForm("", {
             content: [
@@ -62,7 +62,7 @@ export abstract class ReportViewTabView extends ibas.TabView implements IReportV
     /** 运行报表 */
     runReportEvent: Function;
     /** 绘制视图 */
-    darw(): any {
+    draw(): any {
         let that: this = this;
         this.form = new sap.ui.layout.form.SimpleForm("", {
             content: [

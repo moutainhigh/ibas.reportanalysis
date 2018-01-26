@@ -63,7 +63,7 @@ export class FileReportViewView extends ReportViewView {
     /** 运行报表 */
     runReportEvent: Function;
     /** 绘制视图 */
-    darw(): any {
+    draw(): any {
         let that: this = this;
         this.page = new sap.m.Page("", {
             showHeader: false,
@@ -101,7 +101,7 @@ export class FileReportViewTabView extends ReportViewTabView {
     /** 运行报表 */
     runReportEvent: Function;
     /** 绘制视图 */
-    darw(): any {
+    draw(): any {
         let that: this = this;
         this.page = new sap.m.Page("", {
             showHeader: false,

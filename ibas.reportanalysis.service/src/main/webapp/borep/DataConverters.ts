@@ -13,11 +13,11 @@ import {
 } from "../api/index";
 
 /** 数据转换者 */
-export class DataConverter4ra extends ibas.DataConverter4j {
+export class DataConverter4RA extends ibas.DataConverter4j {
 
     /** 创建业务对象转换者 */
     protected createConverter(): ibas.BOConverter {
-        return new BOConverter4ra;
+        return new BOConverter4RA;
     }
 
     /**
@@ -90,7 +90,7 @@ export class DataConverter4ra extends ibas.DataConverter4j {
 }
 
 /** 业务对象转换者 */
-class BOConverter4ra extends ibas.BOConverter {
+class BOConverter4RA extends ibas.BOConverter {
 
     /**
      * 自定义解析

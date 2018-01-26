@@ -26,7 +26,7 @@ export class UserReportPageView extends ibas.View implements IUserReportPageView
     /** 报表筛选条件下拉菜单 */
     private multicombobox: sap.m.MultiComboBox;
     /** 绘制视图 */
-    darw(): any {
+    draw(): any {
         let that: this = this;
         this.multicombobox = new sap.m.MultiComboBox("", {
             width: "20%",
@@ -59,42 +59,37 @@ export class UserReportPageView extends ibas.View implements IUserReportPageView
                         width: "auto",
                         icon: "sap-icon://refresh",
                         buttonMode: sap.m.MenuButtonMode.Split,
-                        defaultAction: function (): void {
-                            that.fireViewEvents(that.refreshReportsEvent);
-                        },
                         menu: new sap.m.Menu("", {
                             items: [
                                 new sap.m.MenuItem("", {
                                     text: ibas.i18n.prop("reportanalysisusers_refresh_all"),
-                                    icon: "sap-icon://opportunity"
+                                    icon: "sap-icon://opportunity",
+                                    press: function (): void {
+                                        that.fireViewEvents(that.refreshReportsEvent);
+                                    }
                                 }),
                                 new sap.m.MenuItem("", {
                                     text: ibas.i18n.prop("reportanalysisusers_refresh_kpi"),
-                                    icon: that.getIcon(bo.emReportType.KPI)
+                                    icon: that.getIcon(bo.emReportType.KPI),
+                                    press: function (): void {
+                                        that.fireViewEvents(that.refreshReportsEvent, bo.emReportType.KPI);
+                                    }
                                 }),
                                 new sap.m.MenuItem("", {
                                     text: ibas.i18n.prop("reportanalysisusers_refresh_boe"),
-                                    icon: that.getIcon(bo.emReportType.BOE)
+                                    icon: that.getIcon(bo.emReportType.BOE),
+                                    press: function (): void {
+                                        that.fireViewEvents(that.refreshReportsEvent, bo.emReportType.BOE);
+                                    }
                                 }),
                                 new sap.m.MenuItem("", {
                                     text: ibas.i18n.prop("reportanalysisusers_refresh_report"),
-                                    icon: that.getIcon(bo.emReportType.REPORT)
+                                    icon: that.getIcon(bo.emReportType.REPORT),
+                                    press: function (): void {
+                                        that.fireViewEvents(that.refreshReportsEvent, bo.emReportType.REPORT);
+                                    }
                                 }),
                             ],
-                            itemSelected: function (event: any): void {
-                                let item: any = event.getParameter("item");
-                                if (item instanceof sap.m.MenuItem) {
-                                    if (item.getIcon() === that.getIcon(bo.emReportType.KPI)) {
-                                        that.fireViewEvents(that.refreshReportsEvent, bo.emReportType.KPI);
-                                    } else if (item.getIcon() === that.getIcon(bo.emReportType.BOE)) {
-                                        that.fireViewEvents(that.refreshReportsEvent, bo.emReportType.BOE);
-                                    } else if (item.getIcon() === that.getIcon(bo.emReportType.REPORT)) {
-                                        that.fireViewEvents(that.refreshReportsEvent, bo.emReportType.REPORT);
-                                    } else {
-                                        that.fireViewEvents(that.refreshReportsEvent);
-                                    }
-                                }
-                            }
                         })
                     }),
                     this.multicombobox,

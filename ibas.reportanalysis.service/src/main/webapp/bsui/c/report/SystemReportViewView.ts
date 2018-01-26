@@ -21,7 +21,7 @@ export class SystemReportViewView extends ReportViewView implements ISystemRepor
     /** 重置报表 */
     resetReportEvent: Function;
     /** 绘制视图 */
-    darw(): any {
+    draw(): any {
         let that: this = this;
         this.form = new sap.ui.layout.form.SimpleForm("", {
             content: [
@@ -148,7 +148,7 @@ export class SystemReportViewTabView extends ReportViewTabView implements ISyste
     /** 重置报表 */
     resetReportEvent: Function;
     /** 绘制视图 */
-    darw(): any {
+    draw(): any {
         let that: this = this;
         this.form = new sap.ui.layout.form.SimpleForm("", {
             content: [

@@ -9,14 +9,14 @@
 import * as ibas from "ibas/index";
 import * as bo from "./bo/index";
 import { IBORepositoryReportAnalysis, UserMethodsCaller, BO_REPOSITORY_REPORTANALYSIS } from "../api/index";
-import { DataConverter4ra } from "./DataConverters";
+import { DataConverter4RA } from "./DataConverters";
 
 /** ReportAnalysis 业务仓库 */
 export class BORepositoryReportAnalysis extends ibas.BORepositoryApplication implements IBORepositoryReportAnalysis {
 
     /** 创建此模块的后端与前端数据的转换者 */
     protected createConverter(): ibas.IDataConverter {
-        return new DataConverter4ra;
+        return new DataConverter4RA;
     }
     /** 获取报表地址 */
     toUrl(report: bo.Report): string;
