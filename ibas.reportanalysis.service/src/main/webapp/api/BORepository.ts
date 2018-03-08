@@ -38,7 +38,7 @@ namespace reportanalysis {
         /**
          * 用户相关调用者
          */
-        export interface UserMethodsCaller<P> extends ibas.IMethodCaller<P> {
+        export interface IUserMethodsCaller<P> extends ibas.IMethodCaller<P> {
             /** 用户 */
             user: string;
             /** 平台 */

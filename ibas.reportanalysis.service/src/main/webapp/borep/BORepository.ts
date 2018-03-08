@@ -57,7 +57,7 @@ namespace reportanalysis {
              * 查询用户报表
              * @param ibas.IListener 用户检索监听者
              */
-            fetchUserReports(caller: UserMethodsCaller<bo.UserReport>): void {
+            fetchUserReports(caller: IUserMethodsCaller<bo.UserReport>): void {
                 let boRepository: ibas.BORepositoryAjax = new ibas.BORepositoryAjax();
                 boRepository.address = this.address;
                 boRepository.token = this.token;
