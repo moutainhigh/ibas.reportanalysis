@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright color-coding studio. All Rights Reserved.
+ * Copyright Color-Coding Studio. All Rights Reserved.
  *
  * Use of this source code is governed by an Apache License, Version 2.0
  * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
@@ -163,7 +163,7 @@ export class UserReportPageView extends ibas.View implements IUserReportPageView
     /** 初始化筛选条件下拉框 */
     initMulticomboboxItem(list: string[]): void {
         this.multicombobox.destroyItems();
-        for (let item of list) {
+        for (let item of ibas.IList) {
             this.multicombobox.addItem(new sap.ui.core.Item("", {
                 text: item
             }));

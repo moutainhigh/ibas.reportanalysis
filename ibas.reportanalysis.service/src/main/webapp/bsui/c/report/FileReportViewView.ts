@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright color-coding studio. All Rights Reserved.
+ * Copyright Color-Coding Studio. All Rights Reserved.
  *
  * Use of this source code is governed by an Apache License, Version 2.0
  * that can be found in the LICENSE file at http://www.apache.org/licenses/LICENSE-2.0
@@ -36,7 +36,7 @@ let showResults: Function = function (table: ibas.DataTable, page: sap.m.Page): 
         let data: any = datas[0];
         if (data.Key === "${Url}") {
             if (data.Value.endsWith(".swf")) {
-                let boRepository: BORepositoryReportAnalysis = new BORepositoryReportAnalysis();
+                let boRepository: bo.BORepositoryReportAnalysis = new bo.BORepositoryReportAnalysis();
                 let url: string = boRepository.toUrl(data.Value);
                 // 忽略缓存
                 url = url + (url.indexOf("?") > 0 ? "&" : "?") + "_=" + ibas.dates.now().getTime().toString();
