@@ -4,6 +4,6 @@
 	<Activated>YES</Activated>
 	<ModuleEntry>ConsoleUsers</ModuleEntry>
 	<ModuleId>0dda2ecb-af63-4a3d-b087-aa3dda8179b5</ModuleId>
-	<ModuleName>ReportAnalysisUsers</ModuleName>
+	<ModuleName>ReportAnalysis</ModuleName>
 	<PlatformId>COMBINATION</PlatformId>
 </ns:ApplicationModule>
