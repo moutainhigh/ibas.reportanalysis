@@ -17,11 +17,11 @@
 namespace reportanalysis {
     export namespace bo {
         // 注册业务对象仓库到工厂
-        ibas.boFactory.register(BO_REPOSITORY_REPORTANALYSIS, BORepositoryReportAnalysis);
+        boFactory.register(BO_REPOSITORY_REPORTANALYSIS, BORepositoryReportAnalysis);
         // 注册业务对象到工厂
-        ibas.boFactory.register(UserReport);
-        ibas.boFactory.register(UserReportParameter);
-        ibas.boFactory.register(Report.BUSINESS_OBJECT_CODE, Report);
-        ibas.boFactory.register(ReportBook.BUSINESS_OBJECT_CODE, ReportBook);
+        boFactory.register(UserReport);
+        boFactory.register(UserReportParameter);
+        boFactory.register(Report.BUSINESS_OBJECT_CODE, Report);
+        boFactory.register(ReportBook.BUSINESS_OBJECT_CODE, ReportBook);
     }
 }
