@@ -12,7 +12,6 @@ namespace reportanalysis {
              * 视图-Report
              */
             export class ReportEditView extends ibas.BOEditView implements app.IReportEditView {
-
                 /** 删除数据事件 */
                 deleteDataEvent: Function;
                 /** 新建数据事件，参数1：是否克隆 */
@@ -22,9 +21,9 @@ namespace reportanalysis {
                 /** 删除报表参数事件 */
                 removeReportParameterEvent: Function;
                 /** 报表-业务对象选择 */
-                chooseReportBOCodeEvent: Function;
+                chooseReportBusinessObjectEvent: Function;
                 /** 报表-应用选择 */
-                chooseReportApplicationIdEvent: Function;
+                chooseReportApplicationEvent: Function;
                 /** 报表-报表选择 */
                 chooseReportAssociatedReportEvent: Function;
                 /** 报表参数-系统变量选择 */
@@ -61,7 +60,7 @@ namespace reportanalysis {
                             new sap.m.Input("", {
                                 showValueHelp: true,
                                 valueHelpRequest: function (): void {
-                                    that.fireViewEvents(that.chooseReportBOCodeEvent);
+                                    that.fireViewEvents(that.chooseReportBusinessObjectEvent);
                                 }
                             }).bindProperty("value", {
                                 path: "/boCode"
@@ -70,7 +69,7 @@ namespace reportanalysis {
                             new sap.m.Input("", {
                                 showValueHelp: true,
                                 valueHelpRequest: function (): void {
-                                    that.fireViewEvents(that.chooseReportApplicationIdEvent);
+                                    that.fireViewEvents(that.chooseReportApplicationEvent);
                                 }
                             }).bindProperty("value", {
                                 path: "/applicationId"

@@ -33,6 +33,7 @@ namespace reportanalysis {
                 this.view.removeReportParameterEvent = this.removeReportParameter;
                 this.view.chooseReportAssociatedReportEvent = this.chooseReportAssociatedReport;
                 this.view.chooseReportParameterVariableEvent = this.chooseReportParameterVariable;
+                this.view.chooseReportBusinessObjectEvent = this.chooseReportBusinessObject;
                 this.view.uploadReportEvent = this.uploadReport;
             }
             /** 视图显示后 */
@@ -177,12 +178,12 @@ namespace reportanalysis {
                 }
             }
             /** 添加报表参数事件 */
-            addReportParameter(): void {
+            private addReportParameter(): void {
                 this.editData.reportParameters.create();
                 this.view.showReportParameters(this.editData.reportParameters.filterDeleted());
             }
             /** 删除报表参数事件 */
-            removeReportParameter(items: bo.ReportParameter[]): void {
+            private removeReportParameter(items: bo.ReportParameter[]): void {
                 // 非数组，转为数组
                 if (!(items instanceof Array)) {
                     items = [items];
@@ -212,9 +213,7 @@ namespace reportanalysis {
                     boCode: bo.Report.BUSINESS_OBJECT_CODE,
                     criteria: [
                         new ibas.Condition(bo.Report.PROPERTY_ACTIVATED_NAME,
-                            ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES),
-                        new ibas.Condition(bo.Report.PROPERTY_OBJECTKEY_NAME,
-                            ibas.emConditionOperation.NOT_EQUAL, ibas.strings.valueOf(this.editData.objectKey)),
+                            ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES)
                     ],
                     onCompleted(selecteds: ibas.IList<bo.Report>): void {
                         that.editData.associatedReport = selecteds.firstOrDefault().objectKey;
@@ -222,7 +221,7 @@ namespace reportanalysis {
                 });
             }
             /** 报表参数-系统变量选择 */
-            chooseReportParameterVariable(caller: bo.ReportParameter): void {
+            private chooseReportParameterVariable(caller: bo.ReportParameter): void {
                 if (ibas.objects.isNull(caller)) {
                     return;
                 }
@@ -257,8 +256,20 @@ namespace reportanalysis {
                     }
                 });
             }
+            /** 选择业务对象 */
+            private chooseReportBusinessObject(): void {
+                let that: this = this;
+                ibas.servicesManager.runChooseService<initialfantasy.bo.IBOInformation>({
+                    boCode: initialfantasy.bo.BO_CODE_BOINFORMATION,
+                    criteria: [],
+                    onCompleted(selecteds: ibas.IList<initialfantasy.bo.IBOInformation>): void {
+                        // 获取触发的对象
+                        that.editData.boCode = selecteds.firstOrDefault().code;
+                    }
+                });
+            }
             /** 上传报表 */
-            uploadReport(data: FormData): void {
+            private uploadReport(data: FormData): void {
                 this.busy(true);
                 let that: this = this;
                 let boRepository: bo.BORepositoryReportAnalysis = new bo.BORepositoryReportAnalysis();
@@ -299,9 +310,9 @@ namespace reportanalysis {
             /** 显示数据 */
             showReportParameters(datas: bo.ReportParameter[]): void;
             /** 报表-业务对象选择 */
-            chooseReportBOCodeEvent: Function;
+            chooseReportBusinessObjectEvent: Function;
             /** 报表-应用选择 */
-            chooseReportApplicationIdEvent: Function;
+            chooseReportApplicationEvent: Function;
             /** 报表-报表选择 */
             chooseReportAssociatedReportEvent: Function;
             /** 报表参数-系统变量选择 */
