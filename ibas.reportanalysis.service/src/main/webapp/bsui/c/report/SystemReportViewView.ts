@@ -12,8 +12,6 @@ namespace reportanalysis {
              * 视图-Report
              */
             export class SystemReportViewView extends ReportViewView implements app.ISystemReportViewView {
-                /** 调用服务事件 */
-                callServicesEvent: Function;
                 /** 重置报表 */
                 resetReportEvent: Function;
                 /** 绘制视图 */
@@ -49,7 +47,11 @@ namespace reportanalysis {
                                     type: sap.m.ButtonType.Transparent,
                                     icon: "sap-icon://action",
                                     press: function (event: any): void {
-                                        that.fireViewEvents(that.callServicesEvent, {
+                                        ibas.servicesManager.showServices({
+                                            proxy: new ibas.BOListServiceProxy({
+                                                data: (<any>that.form.getModel()).getObject(),
+                                                converter: new bo.DataConverter(),
+                                            }),
                                             displayServices(services: ibas.IServiceAgent[]): void {
                                                 if (ibas.objects.isNull(services) || services.length === 0) {
                                                     return;
@@ -139,8 +141,6 @@ namespace reportanalysis {
              * 视图-报表查看-页签，需要与上保持同步
              */
             export class SystemReportViewTabView extends ReportViewTabView implements app.ISystemReportViewView {
-                /** 调用服务事件 */
-                callServicesEvent: Function;
                 /** 重置报表 */
                 resetReportEvent: Function;
                 /** 绘制视图 */
@@ -176,7 +176,11 @@ namespace reportanalysis {
                                     type: sap.m.ButtonType.Transparent,
                                     icon: "sap-icon://action",
                                     press: function (event: any): void {
-                                        that.fireViewEvents(that.callServicesEvent, {
+                                        ibas.servicesManager.showServices({
+                                            proxy: new ibas.BOListServiceProxy({
+                                                data: (<any>that.form.getModel()).getObject(),
+                                                converter: new bo.DataConverter(),
+                                            }),
                                             displayServices(services: ibas.IServiceAgent[]): void {
                                                 if (ibas.objects.isNull(services) || services.length === 0) {
                                                     return;

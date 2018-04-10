@@ -32,9 +32,7 @@ namespace reportanalysis {
             }
         }
         /** 视图-报表 */
-        export interface ISystemReportViewView extends IReportViewView, ibas.IBOViewWithServices {
-            /** 调用服务事件 */
-            callServicesEvent: Function;
+        export interface ISystemReportViewView extends IReportViewView, ibas.IBOView {
             /** 重置报表 */
             resetReportEvent: Function;
         }

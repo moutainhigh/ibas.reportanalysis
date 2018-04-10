@@ -162,15 +162,6 @@ namespace reportanalysis {
                     }
                 });
             }
-            /** 获取服务的契约 */
-            protected getServiceProxies(): ibas.IServiceProxy<ibas.IServiceContract>[] {
-                return [
-                    new ibas.BOListServiceProxy({
-                        data: this.view.getSelecteds(),
-                        converter: new bo.DataConverter(),
-                    })
-                ];
-            }
         }
         /** 视图-报表簿 */
         export interface IReportBookListView extends ibas.IBOListView {
@@ -180,8 +171,6 @@ namespace reportanalysis {
             deleteDataEvent: Function;
             /** 显示数据 */
             showData(datas: bo.ReportBook[]): void;
-            /** 获取选择的数据 */
-            getSelecteds(): bo.ReportBook[];
         }
     }
 }
