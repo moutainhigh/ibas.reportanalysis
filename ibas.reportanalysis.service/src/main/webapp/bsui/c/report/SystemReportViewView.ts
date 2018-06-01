@@ -23,8 +23,8 @@ namespace reportanalysis {
                     });
                     this.page = new sap.m.Page("", {
                         showHeader: false,
-                        subHeader: new sap.m.Bar("", {
-                            contentLeft: [
+                        subHeader: new sap.m.Toolbar("", {
+                            content: [
                                 new sap.m.Button("", {
                                     text: ibas.i18n.prop("shell_run"),
                                     type: sap.m.ButtonType.Transparent,
@@ -40,17 +40,15 @@ namespace reportanalysis {
                                     press: function (): void {
                                         that.fireViewEvents(that.resetReportEvent);
                                     }
-                                })
-                            ],
-                            contentRight: [
+                                }),
+                                new sap.m.ToolbarSpacer(""),
                                 new sap.m.Button("", {
                                     type: sap.m.ButtonType.Transparent,
                                     icon: "sap-icon://action",
                                     press: function (event: any): void {
                                         ibas.servicesManager.showServices({
-                                            proxy: new ibas.BOServiceProxy({
-                                                data: (<any>that.form.getModel()).getObject(),
-                                                converter: new bo.DataConverter(),
+                                            proxy: new ibas.DataTableServiceProxy({
+                                                data: that.dataTable,
                                             }),
                                             displayServices(services: ibas.IServiceAgent[]): void {
                                                 if (ibas.objects.isNull(services) || services.length === 0) {
@@ -85,6 +83,7 @@ namespace reportanalysis {
                     return this.page;
                 }
                 private tableResult: sap.ui.table.Table;
+                private dataTable: ibas.DataTable;
 
                 /** 显示报表结果 */
                 showResults(table: ibas.DataTable): void {
@@ -101,10 +100,11 @@ namespace reportanalysis {
                         rows: "{/rows}",
                     });
                     for (let col of table.columns) {
+                        col.description = ibas.i18n.prop(col.name);
                         if (col.definedDataType() === ibas.emTableDataType.DATE) {
                             this.tableResult.addColumn(
                                 new sap.ui.table.Column("", {
-                                    label: col.name,
+                                    label: ibas.strings.isEmpty(col.description) ? col.name : col.description,
                                     width: "100px",
                                     autoResizable: false,
                                     template: new sap.m.Text("", {
@@ -120,7 +120,7 @@ namespace reportanalysis {
                         } else {
                             this.tableResult.addColumn(
                                 new sap.ui.table.Column("", {
-                                    label: col.name,
+                                    label: ibas.strings.isEmpty(col.description) ? col.name : col.description,
                                     width: "100px",
                                     autoResizable: false,
                                     template: new sap.m.Text("", {
@@ -134,6 +134,7 @@ namespace reportanalysis {
                     }
                     this.tableResult.setModel(new sap.ui.model.json.JSONModel({ rows: table.convert() }));
                     this.form.addContent(this.tableResult);
+                    this.dataTable = table;
                 }
             }
 
@@ -152,8 +153,8 @@ namespace reportanalysis {
                     });
                     this.page = new sap.m.Page("", {
                         showHeader: false,
-                        subHeader: new sap.m.Bar("", {
-                            contentLeft: [
+                        subHeader: new sap.m.Toolbar("", {
+                            content: [
                                 new sap.m.Button("", {
                                     text: ibas.i18n.prop("shell_run"),
                                     type: sap.m.ButtonType.Transparent,
@@ -169,17 +170,15 @@ namespace reportanalysis {
                                     press: function (): void {
                                         that.fireViewEvents(that.resetReportEvent);
                                     }
-                                })
-                            ],
-                            contentRight: [
+                                }),
+                                new sap.m.ToolbarSpacer(""),
                                 new sap.m.Button("", {
                                     type: sap.m.ButtonType.Transparent,
                                     icon: "sap-icon://action",
                                     press: function (event: any): void {
                                         ibas.servicesManager.showServices({
-                                            proxy: new ibas.BOServiceProxy({
-                                                data: (<any>that.form.getModel()).getObject(),
-                                                converter: new bo.DataConverter(),
+                                            proxy: new ibas.DataTableServiceProxy({
+                                                data: that.dataTable,
                                             }),
                                             displayServices(services: ibas.IServiceAgent[]): void {
                                                 if (ibas.objects.isNull(services) || services.length === 0) {
@@ -214,7 +213,7 @@ namespace reportanalysis {
                     return this.page;
                 }
                 private tableResult: sap.ui.table.Table;
-
+                private dataTable: ibas.DataTable;
                 /** 显示报表结果 */
                 showResults(table: ibas.DataTable): void {
                     if (!ibas.objects.isNull(this.tableResult)) {
@@ -263,6 +262,7 @@ namespace reportanalysis {
                     }
                     this.tableResult.setModel(new sap.ui.model.json.JSONModel({ rows: table.convert() }));
                     this.form.addContent(this.tableResult);
+                    this.dataTable = table;
                 }
             }
         }
