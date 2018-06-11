@@ -100,7 +100,11 @@ namespace reportanalysis {
                         rows: "{/rows}",
                     });
                     for (let col of table.columns) {
-                        col.description = ibas.i18n.prop(col.name);
+                        if (ibas.strings.isEmpty(col.description)) {
+                            col.description = ibas.i18n.prop(col.name);
+                        } else {
+                            col.description = ibas.i18n.prop(col.description);
+                        }
                         if (col.definedDataType() === ibas.emTableDataType.DATE) {
                             this.tableResult.addColumn(
                                 new sap.ui.table.Column("", {
@@ -229,10 +233,15 @@ namespace reportanalysis {
                         rows: "{/rows}",
                     });
                     for (let col of table.columns) {
+                        if (ibas.strings.isEmpty(col.description)) {
+                            col.description = ibas.i18n.prop(col.name);
+                        } else {
+                            col.description = ibas.i18n.prop(col.description);
+                        }
                         if (col.definedDataType() === ibas.emTableDataType.DATE) {
                             this.tableResult.addColumn(
                                 new sap.ui.table.Column("", {
-                                    label: col.name,
+                                    label: ibas.strings.isEmpty(col.description) ? col.name : col.description,
                                     width: "100px",
                                     autoResizable: false,
                                     template: new sap.m.Text("", {
@@ -248,7 +257,7 @@ namespace reportanalysis {
                         } else {
                             this.tableResult.addColumn(
                                 new sap.ui.table.Column("", {
-                                    label: col.name,
+                                    label: ibas.strings.isEmpty(col.description) ? col.name : col.description,
                                     width: "100px",
                                     autoResizable: false,
                                     template: new sap.m.Text("", {
