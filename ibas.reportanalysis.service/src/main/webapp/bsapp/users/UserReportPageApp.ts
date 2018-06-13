@@ -73,12 +73,14 @@ namespace reportanalysis {
             /** 当前用户报表集合 */
             private reports: ibas.ArrayList<bo.UserReport>;
             private refreshReports(type: bo.emReportType): void {
+                this.busy(true);
                 let that: this = this;
                 let boRepository: bo.BORepositoryReportAnalysis = new bo.BORepositoryReportAnalysis();
                 boRepository.fetchUserReports({
                     user: ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_CODE),
                     onCompleted(opRslt: ibas.IOperationResult<bo.UserReport>): void {
                         try {
+                            that.busy(false);
                             if (opRslt.resultCode !== 0) {
                                 throw new Error(opRslt.message);
                             }
@@ -88,7 +90,6 @@ namespace reportanalysis {
                                 return type === undefined ? true : item.category === type;
                             });
                             that.view.showReports(beShowed);
-                            that.busy(false);
                             // 激活kpi类型报表
                             for (let item of beShowed) {
                                 if (item.category !== bo.emReportType.KPI) {
@@ -101,7 +102,6 @@ namespace reportanalysis {
                         }
                     }
                 });
-                this.busy(true);
             }
             private runReportKpi(kpiReport: bo.UserReport): void {
                 if (!ibas.objects.instanceOf(kpiReport, bo.UserReport)) {

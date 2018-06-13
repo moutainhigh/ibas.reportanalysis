@@ -64,6 +64,7 @@ namespace reportanalysis {
             }
             report: bo.UserReport;
             runReport(): void {
+                this.busy(true);
                 let that: this = this;
                 let boRepository: bo.BORepositoryReportAnalysis = new bo.BORepositoryReportAnalysis();
                 boRepository.runUserReport({
@@ -84,7 +85,6 @@ namespace reportanalysis {
                         }
                     }
                 });
-                this.busy(true);
                 this.proceeding(ibas.emMessageType.INFORMATION, ibas.i18n.prop("reportanalysis_running_report", this.report.name));
             }
         }
