@@ -96,27 +96,75 @@ namespace reportanalysis {
                                 rows: 9
                             }).bindProperty("value", {
                                 path: "/sqlString"
+                            }).bindProperty("editable", {
+                                path: "/category",
+                                formatter(data: bo.emReportType): any {
+                                    if (data === bo.emReportType.REPORT) {
+                                        return true;
+                                    }
+                                    return false;
+                                }
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_report_server") }),
                             new sap.m.Input("", {
                             }).bindProperty("value", {
                                 path: "/server"
+                            }).bindProperty("editable", {
+                                path: "/category",
+                                formatter(data: bo.emReportType): any {
+                                    if (data === bo.emReportType.BOE) {
+                                        return true;
+                                    } else if (data === bo.emReportType.KPI) {
+                                        return true;
+                                    }
+                                    return false;
+                                }
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_report_user") }),
                             new sap.m.Input("", {
                             }).bindProperty("value", {
                                 path: "/user"
+                            }).bindProperty("editable", {
+                                path: "/category",
+                                formatter(data: bo.emReportType): any {
+                                    if (data === bo.emReportType.BOE) {
+                                        return true;
+                                    } else if (data === bo.emReportType.KPI) {
+                                        return true;
+                                    }
+                                    return false;
+                                }
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_report_password") }),
                             new sap.m.Input("", {
                                 type: sap.m.InputType.Password
                             }).bindProperty("value", {
                                 path: "/password"
+                            }).bindProperty("editable", {
+                                path: "/category",
+                                formatter(data: bo.emReportType): any {
+                                    if (data === bo.emReportType.BOE) {
+                                        return true;
+                                    } else if (data === bo.emReportType.KPI) {
+                                        return true;
+                                    }
+                                    return false;
+                                }
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_report_address") }),
                             new sap.m.Input("", {
                             }).bindProperty("value", {
                                 path: "/address"
+                            }).bindProperty("editable", {
+                                path: "/category",
+                                formatter(data: bo.emReportType): any {
+                                    if (data === bo.emReportType.BOE) {
+                                        return true;
+                                    } else if (data === bo.emReportType.KPI) {
+                                        return true;
+                                    }
+                                    return false;
+                                }
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("reportanalysis_report_file") }),
                             new sap.ui.unified.FileUploader("", {
@@ -145,6 +193,14 @@ namespace reportanalysis {
                                             }
                                         }
                                     });
+                                }
+                            }).bindProperty("enabled", {
+                                path: "/category",
+                                formatter(data: bo.emReportType): any {
+                                    if (data === bo.emReportType.FILE) {
+                                        return true;
+                                    }
+                                    return false;
                                 }
                             }),
                         ]

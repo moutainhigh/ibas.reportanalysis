@@ -340,6 +340,7 @@ namespace reportanalysis {
             protected init(): void {
                 this.reportParameters = new ReportParameters(this);
                 this.objectCode = ibas.config.applyVariables(Report.BUSINESS_OBJECT_CODE);
+                this.category = emReportType.REPORT;
                 this.activated = ibas.emYesNo.YES;
             }
         }
