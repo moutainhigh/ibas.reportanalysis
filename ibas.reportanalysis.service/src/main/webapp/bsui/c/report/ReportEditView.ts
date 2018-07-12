@@ -75,13 +75,17 @@ namespace reportanalysis {
                                 path: "/applicationId"
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_report_associatedreport") }),
-                            new sap.m.Input("", {
-                                showValueHelp: true,
+                            new sap.m.ex.BOInput("", {
+                                boText: "name",
+                                boKey: "objectKey",
+                                boCode: ibas.config.applyVariables(bo.BO_CODE_REPORT),
+                                repositoryName: bo.BO_REPOSITORY_REPORTANALYSIS,
                                 valueHelpRequest: function (): void {
                                     that.fireViewEvents(that.chooseReportAssociatedReportEvent);
+                                },
+                                bindingValue: {
+                                    path: "/associatedReport"
                                 }
-                            }).bindProperty("value", {
-                                path: "/associatedReport"
                             }),
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("reportanalysis_title_content") }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_report_category") }),

@@ -212,8 +212,7 @@ namespace reportanalysis {
                 ibas.servicesManager.runChooseService<bo.Report>({
                     boCode: bo.Report.BUSINESS_OBJECT_CODE,
                     criteria: [
-                        new ibas.Condition(bo.Report.PROPERTY_ACTIVATED_NAME,
-                            ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES)
+                        new ibas.Condition(bo.Report.PROPERTY_ACTIVATED_NAME, ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES)
                     ],
                     onCompleted(selecteds: ibas.IList<bo.Report>): void {
                         that.editData.associatedReport = selecteds.firstOrDefault().objectKey;
@@ -259,9 +258,15 @@ namespace reportanalysis {
             /** 选择业务对象 */
             private chooseReportBusinessObject(): void {
                 let that: this = this;
+                let criteria: ibas.ICriteria = new ibas.Criteria();
+                criteria.noChilds = true;
+                let condition: ibas.ICondition = criteria.conditions.create();
+                condition.alias = "Code";
+                condition.value = ".";
+                condition.operation = ibas.emConditionOperation.NOT_CONTAIN;
                 ibas.servicesManager.runChooseService<initialfantasy.bo.IBOInformation>({
                     boCode: initialfantasy.bo.BO_CODE_BOINFORMATION,
-                    criteria: [],
+                    criteria: criteria,
                     onCompleted(selecteds: ibas.IList<initialfantasy.bo.IBOInformation>): void {
                         // 获取触发的对象
                         that.editData.boCode = selecteds.firstOrDefault().code;

@@ -206,11 +206,15 @@ namespace reportanalysis {
                 this.view.showReportBookItems(this.editData.reportBookItems.filterDeleted());
             }
             /** 选择客户、角色行事件 */
-            chooseUserRole(): void {
+            private chooseUserRole(): void {
                 let that: this = this;
                 if (this.editData.assignedType === bo.emAssignedType.ROLE) {
                     ibas.servicesManager.runChooseService<initialfantasy.bo.IRole>({
                         boCode: initialfantasy.bo.BO_CODE_ROLE,
+                        chooseType: ibas.emChooseType.SINGLE,
+                        criteria: [
+                            new ibas.Condition("Activated", ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES)
+                        ],
                         onCompleted(selecteds: ibas.IList<initialfantasy.bo.IRole>): void {
                             that.editData.assigned = selecteds.firstOrDefault().code;
                             if (ibas.objects.isNull(that.editData.name)) {
@@ -221,6 +225,10 @@ namespace reportanalysis {
                 } else if (this.editData.assignedType === bo.emAssignedType.USER) {
                     ibas.servicesManager.runChooseService<initialfantasy.bo.IUser>({
                         boCode: initialfantasy.bo.BO_CODE_USER,
+                        chooseType: ibas.emChooseType.SINGLE,
+                        criteria: [
+                            new ibas.Condition("Activated", ibas.emConditionOperation.EQUAL, ibas.emYesNo.YES)
+                        ],
                         onCompleted(selecteds: ibas.IList<initialfantasy.bo.IUser>): void {
                             that.editData.assigned = selecteds.firstOrDefault().code;
                             if (ibas.objects.isNull(that.editData.name)) {
