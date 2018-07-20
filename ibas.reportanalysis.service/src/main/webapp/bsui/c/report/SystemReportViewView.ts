@@ -99,7 +99,8 @@ namespace reportanalysis {
                         editable: false,
                         rows: "{/rows}",
                     });
-                    for (let col of table.columns) {
+                    for (let index: number = 0; index < table.columns.length; index++) {
+                        let col: ibas.DataTableColumn = table.columns[index];
                         if (ibas.strings.isEmpty(col.description)) {
                             col.description = ibas.i18n.prop(col.name);
                         } else {
@@ -114,7 +115,7 @@ namespace reportanalysis {
                                     template: new sap.m.Text("", {
                                         wrapping: false
                                     }).bindProperty("text", {
-                                        path: col.name,
+                                        path: index.toString(),
                                         formatter(data: any): any {
                                             return ibas.dates.toString(data);
                                         }
@@ -130,13 +131,13 @@ namespace reportanalysis {
                                     template: new sap.m.Text("", {
                                         wrapping: false
                                     }).bindProperty("text", {
-                                        path: col.name,
+                                        path: index.toString(),
                                     })
                                 })
                             );
                         }
                     }
-                    this.tableResult.setModel(new sap.ui.model.json.JSONModel({ rows: table.convert() }));
+                    this.tableResult.setModel(new sap.ui.model.json.JSONModel({ rows: table.convert({ format: true, indexName: true }) }));
                     this.form.addContent(this.tableResult);
                     this.dataTable = table;
                 }
@@ -232,7 +233,8 @@ namespace reportanalysis {
                         editable: false,
                         rows: "{/rows}",
                     });
-                    for (let col of table.columns) {
+                    for (let index: number = 0; index < table.columns.length; index++) {
+                        let col: ibas.DataTableColumn = table.columns[index];
                         if (ibas.strings.isEmpty(col.description)) {
                             col.description = ibas.i18n.prop(col.name);
                         } else {
@@ -247,7 +249,7 @@ namespace reportanalysis {
                                     template: new sap.m.Text("", {
                                         wrapping: false
                                     }).bindProperty("text", {
-                                        path: col.name,
+                                        path: index.toString(),
                                         formatter(data: any): any {
                                             return ibas.dates.toString(data);
                                         }
@@ -263,13 +265,13 @@ namespace reportanalysis {
                                     template: new sap.m.Text("", {
                                         wrapping: false
                                     }).bindProperty("text", {
-                                        path: col.name,
+                                        path: index.toString(),
                                     })
                                 })
                             );
                         }
                     }
-                    this.tableResult.setModel(new sap.ui.model.json.JSONModel({ rows: table.convert() }));
+                    this.tableResult.setModel(new sap.ui.model.json.JSONModel({ rows: table.convert({ format: true, indexName: true }) }));
                     this.form.addContent(this.tableResult);
                     this.dataTable = table;
                 }
