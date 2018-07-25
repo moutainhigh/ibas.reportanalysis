@@ -15,37 +15,12 @@ namespace reportanalysis {
                 /** 运行报表 */
                 runReportEvent: Function;
                 /** 绘制视图 */
-                draw(): any {
-                    let that: this = this;
-                    this.form = new sap.ui.layout.form.SimpleForm("", {
-                        content: [
-                        ]
-                    });
-                    this.page = new sap.m.Page("", {
-                        showHeader: false,
-                        subHeader: new sap.m.Bar("", {
-                            contentLeft: [
-                                new sap.m.Button("", {
-                                    text: ibas.i18n.prop("shell_run"),
-                                    type: sap.m.ButtonType.Transparent,
-                                    icon: "sap-icon://begin",
-                                    press: function (): void {
-                                        that.fireViewEvents(that.runReportEvent);
-                                    }
-                                })
-                            ],
-                        }),
-                        content: [this.form]
-                    });
-                    this.id = this.page.getId();
-                    return this.page;
-                }
+                abstract draw(): any;
                 protected page: sap.m.Page;
-                protected form: sap.ui.layout.form.SimpleForm;
-
+                protected form: sap.m.VBox;
                 /** 显示报表 */
                 showReport(report: bo.UserReport): void {
-                    this.form.destroyContent();
+                    this.form.destroyItems();
                     drawParameterUIs(this.form, report.parameters);
                 }
                 /** 显示报表结果 */
@@ -59,73 +34,67 @@ namespace reportanalysis {
                 /** 运行报表 */
                 runReportEvent: Function;
                 /** 绘制视图 */
-                draw(): any {
-                    let that: this = this;
-                    this.form = new sap.ui.layout.form.SimpleForm("", {
-                        content: [
-                        ]
-                    });
-                    this.page = new sap.m.Page("", {
-                        showHeader: false,
-                        subHeader: new sap.m.Bar("", {
-                            contentLeft: [
-                                new sap.m.Button("", {
-                                    text: ibas.i18n.prop("shell_run"),
-                                    type: sap.m.ButtonType.Transparent,
-                                    icon: "sap-icon://begin",
-                                    press: function (): void {
-                                        that.fireViewEvents(that.runReportEvent);
-                                    }
-                                }),
-                            ],
-                        }),
-                        content: [this.form]
-                    });
-                    this.id = this.page.getId();
-                    return this.page;
-                }
+                abstract draw(): any;
                 protected page: sap.m.Page;
-                protected form: sap.ui.layout.form.SimpleForm;
+                protected form: sap.m.VBox;
                 /** 显示报表 */
                 showReport(report: bo.UserReport): void {
-                    this.form.destroyContent();
+                    this.form.destroyItems();
                     drawParameterUIs(this.form, report.parameters);
                 }
                 /** 显示报表结果 */
                 abstract showResults(table: ibas.DataTable): void;
             }
 
-            function drawParameterUIs(form: sap.ui.layout.form.SimpleForm, parameters: bo.UserReportParameter[]): void {
+            /**
+             * 视图-报表查看-对话框，需要与上保持同步
+             */
+            export abstract class ReportViewDialogView extends ibas.BODialogView implements app.IReportViewView {
+                /** 运行报表 */
+                runReportEvent: Function;
+                /** 绘制视图 */
+                abstract draw(): any;
+                protected form: sap.m.VBox;
+                /** 显示报表 */
+                showReport(report: bo.UserReport): void {
+                    this.form.destroyItems();
+                    drawParameterUIs(this.form, report.parameters);
+                }
+                /** 显示报表结果 */
+                abstract showResults(table: ibas.DataTable): void;
+            }
+            function drawParameterUIs(form: sap.m.VBox, parameters: bo.UserReportParameter[]): void {
                 if (ibas.objects.isNull(parameters) || parameters.length === 0) {
-                    form.addContent(new sap.m.Title("", {
-                        text: ibas.i18n.prop("reportanalysis_running_parameters")
-                    }));
                     return;
                 }
-                form.addContent(new sap.ui.core.Title("", {
-                    text: ibas.i18n.prop("reportanalysis_running_parameters")
+                form.addItem(new sap.m.Title("", {
+                    level: sap.ui.core.TitleLevel.H5,
+                    titleStyle: sap.ui.core.TitleLevel.H5,
+                    textAlign: sap.ui.core.TextAlign.Center,
+                    text: ibas.i18n.prop("reportanalysis_running_parameters"),
+                    height: "60px",
                 }));
                 for (let item of parameters) {
                     if (item.category === bo.emReportParameterType.PRESET) {
                         // 预设的不显示
                         continue;
                     }
-                    form.addContent(new sap.m.Label("", {
+                    form.addItem(new sap.m.Label("", {
                         textAlign: sap.ui.core.TextAlign.Left,
-                        width: "20%",
+                        width: "260px",
                         text: ibas.objects.isNull(item.description) ? item.name.replace("\$\{", "").replace("\}", "") : item.description
                     }));
                     let input: sap.ui.core.Control;
                     if (item.category === bo.emReportParameterType.DATETIME) {
                         input = new sap.m.DatePicker("", {
-                            width: "60%",
+                            width: "260px",
                         });
                         input.bindProperty("value", {
                             path: "/value"
                         });
                     } else if (item.category === bo.emReportParameterType.SYSTEM) {
                         input = new sap.m.Input("", {
-                            width: "60%",
+                            width: "260px",
                             editable: false,
                         });
                         input.bindProperty("value", {
@@ -143,7 +112,7 @@ namespace reportanalysis {
                             }));
                         }
                         input = new sap.m.Select("", {
-                            width: "60%",
+                            width: "260px",
                             items: values
                         });
                         input.bindProperty("selectedKey", {
@@ -151,14 +120,14 @@ namespace reportanalysis {
                         });
                     } else {
                         input = new sap.m.Input("", {
-                            width: "60%",
+                            width: "260px",
                         });
                         input.bindProperty("value", {
                             path: "/value"
                         });
                     }
                     input.setModel(new sap.ui.model.json.JSONModel(item));
-                    form.addContent(input);
+                    form.addItem(input);
                 }
             }
         }

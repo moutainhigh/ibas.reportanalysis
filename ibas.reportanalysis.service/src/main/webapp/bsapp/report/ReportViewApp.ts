@@ -63,7 +63,7 @@ namespace reportanalysis {
                 }
             }
             report: bo.UserReport;
-            runReport(): void {
+            private runReport(): void {
                 this.busy(true);
                 let that: this = this;
                 let boRepository: bo.BORepositoryReportAnalysis = new bo.BORepositoryReportAnalysis();

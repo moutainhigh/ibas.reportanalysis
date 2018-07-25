@@ -57,6 +57,9 @@ namespace reportanalysis {
                     case app.SystemReportTabViewApp.APPLICATION_ID:
                         view = new c.SystemReportViewTabView();
                         break;
+                    case app.SystemReportDialogViewApp.APPLICATION_ID:
+                        view = new c.SystemReportViewDialogView();
+                        break;
                     case app.FileReportViewApp.APPLICATION_ID:
                         view = new c.FileReportViewView();
                         break;

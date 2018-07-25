@@ -43,7 +43,7 @@ namespace reportanalysis {
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;
-                    this.form = new sap.ui.layout.form.SimpleForm("", {
+                    this.form = new sap.m.HBox("", {
                         content: [
                         ]
                     });
@@ -72,7 +72,7 @@ namespace reportanalysis {
                     if (!ibas.objects.isNull(this.tableResult)) {
                         this.tableResult.destroy(true);
                     }
-                    this.form.destroyContent();
+                    this.form.destroyItems();
                     this.page.setShowSubHeader(false);
                     let datas: any[] = table.convert();
                     if (datas.length === 1) {
@@ -82,7 +82,7 @@ namespace reportanalysis {
                                 ibas.emMessageType.INFORMATION,
                                 ibas.i18n.prop("reportanalysis_running_report", data.Value),
                             );
-                            this.form.addContent(
+                            this.form.addItem(
                                 new sap.ui.core.HTML("", {
                                     content: createHTML(data.Value),
                                     preferDOM: false,
@@ -107,7 +107,7 @@ namespace reportanalysis {
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;
-                    this.form = new sap.ui.layout.form.SimpleForm("", {
+                    this.form = new sap.m.HBox("", {
                         content: [
                         ]
                     });
@@ -136,7 +136,7 @@ namespace reportanalysis {
                     if (!ibas.objects.isNull(this.tableResult)) {
                         this.tableResult.destroy(true);
                     }
-                    this.form.destroyContent();
+                    this.form.destroyItems();
                     this.page.setShowSubHeader(false);
                     let datas: any[] = table.convert();
                     if (datas.length === 1) {
@@ -146,7 +146,7 @@ namespace reportanalysis {
                                 ibas.emMessageType.INFORMATION,
                                 ibas.i18n.prop("reportanalysis_running_report", data.Value),
                             );
-                            this.form.addContent(
+                            this.form.addItem(
                                 new sap.ui.core.HTML("", {
                                     content: createHTML(data.Value),
                                     preferDOM: false,

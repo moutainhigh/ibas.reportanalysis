@@ -7,13 +7,10 @@
  */
 namespace reportanalysis {
     export namespace app {
-
         /** 报表查看者 */
         export interface IReportViewer extends ibas.IApplication<ibas.IView> {
             /** 报表 */
             report: bo.UserReport;
-            /** 运行报表 */
-            runReport(): void;
             /** 运行 */
             run(): void;
             /** 运行 */
