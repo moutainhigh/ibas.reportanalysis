@@ -60,4 +60,18 @@ namespace reportanalysis {
             ROLE,
         }
     }
+
+    export namespace app {
+        /** 报表数据服务契约 */
+        export interface IReportDataServiceContract extends ibas.IServiceContract {
+            /** 标题 */
+            title?: string;
+            /** 使用的报表查询 */
+            criteria: ibas.ICriteria | ibas.ICondition[];
+        }
+        /** 报表数据服务代理 */
+        export class ReportDataServiceProxy extends ibas.ServiceProxy<IReportDataServiceContract> {
+
+        }
+    }
 }

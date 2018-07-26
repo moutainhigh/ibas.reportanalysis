@@ -7,6 +7,15 @@
  */
 namespace reportanalysis {
     export namespace app {
+        /** 报表查看者 */
+        export interface IReportViewer extends ibas.IApplication<ibas.IView> {
+            /** 报表 */
+            report: bo.UserReport;
+            /** 运行 */
+            run(): void;
+            /** 运行 */
+            run(report: bo.UserReport): void;
+        }
         /** 查看应用-报表 */
         export abstract class ReportViewApp<T extends IReportViewView> extends ibas.Application<T> implements IReportViewer {
             /** 构造函数 */
@@ -44,23 +53,20 @@ namespace reportanalysis {
             }
             /** 运行,覆盖原方法 */
             run(): void {
-                try {
-                    if (ibas.objects.instanceOf(this.report, bo.UserReport)) {
+                if (ibas.objects.instanceOf(this.report, bo.UserReport)) {
+                    this.description = ibas.strings.format("{0} - {1}", this.description, this.report.name);
+                    super.run.apply(this, arguments);
+                    return;
+                } else if (arguments.length === 1) {
+                    let report: bo.UserReport = arguments[0];
+                    if (ibas.objects.instanceOf(report, bo.UserReport)) {
+                        this.report = report;
+                        this.description = ibas.strings.format("{0} - {1}", this.description, this.report.name);
                         super.run.apply(this, arguments);
                         return;
-                    } else if (arguments.length === 1) {
-                        let report: bo.UserReport = arguments[0];
-                        if (ibas.objects.instanceOf(report, bo.UserReport)) {
-                            this.report = report;
-                            this.description = ibas.strings.format("{0} - {1}", this.description, this.report.name);
-                            super.run.apply(this, arguments);
-                            return;
-                        }
                     }
-                    throw new Error(ibas.i18n.prop("reportanalysis_run_report_error"));
-                } catch (error) {
-                    this.messages(error);
                 }
+                throw new Error(ibas.i18n.prop("reportanalysis_run_report_error"));
             }
             report: bo.UserReport;
             private runReport(): void {

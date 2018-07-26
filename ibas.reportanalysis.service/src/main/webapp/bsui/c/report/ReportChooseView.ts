@@ -164,6 +164,9 @@ namespace reportanalysis {
                     }
                 }
             }
+            export class ReporDataServiceView extends ReportChooseView implements app.IReporDataServiceView {
+
+            }
         }
     }
 }

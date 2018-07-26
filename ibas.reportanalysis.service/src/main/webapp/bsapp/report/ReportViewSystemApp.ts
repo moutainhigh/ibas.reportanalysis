@@ -75,12 +75,13 @@ namespace reportanalysis {
                     ));
                     return;
                 }
+                this.close();
                 if (this.onChoosedData instanceof Function) {
                     this.onChoosedData(table);
                 }
             }
             /** 数据选择完成 */
-            onChoosedData: (table: ibas.DataTable) => {};
+            onChoosedData: (table: ibas.DataTable) => void;
         }
         /** 视图-报表 */
         export interface ISystemReportViewDialogView extends IReportViewView {

@@ -66,6 +66,9 @@ namespace reportanalysis {
                     case app.FileReportTabViewApp.APPLICATION_ID:
                         view = new c.FileReportViewTabView();
                         break;
+                    case app.ReportDataService.APPLICATION_ID:
+                        view = new c.ReporDataServiceView();
+                        break;
                     default:
                         break;
                 }
