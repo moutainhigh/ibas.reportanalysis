@@ -55,7 +55,7 @@ public class ExecuteReportParameter {
 			parameter.setValue(bo.getAddress());
 			parameters.add(parameter);
 		}
-		if (bo.getCategory() == emReportType.REPORT) {
+		if (bo.getCategory() == emReportType.REPORT || bo.getCategory() == emReportType.KPI) {
 			// 系统报表
 			if (bo.getSqlString() != null && bo.getSqlString().length() > 0) {
 				parameter = new ExecuteReportParameter();

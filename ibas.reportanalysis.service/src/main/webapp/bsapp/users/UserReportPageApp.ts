@@ -46,22 +46,39 @@ namespace reportanalysis {
                     return;
                 }
                 if (report.category === bo.emReportType.KPI) {
-                    // kpi报表
-                    // 刷新指标
-                    this.runReportKpi(report);
                     // 激活关联报表
                     let parameter: bo.UserReportParameter = report.parameters.firstOrDefault((item) => {
                         return item.name === PARAMETER_NAME_ASSOCIATED_REPORT;
                     });
                     if (!ibas.objects.isNull(parameter)) {
-                        for (let item of this.reports) {
-                            if (item.id === parameter.value) {
-                                this.activeReport(item);
-                                return;
+                        // 查找关联的报表
+                        let criteria: ibas.Criteria = new ibas.Criteria();
+                        let condition: ibas.ICondition = criteria.conditions.create();
+                        condition.alias = bo.Report.PROPERTY_OBJECTKEY_NAME;
+                        condition.value = parameter.value;
+                        condition = criteria.conditions.create();
+                        condition.alias = bo.Report.PROPERTY_ACTIVATED_NAME;
+                        condition.value = ibas.emYesNo.YES.toString();
+                        let that: this = this;
+                        let boRepository: bo.BORepositoryReportAnalysis = new bo.BORepositoryReportAnalysis();
+                        boRepository.fetchReport({
+                            criteria: criteria,
+                            onCompleted(opRslt: ibas.IOperationResult<bo.Report>): void {
+                                try {
+                                    if (opRslt.resultObjects.length > 0) {
+                                        let report: bo.UserReport = bo.UserReport.create(opRslt.resultObjects.firstOrDefault());
+                                        let app: IReportViewer = reportFactory.createViewer(report);
+                                        app.navigation = that.navigation;
+                                        app.viewShower = that.viewShower;
+                                        app.run(report);
+                                    } else {
+                                        this.proceeding(ibas.emMessageType.WARNING, ibas.i18n.prop("reportanalysis_not_found_report", parameter.value));
+                                    }
+                                } catch (error) {
+                                    that.messages(error);
+                                }
                             }
-                        }
-                        // 用户没有此关联报表
-                        this.proceeding(ibas.emMessageType.WARNING, ibas.i18n.prop("reportanalysis_not_found_report", parameter.value));
+                        });
                     }
                 } else {
                     let app: IReportViewer = reportFactory.createViewer(report);
@@ -115,7 +132,7 @@ namespace reportanalysis {
                         if (opRslt.resultCode === 0) {
                             let table: ibas.DataTable = opRslt.resultObjects.firstOrDefault();
                             if (!ibas.objects.isNull(table)) {
-                                that.view.updateKPI(kpiReport, table);
+                                that.view.updateReport(kpiReport, table);
                             }
                         }
                     }
@@ -130,8 +147,8 @@ namespace reportanalysis {
             activeReportEvent: Function;
             /** 刷新报表 */
             refreshReportsEvent: Function;
-            /** 更新KPI */
-            updateKPI(report: bo.UserReport, table: ibas.DataTable): void;
+            /** 更新报表 */
+            updateReport(report: bo.UserReport, table: ibas.DataTable): void;
         }
     }
 }

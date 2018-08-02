@@ -16,33 +16,38 @@ namespace reportanalysis {
                 activeReportEvent: Function;
                 /** 刷新报表 */
                 refreshReportsEvent: Function;
-                private page: sap.m.Page;
-                private container: sap.m.TileContainer;
-                /** 页面头部 */
-                private mainHeader: sap.tnt.ToolHeader;
-                /** 报表筛选条件下拉菜单 */
-                private multicombobox: sap.m.MultiComboBox;
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;
-                    this.multicombobox = new sap.m.MultiComboBox("", {
-                        width: "20%",
-                        Deselected: true,
-                        filterSecondaryValues: false,
-                        showSecondaryValues: true,
-                        placement: sap.m.PlacementType.Auto,
+                    this.multiCombobox = new sap.m.MultiComboBox("", {
+                        width: "auto",
+                        placeholder: ibas.i18n.prop("reportanalysisusers_filter_report_by_groups"),
                         selectionFinish: function (oEvent: any): void {
-                            let selectedItems: any = oEvent.getParameter("selectedItems");
-                            let messageText: any[] = [];
-                            for (let i: number = 0; i < selectedItems.length; i++) {
-                                messageText.push(selectedItems[i].getText());
+                            let groups: ibas.ArrayList<string> = new ibas.ArrayList<string>();
+                            for (let item of that.multiCombobox.getSelectedItems()) {
+                                groups.push(item.getText());
                             }
-                            that.groupsTranslateReports(messageText);
+                            for (let item of that.container.getTiles()) {
+                                if (item instanceof sap.m.StandardTile) {
+                                    item.setVisible(true);
+                                    if (groups.length === 0) {
+                                        continue;
+                                    }
+                                    let report: bo.UserReport = (<any>item.getModel()).getData();
+                                    if (ibas.objects.isNull(report)) {
+                                        continue;
+                                    }
+                                    if (groups.contain(report.group)) {
+                                        continue;
+                                    }
+                                    item.setVisible(false);
+                                }
+                            }
                         },
                     });
                     this.container = new sap.m.TileContainer("", {
                     });
-                    this.page = new sap.m.Page("", {
+                    return new sap.m.Page("", {
                         showHeader: false,
                         content: [
                             this.container,
@@ -50,26 +55,27 @@ namespace reportanalysis {
                         footer: new sap.m.Toolbar("", {
                             content: [
                                 new sap.m.ToolbarSpacer(""),
+                                this.multiCombobox,
                                 new sap.m.MenuButton("", {
                                     text: ibas.i18n.prop("shell_refresh"),
                                     type: sap.m.ButtonType.Transparent,
-                                    width: "auto",
                                     icon: "sap-icon://refresh",
+                                    width: "150px",
                                     buttonMode: sap.m.MenuButtonMode.Split,
+                                    textDirection: sap.ui.core.TextDirection.Inherit,
+                                    useDefaultActionOnly: true,
+                                    defaultAction: function (): void {
+                                        that.fireViewEvents(that.refreshReportsEvent);
+                                        that.multiCombobox.destroyItems();
+                                    },
                                     menu: new sap.m.Menu("", {
                                         items: [
-                                            new sap.m.MenuItem("", {
-                                                text: ibas.i18n.prop("reportanalysisusers_refresh_all"),
-                                                icon: "sap-icon://opportunity",
-                                                press: function (): void {
-                                                    that.fireViewEvents(that.refreshReportsEvent);
-                                                }
-                                            }),
                                             new sap.m.MenuItem("", {
                                                 text: ibas.i18n.prop("reportanalysisusers_refresh_kpi"),
                                                 icon: that.getIcon(bo.emReportType.KPI),
                                                 press: function (): void {
                                                     that.fireViewEvents(that.refreshReportsEvent, bo.emReportType.KPI);
+                                                    that.multiCombobox.destroyItems();
                                                 }
                                             }),
                                             new sap.m.MenuItem("", {
@@ -77,6 +83,7 @@ namespace reportanalysis {
                                                 icon: that.getIcon(bo.emReportType.BOE),
                                                 press: function (): void {
                                                     that.fireViewEvents(that.refreshReportsEvent, bo.emReportType.BOE);
+                                                    that.multiCombobox.destroyItems();
                                                 }
                                             }),
                                             new sap.m.MenuItem("", {
@@ -84,86 +91,46 @@ namespace reportanalysis {
                                                 icon: that.getIcon(bo.emReportType.REPORT),
                                                 press: function (): void {
                                                     that.fireViewEvents(that.refreshReportsEvent, bo.emReportType.REPORT);
+                                                    that.multiCombobox.destroyItems();
                                                 }
                                             }),
                                         ],
                                     })
                                 }),
-                                this.multicombobox,
-                                new sap.m.ToolbarSpacer(""),
                             ]
                         })
                     });
-                    this.id = this.page.getId();
-                    return this.page;
                 }
+                private container: sap.m.TileContainer;
+                /** 报表筛选条件下拉菜单 */
+                private multiCombobox: sap.m.MultiComboBox;
                 /** 显示数据 */
                 showReports(reports: bo.UserReport[]): void {
                     this.container.destroyTiles();
-                    let reportgroups: string[] = [];
+                    let groups: ibas.IList<string> = new ibas.ArrayList<string>();
                     let that: this = this;
                     for (let item of reports) {
-                        this.container.addTile(
-                            new sap.m.StandardTile("", {
-                                info: ibas.i18n.prop("reportanalysis_report_id", item.id),
-                                icon: this.getIcon(item.category),
-                                title: item.name,
-                                press(): void {
-                                    that.fireViewEvents(that.activeReportEvent, item);
-                                }
-                            })
-                        );
-                        // 将用户报表组别添加进reportgroups
-                        if (reportgroups.length > 0) {
-                            let status: boolean = false;
-                            for (let i: number = 0; i < reportgroups.length; i++) {
-                                if (reportgroups[i] === item.group) {
-                                    status = true;
-                                }
-                                if (i === reportgroups.length - 1 && status === false) {
-                                    reportgroups.push(item.group);
-                                }
+                        let title: sap.m.StandardTile = new sap.m.StandardTile("", {
+                            info: "# {id}",
+                            title: "{name}",
+                            icon: this.getIcon(item.category),
+                            press(): void {
+                                that.fireViewEvents(that.activeReportEvent, item);
                             }
-                        } else {
-                            reportgroups.push(item.group);
+                        });
+                        title.bindObject("/");
+                        title.setModel(new sap.ui.model.json.JSONModel(item));
+                        this.container.addTile(title);
+                        if (!ibas.strings.isEmpty(item.group) && !groups.contain(item.group)) {
+                            groups.add(item.group);
                         }
                     }
-                    // 解决选择筛选条件后下拉框元素重组
-                    if (this.multicombobox.getItems().length === 0) {
-                        this.initMulticomboboxItem(reportgroups);
-                        // 将第一次获取到的当前用户报表保存
-                        this.reports = reports;
-                    }
-                }
-                /** 当前用户报表集合 */
-                reports: bo.UserReport[];
-                /** 将用户选择的条件转化为具体哪些报表作为参数传给showReports函数 */
-                groupsTranslateReports(groups: any): void {
-                    let that: this = this;
-                    let beShowed: bo.UserReport[];
-                    let beShowedes: bo.UserReport[] = [];
-                    // 在用户报表集合中找出所有符合用户选定条件的报表
-                    if (groups.length > 0) {
-                        for (let i: number = 0; i < that.reports.length; i++) {
-                            for (let item of that.reports) {
-                                if (groups[i] === item.group) {
-                                    beShowedes.push(item);
-                                }
-                            }
+                    if (this.multiCombobox.getItems().length === 0) {
+                        for (let item of groups) {
+                            this.multiCombobox.addItem(new sap.ui.core.Item("", {
+                                text: item
+                            }));
                         }
-                        that.showReports(beShowedes);
-                    } else {
-                        // 当用户清空筛选条件，显示所有报表
-                        that.showReports(that.reports);
-                    }
-                }
-                /** 初始化筛选条件下拉框 */
-                initMulticomboboxItem(list: string[]): void {
-                    this.multicombobox.destroyItems();
-                    for (let item of list) {
-                        this.multicombobox.addItem(new sap.ui.core.Item("", {
-                            text: item
-                        }));
                     }
                 }
                 private getIcon(type: bo.emReportType): string {
@@ -175,17 +142,16 @@ namespace reportanalysis {
                     return "sap-icon://pie-chart";
                 }
                 /** 更新KPI */
-                updateKPI(report: bo.UserReport, table: ibas.DataTable): void {
+                updateReport(report: bo.UserReport, table: ibas.DataTable): void {
                     let results: any[] = table.convert();
                     for (let item of this.container.getTiles()) {
                         if (item instanceof sap.m.StandardTile) {
-                            if (item.getInfo().indexOf("[" + report.id + "]") > 0) {
+                            if (item.getInfo() === ibas.strings.format("# {0}", report.id)) {
                                 for (let result of results) {
                                     if (result.Key === "${Kpi}") {
                                         item.setNumber(result.Value);
                                     }
                                 }
-                                // item.setInfoState(sap.ui.core.ValueState.Warning);
                             }
                         }
                     }

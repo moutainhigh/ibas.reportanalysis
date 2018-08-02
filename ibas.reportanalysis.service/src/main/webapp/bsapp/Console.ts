@@ -138,6 +138,9 @@ namespace reportanalysis {
                                 }
                                 that.register(new UserReportPageFunc());
                                 for (let item of opRslt.resultObjects) {
+                                    if (item.category === bo.emReportType.KPI) {
+                                        continue;
+                                    }
                                     that.register(new UserReportBookFunc(item));
                                 }
                                 // 通知初始化完成

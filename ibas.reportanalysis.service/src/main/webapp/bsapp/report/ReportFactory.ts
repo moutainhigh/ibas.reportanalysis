@@ -18,6 +18,8 @@ namespace reportanalysis {
                         return new BOEReportViewApp();
                     } else if (report.category === bo.emReportType.FILE) {
                         return new FileReportViewApp();
+                    } else if (report.category === bo.emReportType.KPI) {
+                        return new SystemReportViewApp();
                     }
                 }
                 throw new Error(

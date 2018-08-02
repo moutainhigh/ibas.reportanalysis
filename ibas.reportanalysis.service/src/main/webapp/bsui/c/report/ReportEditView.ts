@@ -105,6 +105,8 @@ namespace reportanalysis {
                                 formatter(data: bo.emReportType): any {
                                     if (data === bo.emReportType.REPORT) {
                                         return true;
+                                    } else if (data === bo.emReportType.KPI) {
+                                        return true;
                                     }
                                     return false;
                                 }
@@ -118,8 +120,6 @@ namespace reportanalysis {
                                 formatter(data: bo.emReportType): any {
                                     if (data === bo.emReportType.BOE) {
                                         return true;
-                                    } else if (data === bo.emReportType.KPI) {
-                                        return true;
                                     }
                                     return false;
                                 }
@@ -132,8 +132,6 @@ namespace reportanalysis {
                                 path: "/category",
                                 formatter(data: bo.emReportType): any {
                                     if (data === bo.emReportType.BOE) {
-                                        return true;
-                                    } else if (data === bo.emReportType.KPI) {
                                         return true;
                                     }
                                     return false;
@@ -149,8 +147,6 @@ namespace reportanalysis {
                                 formatter(data: bo.emReportType): any {
                                     if (data === bo.emReportType.BOE) {
                                         return true;
-                                    } else if (data === bo.emReportType.KPI) {
-                                        return true;
                                     }
                                     return false;
                                 }
@@ -163,8 +159,6 @@ namespace reportanalysis {
                                 path: "/category",
                                 formatter(data: bo.emReportType): any {
                                     if (data === bo.emReportType.BOE) {
-                                        return true;
-                                    } else if (data === bo.emReportType.KPI) {
                                         return true;
                                     }
                                     return false;
