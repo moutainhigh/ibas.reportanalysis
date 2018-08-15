@@ -8,7 +8,7 @@
 namespace reportanalysis {
     export namespace ui {
         export namespace c {
-            interface ISystemReportView {
+            export interface ISystemReportView {
                 runReportEvent: Function;
                 resetReportEvent: Function;
                 fireViewEvents(event: Function, ...pars: any[]): void;
@@ -93,9 +93,10 @@ namespace reportanalysis {
                             col.description = col.name;
                         }
                     } else {
+                        let value: string = col.description;
                         col.description = ibas.i18n.prop(col.description);
                         if (col.description.startsWith("[") && col.description.endsWith("]")) {
-                            col.description = col.description;
+                            col.description = value;
                         }
                     }
                     if (col.definedDataType() === ibas.emTableDataType.DATE) {
