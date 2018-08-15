@@ -89,8 +89,14 @@ namespace reportanalysis {
                     let col: ibas.DataTableColumn = table.columns[index];
                     if (ibas.strings.isEmpty(col.description)) {
                         col.description = ibas.i18n.prop(col.name);
+                        if (col.description.startsWith("[") && col.description.endsWith("]")) {
+                            col.description = col.name;
+                        }
                     } else {
                         col.description = ibas.i18n.prop(col.description);
+                        if (col.description.startsWith("[") && col.description.endsWith("]")) {
+                            col.description = col.description;
+                        }
                     }
                     if (col.definedDataType() === ibas.emTableDataType.DATE) {
                         tableResult.addColumn(
@@ -123,7 +129,7 @@ namespace reportanalysis {
                         );
                     }
                 }
-                tableResult.setModel(new sap.ui.model.json.JSONModel({ rows: table.convert({ format: true, indexName: true }) }));
+                tableResult.setModel(new sap.ui.model.json.JSONModel({ rows: table.convert({ format: true, nameAs: "index" }) }));
                 return tableResult;
             }
             /**
