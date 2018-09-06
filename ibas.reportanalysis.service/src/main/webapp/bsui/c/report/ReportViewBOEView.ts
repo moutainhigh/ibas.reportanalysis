@@ -12,27 +12,34 @@ namespace reportanalysis {
             const CONFIG_ITEM_FULL_SCREEN: string = "fullScreen";
             /** 获取窗口宽度 */
             let getWindowWidth: Function = function (tab: boolean): number {
-                let consume: number = 96;
+                let consume: number = 52;
                 return window.innerWidth - consume;
             };
             /** 获取窗口高度 */
             let getWindowHeight: Function = function (tab: boolean): number {
-                let consume: number = 86;
-                if (ibas.config.get(CONFIG_ITEM_FULL_SCREEN, false)) {
-                    consume = consume - 50;
+                let consume: number = 96;
+                if (ibas.config.get(openui5.CONFIG_ITEM_COMPACT_SCREEN) === false) {
+                    consume = consume + 8;
                 }
-                if (tab) {
-                    consume = consume + 50;
+                if (ibas.config.get(CONFIG_ITEM_FULL_SCREEN, false)) {
+                    consume = consume - 48;
+                }
+                if (tab === true) {
+                    if (ibas.config.get(openui5.CONFIG_ITEM_COMPACT_SCREEN) === false) {
+                        consume = consume - 48 + 48;
+                    } else {
+                        consume = consume - 40 + 32;
+                    }
                 }
                 return window.innerHeight - consume;
             };
-            let createHTML: Function = function (url: string): string {
+            let createHTML: Function = function (url: string, tab: boolean): string {
                 if (ibas.objects.isNull(url)) {
                     return "";
                 }
                 return ibas.strings.format(
                     `<iframe src="{0}" width="{1}" height="{2}" frameborder="no" border="0" scrolling="no"></iframe>`,
-                    encodeURI(url), getWindowWidth(true), getWindowHeight(true));
+                    encodeURI(url), getWindowWidth(tab), getWindowHeight(tab));
             };
             /**
              * 视图-Report
@@ -63,7 +70,6 @@ namespace reportanalysis {
                         }),
                         content: [this.form]
                     });
-                    this.id = this.page.getId();
                     return this.page;
                 }
                 private tableResult: sap.ui.table.Table;
@@ -84,7 +90,7 @@ namespace reportanalysis {
                             );
                             this.form.addItem(
                                 new sap.ui.core.HTML("", {
-                                    content: createHTML(data.Value),
+                                    content: createHTML(data.Value, false),
                                     preferDOM: false,
                                     sanitizeContent: true,
                                     visible: true,
@@ -148,7 +154,7 @@ namespace reportanalysis {
                             );
                             this.form.addItem(
                                 new sap.ui.core.HTML("", {
-                                    content: createHTML(data.Value),
+                                    content: createHTML(data.Value, true),
                                     preferDOM: false,
                                     sanitizeContent: true,
                                     visible: true,
