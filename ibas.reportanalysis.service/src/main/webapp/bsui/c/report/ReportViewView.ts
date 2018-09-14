@@ -67,27 +67,50 @@ namespace reportanalysis {
                 if (ibas.objects.isNull(parameters) || parameters.length === 0) {
                     return;
                 }
-                form.addItem(new sap.m.Title("", {
-                    level: sap.ui.core.TitleLevel.H5,
-                    titleStyle: sap.ui.core.TitleLevel.H5,
-                    textAlign: sap.ui.core.TextAlign.Center,
-                    text: ibas.i18n.prop("reportanalysis_running_parameters"),
-                    height: "60px",
-                }));
+                form.addItem(
+                    new sap.m.Title("", {
+                        level: sap.ui.core.TitleLevel.H2,
+                        titleStyle: sap.ui.core.TitleLevel.H2,
+                        textAlign: sap.ui.core.TextAlign.Center,
+                        text: "",
+                    })
+                );
+                form.addItem(
+                    new sap.m.Title("", {
+                        level: sap.ui.core.TitleLevel.H3,
+                        titleStyle: sap.ui.core.TitleLevel.H3,
+                        textAlign: sap.ui.core.TextAlign.Center,
+                        text: ibas.i18n.prop("reportanalysis_running_parameters"),
+                    })
+                );
+                form.addItem(
+                    new sap.m.Title("", {
+                        level: sap.ui.core.TitleLevel.H4,
+                        titleStyle: sap.ui.core.TitleLevel.H4,
+                        textAlign: sap.ui.core.TextAlign.Center,
+                        text: "",
+                    })
+                );
                 for (let item of parameters) {
                     if (item.category === bo.emReportParameterType.PRESET) {
                         // 预设的不显示
                         continue;
                     }
-                    form.addItem(new sap.m.Label("", {
-                        textAlign: sap.ui.core.TextAlign.Left,
-                        width: "260px",
-                        text: ibas.objects.isNull(item.description) ? item.name.replace("\$\{", "").replace("\}", "") : item.description
-                    }));
+                    form.addItem(
+                        new sap.m.Title("", {
+                            width: "260px",
+                            level: sap.ui.core.TitleLevel.H5,
+                            titleStyle: sap.ui.core.TitleLevel.H5,
+                            textAlign: sap.ui.core.TextAlign.Left,
+                            text: ibas.objects.isNull(item.description) ? item.name.replace("\$\{", "").replace("\}", "") : item.description
+                        })
+                    );
                     let input: sap.ui.core.Control;
                     if (item.category === bo.emReportParameterType.DATETIME) {
                         input = new sap.m.DatePicker("", {
                             width: "260px",
+                            valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
+                            displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
                         });
                         input.bindProperty("value", {
                             path: "/value"

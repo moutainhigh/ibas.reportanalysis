@@ -260,6 +260,12 @@ namespace reportanalysis {
                             }
                             item.report = selected.objectKey;
                             item.name = selected.name;
+                            if (!ibas.strings.isEmpty(selected.group)) {
+                                if (!ibas.strings.isEmpty(item.name)) {
+                                    item.name = item.name + ";";
+                                }
+                                item.name = item.name + selected.group;
+                            }
                             item = null;
                         }
                         if (created) {

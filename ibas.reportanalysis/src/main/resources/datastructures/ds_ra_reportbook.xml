@@ -5,7 +5,7 @@
     <Property Name="ObjectKey" Description="对象编号" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="ObjectKey" PrimaryKey="Yes"/>
     <Property Name="ObjectCode" Description="对象类型" DataType="Alphanumeric" DataSubType="Default" EditSize="30" Mapped="ObjectCode"/>
     <Property Name="LogInst" Description="实例号" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="LogInst"/>
-    <Property Name="Series" Description="服务系列" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="Series"/>    
+    <Property Name="Series" Description="服务系列" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="Series"/>
     <Property Name="DataSource" Description="数据源" DataType="Alphanumeric" DataSubType="Default" EditSize="8" Mapped="DataSource"/>
     <Property Name="CreateDate" Description="创建日期" DataType="Date" DataSubType="Default" EditSize="8" Mapped="CreateDate"/>
     <Property Name="CreateTime" Description="创建时间" DataType="Date" DataSubType="Time" EditSize="8" Mapped="CreateTime"/>
@@ -38,7 +38,7 @@
     <Property Name="CreateActionId" Description="创建动作标识" DataType="Alphanumeric" DataSubType="Default" EditSize="36" Mapped="CreateActId"/>
     <Property Name="UpdateActionId" Description="更新动作标识" DataType="Alphanumeric" DataSubType="Default" EditSize="36" Mapped="UpdateActId"/>
     <Property Name="Report" Description="报表编号" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="Report" />
-    <Property Name="Name" Description="项目名称" DataType="Alphanumeric" DataSubType="Default" EditSize="20" Mapped="Name"/>
+    <Property Name="Name" Description="项目名称" DataType="Alphanumeric" DataSubType="Default" EditSize="100" Mapped="Name"/>
   </Model>
   <BusinessObject MappedModel="ReportBook" ShortName="${Company}_RA_RPTBOOK">
     <RelatedBO Relation="OneToMany" MappedModel="ReportBookItem"/>
