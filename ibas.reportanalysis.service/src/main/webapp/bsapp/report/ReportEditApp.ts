@@ -225,36 +225,82 @@ namespace reportanalysis {
                 if (ibas.objects.isNull(caller)) {
                     return;
                 }
-                if (caller.category !== bo.emReportParameterType.SYSTEM) {
-                    return;
+                if (caller.category === bo.emReportParameterType.SYSTEM) {
+                    let that: this = this;
+                    ibas.servicesManager.runChooseService<ibas.KeyValue>({
+                        boCode: initialfantasy.bo.BO_CODE_SYSTEM_VARIABLE,
+                        onCompleted(selecteds: ibas.IList<ibas.KeyValue>): void {
+                            // 获取触发的对象
+                            let index: number = that.editData.reportParameters.indexOf(caller);
+                            let item: bo.ReportParameter = that.editData.reportParameters[index];
+                            // 选择返回数量多余触发数量时,自动创建新的项目
+                            let created: boolean = false;
+                            for (let selected of selecteds) {
+                                if (ibas.objects.isNull(item)) {
+                                    item = that.editData.reportParameters.create();
+                                    item.category = bo.emReportParameterType.SYSTEM;
+                                    created = true;
+                                }
+                                if (ibas.strings.isEmpty(item.name)) {
+                                    item.name = selected.key;
+                                }
+                                item.value = selected.key;
+                                item = null;
+                            }
+                            if (created) {
+                                // 创建了新的行项目
+                                that.view.showReportParameters(that.editData.reportParameters.filterDeleted());
+                            }
+                        }
+                    });
+                } else if (caller.category === bo.emReportParameterType.CHOOSE_LIST) {
+                    let that: this = this;
+                    let criteria: ibas.ICriteria = new ibas.Criteria();
+                    criteria.noChilds = true;
+                    let condition: ibas.ICondition = criteria.conditions.create();
+                    condition.alias = "Code";
+                    condition.value = ".";
+                    condition.operation = ibas.emConditionOperation.NOT_CONTAIN;
+                    ibas.servicesManager.runChooseService<initialfantasy.bo.IBOInformation>({
+                        boCode: initialfantasy.bo.BO_CODE_BOINFORMATION,
+                        criteria: criteria,
+                        onCompleted(selecteds: ibas.IList<initialfantasy.bo.IBOInformation>): void {
+                            // 获取触发的对象
+                            let index: number = that.editData.reportParameters.indexOf(caller);
+                            let item: bo.ReportParameter = that.editData.reportParameters[index];
+                            // 选择返回数量多余触发数量时,自动创建新的项目
+                            let created: boolean = false;
+                            for (let selected of selecteds) {
+                                if (ibas.objects.isNull(item)) {
+                                    item = that.editData.reportParameters.create();
+                                    item.category = bo.emReportParameterType.CHOOSE_LIST;
+                                    created = true;
+                                }
+                                if (ibas.strings.isEmpty(item.name)) {
+                                    item.name = selected.name;
+                                }
+                                if (ibas.strings.isEmpty(item.description)) {
+                                    item.description = selected.description;
+                                }
+                                // 默认赋值字段
+                                if (selected.objectType === "Simple") {
+                                    item.value = ibas.strings.format("{0}.ObjectKey", selected.code);
+                                } else if (selected.objectType === "MasterData") {
+                                    item.value = ibas.strings.format("{0}.Code", selected.code);
+                                } else if (selected.objectType === "Document") {
+                                    item.value = ibas.strings.format("{0}.DocEntry", selected.code);
+                                } else {
+                                    item.value = selected.code;
+                                }
+                                item = null;
+                            }
+                            if (created) {
+                                // 创建了新的行项目
+                                that.view.showReportParameters(that.editData.reportParameters.filterDeleted());
+                            }
+                        }
+                    });
                 }
-                let that: this = this;
-                ibas.servicesManager.runChooseService<ibas.KeyValue>({
-                    boCode: initialfantasy.bo.BO_CODE_SYSTEM_VARIABLE,
-                    onCompleted(selecteds: ibas.IList<ibas.KeyValue>): void {
-                        // 获取触发的对象
-                        let index: number = that.editData.reportParameters.indexOf(caller);
-                        let item: bo.ReportParameter = that.editData.reportParameters[index];
-                        // 选择返回数量多余触发数量时,自动创建新的项目
-                        let created: boolean = false;
-                        for (let selected of selecteds) {
-                            if (ibas.objects.isNull(item)) {
-                                item = that.editData.reportParameters.create();
-                                item.category = bo.emReportParameterType.SYSTEM;
-                                created = true;
-                            }
-                            if (ibas.strings.isEmpty(item.name)) {
-                                item.name = selected.key;
-                            }
-                            item.value = selected.key;
-                            item = null;
-                        }
-                        if (created) {
-                            // 创建了新的行项目
-                            that.view.showReportParameters(that.editData.reportParameters.filterDeleted());
-                        }
-                    }
-                });
             }
             /** 选择业务对象 */
             private chooseReportBusinessObject(): void {

@@ -141,6 +141,36 @@ namespace reportanalysis {
                         input.bindProperty("selectedKey", {
                             path: "/value"
                         });
+                    } else if (item.category === bo.emReportParameterType.CHOOSE_LIST && !ibas.strings.isEmpty(item.value)) {
+                        let boCode: string = item.value;
+                        let property: string = null;
+                        if (boCode.indexOf(".") > 0) {
+                            boCode = item.value.split(".")[0];
+                            property = item.value.split(".")[1];
+                        }
+                        item.value = null;
+                        input = new sap.m.Input("", {
+                            width: "260px",
+                            showValueHelp: true,
+                            valueHelpRequest: function (): void {
+                                ibas.servicesManager.runChooseService<any>({
+                                    chooseType: ibas.emChooseType.SINGLE,
+                                    boCode: boCode,
+                                    criteria: [],
+                                    onCompleted(selecteds: ibas.IList<any>): void {
+                                        let selected: any = selecteds.firstOrDefault();
+                                        if (!ibas.strings.isEmpty(property)) {
+                                            (<sap.m.Input>input).setValue(selected[property]);
+                                        } else {
+                                            (<sap.m.Input>input).setValue(selected.toString());
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                        input.bindProperty("value", {
+                            path: "/value"
+                        });
                     } else {
                         input = new sap.m.Input("", {
                             width: "260px",

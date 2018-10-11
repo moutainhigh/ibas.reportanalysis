@@ -32,13 +32,14 @@ public enum emReportParameterType {
 	RANGE,
 
 	/**
-	 * 查询结果
-	 */
-	@Value("SQL")
-	SQL,
-	/**
 	 * 预置值
 	 */
 	@Value("SET")
 	PRESET,
+
+	/**
+	 * 选择列表
+	 */
+	@Value("CHS")
+	CHOOSE_LIST,
 }

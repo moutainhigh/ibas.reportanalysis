@@ -45,10 +45,10 @@ namespace reportanalysis {
             SYSTEM,
             /** 范围值 */
             RANGE,
-            /** 查询结果 */
-            SQL,
             /** 预置值 */
-            PRESET
+            PRESET,
+            /** 选择服务 */
+            CHOOSE_LIST
         }
         /**
          * 分配类型
