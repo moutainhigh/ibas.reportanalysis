@@ -2,21 +2,29 @@ package org.colorcoding.ibas.reportanalysis.reporter;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+
 import org.colorcoding.ibas.bobas.data.ArrayList;
-import org.colorcoding.ibas.initialfantasy.MyConfiguration;
+import org.colorcoding.ibas.bobas.serialization.Serializable;
+import org.colorcoding.ibas.reportanalysis.MyConfiguration;
 import org.colorcoding.ibas.reportanalysis.bo.report.IReport;
 import org.colorcoding.ibas.reportanalysis.bo.report.IReportParameter;
 import org.colorcoding.ibas.reportanalysis.bo.report.Report;
 import org.colorcoding.ibas.reportanalysis.data.emReportParameterType;
 import org.colorcoding.ibas.reportanalysis.data.emReportType;
 
-public class ExecuteReportParameter {
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlType(name = "ExecuteReportParameter", namespace = MyConfiguration.NAMESPACE_REPORTER)
+public class ExecuteReportParameter extends Serializable {
+
+	private static final long serialVersionUID = -2179335121340797893L;
 
 	public static ExecuteReportParameter create(IReportParameter boItem) {
 		ExecuteReportParameter reportParameter = new ExecuteReportParameter();
 		reportParameter.setName(boItem.getName());
-		reportParameter.setCategory(boItem.getCategory());
-		reportParameter.setDescription(boItem.getDescription());
 		reportParameter.setValue(boItem.getValue());
 		return reportParameter;
 	}
@@ -28,14 +36,12 @@ public class ExecuteReportParameter {
 			parameter = new ExecuteReportParameter();
 			parameter
 					.setName(String.format(MyConfiguration.VARIABLE_NAMING_TEMPLATE, Report.PROPERTY_SERVER.getName()));
-			parameter.setCategory(emReportParameterType.PRESET);
 			parameter.setValue(bo.getServer());
 			parameters.add(parameter);
 		}
 		if (bo.getUser() != null && bo.getUser().length() > 0) {
 			parameter = new ExecuteReportParameter();
 			parameter.setName(String.format(MyConfiguration.VARIABLE_NAMING_TEMPLATE, Report.PROPERTY_USER.getName()));
-			parameter.setCategory(emReportParameterType.PRESET);
 			parameter.setValue(bo.getUser());
 			parameters.add(parameter);
 		}
@@ -43,7 +49,6 @@ public class ExecuteReportParameter {
 			parameter = new ExecuteReportParameter();
 			parameter.setName(
 					String.format(MyConfiguration.VARIABLE_NAMING_TEMPLATE, Report.PROPERTY_PASSWORD.getName()));
-			parameter.setCategory(emReportParameterType.PRESET);
 			parameter.setValue(bo.getPassword());
 			parameters.add(parameter);
 		}
@@ -51,17 +56,15 @@ public class ExecuteReportParameter {
 			parameter = new ExecuteReportParameter();
 			parameter.setName(
 					String.format(MyConfiguration.VARIABLE_NAMING_TEMPLATE, Report.PROPERTY_ADDRESS.getName()));
-			parameter.setCategory(emReportParameterType.PRESET);
 			parameter.setValue(bo.getAddress());
 			parameters.add(parameter);
 		}
-		if (bo.getCategory() == emReportType.REPORT || bo.getCategory() == emReportType.KPI) {
+		if (bo.getCategory() == emReportType.REPORT) {
 			// 系统报表
 			if (bo.getSqlString() != null && bo.getSqlString().length() > 0) {
 				parameter = new ExecuteReportParameter();
 				parameter.setName(
 						String.format(MyConfiguration.VARIABLE_NAMING_TEMPLATE, Report.PROPERTY_SQLSTRING.getName()));
-				parameter.setCategory(emReportParameterType.PRESET);
 				parameter.setValue(bo.getSqlString());
 				parameters.add(parameter);
 			}
@@ -69,22 +72,7 @@ public class ExecuteReportParameter {
 		return parameters;
 	}
 
-	/**
-	 * 参数名称
-	 */
-	private String name;
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * 参数类型
-	 */
+	@XmlElement(name = "Category")
 	private emReportParameterType category;
 
 	public emReportParameterType getCategory() {
@@ -95,22 +83,18 @@ public class ExecuteReportParameter {
 		this.category = category;
 	}
 
-	/**
-	 * 参数说明
-	 */
-	private String description;
+	@XmlElement(name = "Name")
+	private String name;
 
-	public String getDescription() {
-		return description;
+	public String getName() {
+		return name;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	/**
-	 * 参数值
-	 */
+	@XmlElement(name = "Value")
 	private String value;
 
 	public String getValue() {

@@ -17,5 +17,5 @@ public interface IReporter {
 	 * @return
 	 * @throws Exception
 	 */
-	IDataTable run(ExecuteReport report) throws ReportException;
+	IDataTable run(ExecuteReport report) throws ReporterException;
 }

@@ -7,26 +7,25 @@
  */
 namespace reportanalysis {
     export namespace app {
-        /** 报表查看者 */
-        export interface IReportViewer extends ibas.IApplication<ibas.IView> {
-            /** 报表 */
-            report: bo.UserReport;
-            /** 运行 */
-            run(): void;
-            /** 运行 */
-            run(report: bo.UserReport): void;
-        }
         /** 查看应用-报表 */
-        export abstract class ReportViewApp<T extends IReportViewView> extends ibas.Application<T> implements IReportViewer {
+        abstract class ReportViewApp<T extends IReportViewView> extends ibas.Application<T>  {
+            /** 应用标识 */
+            static APPLICATION_ID: string = "3c42c391-4dc3-4188-a9d7-b6cc757428ea";
+            /** 应用名称 */
+            static APPLICATION_NAME: string = "reportanalysis_app_report_view";
             /** 构造函数 */
             constructor() {
                 super();
+                this.id = ReportViewApp.APPLICATION_ID;
+                this.name = ReportViewApp.APPLICATION_NAME;
+                this.description = ibas.i18n.prop(this.name);
             }
             /** 注册视图 */
             protected registerView(): void {
                 super.registerView();
                 // 其他事件
                 this.view.runReportEvent = this.runReport;
+                this.view.resetReportEvent = this.viewShowed;
             }
             /** 视图显示后 */
             protected viewShowed(): void {
@@ -51,24 +50,24 @@ namespace reportanalysis {
                     this.view.showReport(this.report);
                 }
             }
+            run(): void;
+            run(report: bo.Report): void;
+            run(report: bo.UserReport): void;
             /** 运行,覆盖原方法 */
             run(): void {
-                if (ibas.objects.instanceOf(this.report, bo.UserReport)) {
-                    this.description = ibas.strings.format("{0} - {1}", this.description, this.report.name);
-                    super.run.apply(this, arguments);
-                    return;
-                } else if (arguments.length === 1) {
-                    let report: bo.UserReport = arguments[0];
-                    if (ibas.objects.instanceOf(report, bo.UserReport)) {
-                        this.report = report;
-                        this.description = ibas.strings.format("{0} - {1}", this.description, this.report.name);
-                        super.run.apply(this, arguments);
-                        return;
-                    }
+                let report: any = arguments[0];
+                if (report instanceof bo.UserReport) {
+                    this.report = report;
+                } else if (report instanceof bo.Report) {
+                    this.report = bo.UserReport.create(report);
                 }
-                throw new Error(ibas.i18n.prop("reportanalysis_run_report_error"));
+                if (!(this.report instanceof bo.UserReport)) {
+                    throw new Error(ibas.i18n.prop("reportanalysis_run_report_error"));
+                }
+                this.description = ibas.strings.format("{0} - {1}", this.description, this.report.name);
+                super.run.apply(this, arguments);
             }
-            report: bo.UserReport;
+            protected report: bo.UserReport;
             private runReport(): void {
                 this.busy(true);
                 let that: this = this;
@@ -98,10 +97,75 @@ namespace reportanalysis {
         export interface IReportViewView extends ibas.IView {
             /** 运行报表 */
             runReportEvent: Function;
+            /** 重置报表 */
+            resetReportEvent: Function;
             /** 显示报表 */
             showReport(report: bo.UserReport): void;
             /** 显示报表结果 */
             showResults(table: ibas.DataTable): void;
+        }
+        /** 查看应用-报表普通 */
+        export class ReportViewerApp extends ReportViewApp<IReportDataChooseView> {
+            /** 应用标识 */
+            static APPLICATION_ID: string = "3c42c391-4dc3-4188-a9d7-b6cc757428eb";
+            /** 构造函数 */
+            constructor() {
+                super();
+                this.id = ReportViewerApp.APPLICATION_ID;
+            }
+        }
+        /** 查看应用-报表页签 */
+        export class ReportTabViewerApp extends ReportViewApp<IReportDataChooseView> {
+            /** 应用标识 */
+            static APPLICATION_ID: string = "3c42c391-4dc3-4188-a9d7-b6cc757428ec";
+            /** 构造函数 */
+            constructor() {
+                super();
+                this.id = ReportTabViewerApp.APPLICATION_ID;
+            }
+            /** 使用报表 */
+            useReport(report: bo.UserReport): void {
+                this.report = report;
+            }
+        }
+        /** 查看应用-报表数据选择 */
+        export class ReportDataChooseApp extends ReportViewApp<IReportDataChooseView> {
+            /** 应用标识 */
+            static APPLICATION_ID: string = "3c42c391-4dc3-4188-a9d7-b6cc757428ed";
+            /** 构造函数 */
+            constructor() {
+                super();
+                this.id = ReportDataChooseApp.APPLICATION_ID;
+            }
+            /** 注册视图 */
+            protected registerView(): void {
+                super.registerView();
+                // 其他事件
+                this.view.chooseDataEvent = this.chooseData;
+            }
+            /** 视图显示后 */
+            protected viewShowed(): void {
+                super.viewShowed();
+            }
+            private chooseData(table: ibas.DataTable): void {
+                if (ibas.objects.isNull(table) || table.rows.length <= 0) {
+                    this.messages(ibas.emMessageType.WARNING, ibas.i18n.prop("shell_please_chooose_data",
+                        ibas.i18n.prop("shell_using")
+                    ));
+                    return;
+                }
+                this.close();
+                if (this.onChoosedData instanceof Function) {
+                    this.onChoosedData(table);
+                }
+            }
+            /** 数据选择完成 */
+            onChoosedData: (table: ibas.DataTable) => void;
+        }
+        /** 视图-报表 */
+        export interface IReportDataChooseView extends IReportViewView {
+            /** 选择数据 */
+            chooseDataEvent: Function;
         }
     }
 }

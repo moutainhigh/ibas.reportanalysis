@@ -52,6 +52,11 @@ public class MyConfiguration extends org.colorcoding.ibas.bobas.MyConfiguration 
 	public static final String NAMESPACE_BO = NAMESPACE_ROOT + "bo";
 
 	/**
+	 * 报表命名空间
+	 */
+	public static final String NAMESPACE_REPORTER = NAMESPACE_ROOT + "reporter";
+
+	/**
 	 * 服务命名空间
 	 */
 	public static final String NAMESPACE_SERVICE = NAMESPACE_ROOT + "service";

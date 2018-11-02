@@ -9,6 +9,3 @@
 /// <reference path="./ReportEditView.ts" />
 /// <reference path="./ReportListView.ts" />
 /// <reference path="./ReportViewView.ts" />
-/// <reference path="./ReportViewSystemView.ts" />
-/// <reference path="./ReportViewBOEView.ts" />
-/// <reference path="./ReportViewFileView.ts" />

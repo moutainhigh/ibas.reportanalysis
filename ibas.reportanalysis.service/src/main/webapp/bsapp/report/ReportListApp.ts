@@ -83,12 +83,13 @@ namespace reportanalysis {
                         try {
                             if (opRslt.resultObjects.length > 0) {
                                 data = opRslt.resultObjects.firstOrDefault();
+                                let app: ReportViewerApp = new ReportViewerApp();
+                                app.navigation = that.navigation;
+                                app.viewShower = that.viewShower;
+                                app.run(data);
+                            } else {
+                                throw new Error(ibas.i18n.prop("reportanalysis_run_report_error"));
                             }
-                            let report: bo.UserReport = bo.UserReport.create(data);
-                            let app: IReportViewer = reportFactory.createViewer(report);
-                            app.navigation = that.navigation;
-                            app.viewShower = that.viewShower;
-                            app.run(report);
                         } catch (error) {
                             that.messages(error);
                         }

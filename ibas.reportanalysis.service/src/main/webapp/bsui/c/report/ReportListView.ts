@@ -65,7 +65,7 @@ namespace reportanalysis {
                                 }).bindProperty("text", {
                                     path: "category",
                                     formatter(data: any): any {
-                                        return ibas.enums.describe(bo.emReportType, data);
+                                        return ibas.enums.toString(bo.emReportType, data);
                                     }
                                 })
                             }),

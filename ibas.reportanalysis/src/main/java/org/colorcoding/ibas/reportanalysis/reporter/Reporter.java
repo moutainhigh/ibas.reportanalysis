@@ -1,10 +1,6 @@
 package org.colorcoding.ibas.reportanalysis.reporter;
 
-import org.colorcoding.ibas.bobas.data.DataTable;
 import org.colorcoding.ibas.bobas.data.IDataTable;
-import org.colorcoding.ibas.bobas.data.IDataTableColumn;
-import org.colorcoding.ibas.bobas.data.IDataTableRow;
-import org.colorcoding.ibas.bobas.data.KeyText;
 import org.colorcoding.ibas.bobas.i18n.I18N;
 
 public abstract class Reporter implements IReporter {
@@ -19,7 +15,7 @@ public abstract class Reporter implements IReporter {
 		this.report = report;
 	}
 
-	protected String getParameterValue(String name) throws ReportException {
+	protected String getParameterValue(String name) throws ReporterException {
 		if (this.getReport() != null) {
 			for (ExecuteReportParameter item : this.getReport().getParameters()) {
 				if (name.equalsIgnoreCase(item.getName())) {
@@ -27,45 +23,20 @@ public abstract class Reporter implements IReporter {
 				}
 			}
 		}
-		throw new ReportException(I18N.prop("msg_ra_not_found_report_parameter", name));
+		throw new ReporterException(I18N.prop("msg_ra_not_found_report_parameter", name));
 	}
 
 	/**
 	 * 运行报表
 	 * 
-	 * @param report
-	 *            用户报表
+	 * @param report 用户报表
 	 * @return
 	 * @throws Exception
 	 */
-	public IDataTable run(ExecuteReport report) throws ReportException {
+	public IDataTable run(ExecuteReport report) throws ReporterException {
 		this.setReport(report);
 		return this.run();
 	}
 
-	/**
-	 * 创建键值表
-	 * 
-	 * @param values
-	 * @return
-	 */
-	protected IDataTable create(KeyText[] values) {
-		IDataTable table = new DataTable();
-		if (values != null) {
-			for (KeyText item : values) {
-				IDataTableColumn columnKey = table.getColumns().create();
-				columnKey.setName("Key");
-				columnKey.setDataType(String.class);
-				IDataTableColumn columnValue = table.getColumns().create();
-				columnValue.setName("Value");
-				columnValue.setDataType(String.class);
-				IDataTableRow row = table.getRows().create();
-				row.setValue(columnKey, item.getKey());
-				row.setValue(columnValue, item.getText());
-			}
-		}
-		return table;
-	}
-
-	protected abstract IDataTable run() throws ReportException;
+	protected abstract IDataTable run() throws ReporterException;
 }

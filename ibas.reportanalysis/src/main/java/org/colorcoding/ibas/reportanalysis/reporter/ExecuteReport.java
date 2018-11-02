@@ -1,29 +1,42 @@
 package org.colorcoding.ibas.reportanalysis.reporter;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 import org.colorcoding.ibas.bobas.data.ArrayList;
+import org.colorcoding.ibas.bobas.data.List;
+import org.colorcoding.ibas.bobas.serialization.Serializable;
+import org.colorcoding.ibas.reportanalysis.MyConfiguration;
 import org.colorcoding.ibas.reportanalysis.bo.report.IReport;
 import org.colorcoding.ibas.reportanalysis.bo.report.IReportParameter;
 import org.colorcoding.ibas.reportanalysis.data.emReportType;
 
-public class ExecuteReport {
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlType(name = "ExecuteReport", namespace = MyConfiguration.NAMESPACE_REPORTER)
+@XmlRootElement(name = "ExecuteReport", namespace = MyConfiguration.NAMESPACE_REPORTER)
+public class ExecuteReport extends Serializable {
+
+	private static final long serialVersionUID = -1440463650390693985L;
 
 	public static ExecuteReport create(IReport boItem) {
 		ExecuteReport exeReport = new ExecuteReport();
 		exeReport.setId(String.valueOf(boItem.getObjectKey()));
 		exeReport.setName(boItem.getName());
 		exeReport.setCategory(boItem.getCategory());
-		exeReport.setGroup(boItem.getGroup());
-		ArrayList<ExecuteReportParameter> parameters = new ArrayList<>();
 		// 报表中的参数
-		parameters.addAll(ExecuteReportParameter.create(boItem));
+		exeReport.getParameters().addAll(ExecuteReportParameter.create(boItem));
 		// 参数
 		for (IReportParameter item : boItem.getReportParameters()) {
-			parameters.add(ExecuteReportParameter.create(item));
+			exeReport.getParameters().add(ExecuteReportParameter.create(item));
 		}
-		exeReport.setParameters(parameters);
 		return exeReport;
 	}
 
+	@XmlElement(name = "Id")
 	private String id;
 
 	public String getId() {
@@ -34,6 +47,7 @@ public class ExecuteReport {
 		this.id = id;
 	}
 
+	@XmlElement(name = "Name")
 	private String name;
 
 	public String getName() {
@@ -44,6 +58,7 @@ public class ExecuteReport {
 		this.name = name;
 	}
 
+	@XmlElement(name = "Category")
 	private emReportType category;
 
 	public emReportType getCategory() {
@@ -54,27 +69,15 @@ public class ExecuteReport {
 		this.category = category;
 	}
 
-	private String group;
-
-	public String getGroup() {
-		return group;
-	}
-
-	public void setGroup(String group) {
-		this.group = group;
-	}
-
+	@XmlElementWrapper(name = "Parameters")
+	@XmlElement(name = "Parameter", type = ExecuteReportParameter.class)
 	private ArrayList<ExecuteReportParameter> parameters;
 
-	public ArrayList<ExecuteReportParameter> getParameters() {
+	public List<ExecuteReportParameter> getParameters() {
 		if (this.parameters == null) {
 			this.parameters = new ArrayList<ExecuteReportParameter>();
 		}
 		return parameters;
-	}
-
-	public void setParameters(ArrayList<ExecuteReportParameter> parameters) {
-		this.parameters = parameters;
 	}
 
 	@Override

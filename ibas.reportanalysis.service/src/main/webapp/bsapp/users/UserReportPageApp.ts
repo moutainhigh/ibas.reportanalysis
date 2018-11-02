@@ -42,50 +42,10 @@ namespace reportanalysis {
                 this.refreshReports(type);
             }
             private activeReport(report: bo.UserReport): void {
-                if (!ibas.objects.instanceOf(report, bo.UserReport)) {
-                    return;
-                }
-                if (report.category === bo.emReportType.KPI) {
-                    // 激活关联报表
-                    let parameter: bo.UserReportParameter = report.parameters.firstOrDefault((item) => {
-                        return item.name === PARAMETER_NAME_ASSOCIATED_REPORT;
-                    });
-                    if (!ibas.objects.isNull(parameter)) {
-                        // 查找关联的报表
-                        let criteria: ibas.Criteria = new ibas.Criteria();
-                        let condition: ibas.ICondition = criteria.conditions.create();
-                        condition.alias = bo.Report.PROPERTY_OBJECTKEY_NAME;
-                        condition.value = parameter.value;
-                        condition = criteria.conditions.create();
-                        condition.alias = bo.Report.PROPERTY_ACTIVATED_NAME;
-                        condition.value = ibas.emYesNo.YES.toString();
-                        let that: this = this;
-                        let boRepository: bo.BORepositoryReportAnalysis = new bo.BORepositoryReportAnalysis();
-                        boRepository.fetchReport({
-                            criteria: criteria,
-                            onCompleted(opRslt: ibas.IOperationResult<bo.Report>): void {
-                                try {
-                                    if (opRslt.resultObjects.length > 0) {
-                                        let report: bo.UserReport = bo.UserReport.create(opRslt.resultObjects.firstOrDefault());
-                                        let app: IReportViewer = reportFactory.createViewer(report);
-                                        app.navigation = that.navigation;
-                                        app.viewShower = that.viewShower;
-                                        app.run(report);
-                                    } else {
-                                        this.proceeding(ibas.emMessageType.WARNING, ibas.i18n.prop("reportanalysis_not_found_report", parameter.value));
-                                    }
-                                } catch (error) {
-                                    that.messages(error);
-                                }
-                            }
-                        });
-                    }
-                } else {
-                    let app: IReportViewer = reportFactory.createViewer(report);
-                    app.navigation = this.navigation;
-                    app.viewShower = this.viewShower;
-                    app.run(report);
-                }
+                let app: ReportViewerApp = new ReportViewerApp();
+                app.navigation = this.navigation;
+                app.viewShower = this.viewShower;
+                app.run(report);
             }
             /** 当前用户报表集合 */
             private reports: ibas.ArrayList<bo.UserReport>;
@@ -107,33 +67,8 @@ namespace reportanalysis {
                                 return type === undefined ? true : item.category === type;
                             });
                             that.view.showReports(beShowed);
-                            // 激活kpi类型报表
-                            for (let item of beShowed) {
-                                if (item.category !== bo.emReportType.KPI) {
-                                    continue;
-                                }
-                                that.runReportKpi(item);
-                            }
                         } catch (error) {
                             that.messages(error);
-                        }
-                    }
-                });
-            }
-            private runReportKpi(kpiReport: bo.UserReport): void {
-                if (!ibas.objects.instanceOf(kpiReport, bo.UserReport)) {
-                    return;
-                }
-                let that: this = this;
-                let boRepository: bo.BORepositoryReportAnalysis = new bo.BORepositoryReportAnalysis();
-                boRepository.runUserReport({
-                    report: kpiReport,
-                    onCompleted(opRslt: ibas.IOperationResult<ibas.DataTable>): void {
-                        if (opRslt.resultCode === 0) {
-                            let table: ibas.DataTable = opRslt.resultObjects.firstOrDefault();
-                            if (!ibas.objects.isNull(table)) {
-                                that.view.updateReport(kpiReport, table);
-                            }
                         }
                     }
                 });

@@ -3,9 +3,10 @@ package org.colorcoding.ibas.reportanalysis.bo.users;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.colorcoding.ibas.bobas.serialization.Serializable;
+import org.colorcoding.ibas.reportanalysis.MyConfiguration;
 import org.colorcoding.ibas.reportanalysis.bo.report.IReportParameter;
 import org.colorcoding.ibas.reportanalysis.data.emReportParameterType;
 
@@ -16,9 +17,10 @@ import org.colorcoding.ibas.reportanalysis.data.emReportParameterType;
  *
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "UserReportParameter")
-@XmlRootElement(name = "UserReportParameter")
-public class UserReportParameter {
+@XmlType(name = "UserReportParameter", namespace = MyConfiguration.NAMESPACE_BO)
+public class UserReportParameter extends Serializable {
+
+	private static final long serialVersionUID = -3680479928709656106L;
 
 	public static UserReportParameter create(IReportParameter boItem) {
 		UserReportParameter userReportParameter = new UserReportParameter();

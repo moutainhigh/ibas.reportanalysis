@@ -3,10 +3,13 @@ package org.colorcoding.ibas.reportanalysis.bo.users;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.colorcoding.ibas.bobas.data.ArrayList;
+import org.colorcoding.ibas.bobas.serialization.Serializable;
+import org.colorcoding.ibas.reportanalysis.MyConfiguration;
 import org.colorcoding.ibas.reportanalysis.bo.report.IReport;
 import org.colorcoding.ibas.reportanalysis.bo.report.IReportParameter;
 import org.colorcoding.ibas.reportanalysis.data.emReportParameterType;
@@ -19,9 +22,11 @@ import org.colorcoding.ibas.reportanalysis.data.emReportType;
  *
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "UserReport")
-@XmlRootElement(name = "UserReport")
-public class UserReport {
+@XmlType(name = "UserReport", namespace = MyConfiguration.NAMESPACE_BO)
+@XmlRootElement(name = "UserReport", namespace = MyConfiguration.NAMESPACE_BO)
+public class UserReport extends Serializable {
+
+	private static final long serialVersionUID = 119830178112149087L;
 
 	public static final String PARAMETER_NAME_ASSOCIATED_REPORT = "${Report}";
 
@@ -91,10 +96,14 @@ public class UserReport {
 		this.group = group;
 	}
 
-	@XmlElement(name = "Parameters")
+	@XmlElementWrapper(name = "Parameters")
+	@XmlElement(name = "Parameter", type = UserReportParameter.class)
 	private UserReportParameter[] parameters;
 
 	public UserReportParameter[] getParameters() {
+		if (this.parameters == null) {
+			this.parameters = new UserReportParameter[] {};
+		}
 		return parameters;
 	}
 

@@ -26,12 +26,10 @@ namespace reportanalysis {
         export enum emReportType {
             /** 系统报表 */
             REPORT,
-            /** 报表服务 */
-            BOE,
-            /** 绩效指标 */
-            KPI,
+            /** 服务报表 */
+            SERVICE,
             /** 报表文件 */
-            FILE
+            FILE,
         }
         /**
          * 报表参数类型

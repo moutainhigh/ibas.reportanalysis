@@ -9,7 +9,8 @@ import org.colorcoding.ibas.bobas.data.IKeyText;
 import org.colorcoding.ibas.bobas.i18n.I18N;
 import org.colorcoding.ibas.bobas.repository.BORepository4DbReadonly;
 import org.colorcoding.ibas.bobas.repository.IBORepository4DbReadonly;
-import org.colorcoding.ibas.initialfantasy.MyConfiguration;
+import org.colorcoding.ibas.reportanalysis.MyConfiguration;
+import org.colorcoding.ibas.reportanalysis.bo.report.Report;
 
 /**
  * 系统报表者
@@ -17,18 +18,17 @@ import org.colorcoding.ibas.initialfantasy.MyConfiguration;
  * @author Niuren.Zhu
  *
  */
-public class ReportReporter extends Reporter {
-	/**
-	 * 参数名，查询
-	 */
-	public static final String PARAMETER_NAME_SQL = "${SqlString}";
+public class SystemReporter extends Reporter {
+
+	public static final String PARAMETER_NAME_SQL = String.format(MyConfiguration.VARIABLE_NAMING_TEMPLATE,
+			Report.PROPERTY_SQLSTRING.getName());
 
 	@Override
-	public IDataTable run() throws ReportException {
+	public IDataTable run() throws ReporterException {
 		ExecuteReportParameter sqlParameter = this.getReport().getParameters()
 				.firstOrDefault(c -> PARAMETER_NAME_SQL.equalsIgnoreCase(c.getName()));
 		if (sqlParameter == null || sqlParameter.getValue() == null || sqlParameter.getValue().isEmpty()) {
-			throw new ReportException(I18N.prop("msg_ra_invaild_report_query",
+			throw new ReporterException(I18N.prop("msg_ra_invaild_report_query",
 					this.getReport().getName() != null ? this.getReport().getName() : this.getReport().getId()));
 		}
 		// 替换变量
@@ -74,10 +74,10 @@ public class ReportReporter extends Reporter {
 		IBORepository4DbReadonly boRepository = new BORepository4DbReadonly("Master");
 		IOperationResult<IDataTable> opRslt = boRepository.query(new SqlQuery(sqlString, true, false));
 		if (opRslt.getError() != null) {
-			throw new ReportException(opRslt.getError());
+			throw new ReporterException(opRslt.getError());
 		}
 		if (opRslt.getResultCode() != 0) {
-			throw new ReportException(opRslt.getMessage());
+			throw new ReporterException(opRslt.getMessage());
 		}
 		return opRslt.getResultObjects().firstOrDefault();
 	}

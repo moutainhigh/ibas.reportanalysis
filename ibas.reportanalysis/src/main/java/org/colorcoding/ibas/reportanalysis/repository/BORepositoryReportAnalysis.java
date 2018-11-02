@@ -27,7 +27,7 @@ import org.colorcoding.ibas.reportanalysis.data.emReportParameterType;
 import org.colorcoding.ibas.reportanalysis.reporter.ExecuteReport;
 import org.colorcoding.ibas.reportanalysis.reporter.ExecuteReportParameter;
 import org.colorcoding.ibas.reportanalysis.reporter.IReporter;
-import org.colorcoding.ibas.reportanalysis.reporter.ReporterFactories;
+import org.colorcoding.ibas.reportanalysis.reporter.ReporterFactory;
 
 /**
  * ReportAnalysis仓库
@@ -39,10 +39,8 @@ public class BORepositoryReportAnalysis extends BORepositoryServiceApplication
 	/**
 	 * 查询-用户报表
 	 * 
-	 * @param user
-	 *            用户
-	 * @param token
-	 *            口令
+	 * @param user  用户
+	 * @param token 口令
 	 * @return 操作结果
 	 */
 	public OperationResult<UserReport> fetchUserReports(String user, String token) {
@@ -135,10 +133,8 @@ public class BORepositoryReportAnalysis extends BORepositoryServiceApplication
 	/**
 	 * 查询-用户报表
 	 * 
-	 * @param user
-	 *            用户
-	 * @param token
-	 *            口令
+	 * @param user  用户
+	 * @param token 口令
 	 * @return 操作结果
 	 */
 	public IOperationResult<UserReport> fetchUserReports(String user) {
@@ -150,10 +146,8 @@ public class BORepositoryReportAnalysis extends BORepositoryServiceApplication
 	/**
 	 * 运行-用户报表
 	 * 
-	 * @param report
-	 *            用户报表
-	 * @param token
-	 *            口令
+	 * @param report 用户报表
+	 * @param token  口令
 	 * @return 操作结果
 	 */
 	public OperationResult<DataTable> runUserReport(UserReport report, String token) {
@@ -191,7 +185,7 @@ public class BORepositoryReportAnalysis extends BORepositoryServiceApplication
 					}
 				}
 			}
-			IReporter reporter = ReporterFactories.create().create(exeReport);
+			IReporter reporter = ReporterFactory.create(exeReport);
 			if (reporter == null) {
 				throw new Exception(I18N.prop("msg_ra_not_allowed_run_report",
 						report.getName() != null ? report.getName() : report.getId()));
@@ -209,8 +203,7 @@ public class BORepositoryReportAnalysis extends BORepositoryServiceApplication
 	/**
 	 * 运行-用户报表
 	 * 
-	 * @param report
-	 *            用户报表
+	 * @param report 用户报表
 	 * @return 操作结果
 	 */
 	public IOperationResult<DataTable> runUserReport(UserReport report) {
@@ -221,10 +214,8 @@ public class BORepositoryReportAnalysis extends BORepositoryServiceApplication
 	/**
 	 * 查询-报表
 	 * 
-	 * @param criteria
-	 *            查询
-	 * @param token
-	 *            口令
+	 * @param criteria 查询
+	 * @param token    口令
 	 * @return 操作结果
 	 */
 	public OperationResult<Report> fetchReport(ICriteria criteria, String token) {
@@ -234,8 +225,7 @@ public class BORepositoryReportAnalysis extends BORepositoryServiceApplication
 	/**
 	 * 查询-报表（提前设置用户口令）
 	 * 
-	 * @param criteria
-	 *            查询
+	 * @param criteria 查询
 	 * @return 操作结果
 	 */
 	public IOperationResult<IReport> fetchReport(ICriteria criteria) {
@@ -245,10 +235,8 @@ public class BORepositoryReportAnalysis extends BORepositoryServiceApplication
 	/**
 	 * 保存-报表
 	 * 
-	 * @param bo
-	 *            对象实例
-	 * @param token
-	 *            口令
+	 * @param bo    对象实例
+	 * @param token 口令
 	 * @return 操作结果
 	 */
 	public OperationResult<Report> saveReport(Report bo, String token) {
@@ -258,8 +246,7 @@ public class BORepositoryReportAnalysis extends BORepositoryServiceApplication
 	/**
 	 * 保存-报表（提前设置用户口令）
 	 * 
-	 * @param bo
-	 *            对象实例
+	 * @param bo 对象实例
 	 * @return 操作结果
 	 */
 	public IOperationResult<IReport> saveReport(IReport bo) {
@@ -270,10 +257,8 @@ public class BORepositoryReportAnalysis extends BORepositoryServiceApplication
 	/**
 	 * 查询-报表簿
 	 * 
-	 * @param criteria
-	 *            查询
-	 * @param token
-	 *            口令
+	 * @param criteria 查询
+	 * @param token    口令
 	 * @return 操作结果
 	 */
 	public OperationResult<ReportBook> fetchReportBook(ICriteria criteria, String token) {
@@ -283,8 +268,7 @@ public class BORepositoryReportAnalysis extends BORepositoryServiceApplication
 	/**
 	 * 查询-报表簿（提前设置用户口令）
 	 * 
-	 * @param criteria
-	 *            查询
+	 * @param criteria 查询
 	 * @return 操作结果
 	 */
 	public IOperationResult<IReportBook> fetchReportBook(ICriteria criteria) {
@@ -294,10 +278,8 @@ public class BORepositoryReportAnalysis extends BORepositoryServiceApplication
 	/**
 	 * 保存-报表簿
 	 * 
-	 * @param bo
-	 *            对象实例
-	 * @param token
-	 *            口令
+	 * @param bo    对象实例
+	 * @param token 口令
 	 * @return 操作结果
 	 */
 	public OperationResult<ReportBook> saveReportBook(ReportBook bo, String token) {
@@ -307,8 +289,7 @@ public class BORepositoryReportAnalysis extends BORepositoryServiceApplication
 	/**
 	 * 保存-报表簿（提前设置用户口令）
 	 * 
-	 * @param bo
-	 *            对象实例
+	 * @param bo 对象实例
 	 * @return 操作结果
 	 */
 	public IOperationResult<IReportBook> saveReportBook(IReportBook bo) {

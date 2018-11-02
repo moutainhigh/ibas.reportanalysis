@@ -71,26 +71,26 @@ namespace reportanalysis {
                                     menu: new sap.m.Menu("", {
                                         items: [
                                             new sap.m.MenuItem("", {
-                                                text: ibas.i18n.prop("reportanalysisusers_refresh_kpi"),
-                                                icon: that.getIcon(bo.emReportType.KPI),
-                                                press: function (): void {
-                                                    that.fireViewEvents(that.refreshReportsEvent, bo.emReportType.KPI);
-                                                    that.multiCombobox.destroyItems();
-                                                }
-                                            }),
-                                            new sap.m.MenuItem("", {
-                                                text: ibas.i18n.prop("reportanalysisusers_refresh_boe"),
-                                                icon: that.getIcon(bo.emReportType.BOE),
-                                                press: function (): void {
-                                                    that.fireViewEvents(that.refreshReportsEvent, bo.emReportType.BOE);
-                                                    that.multiCombobox.destroyItems();
-                                                }
-                                            }),
-                                            new sap.m.MenuItem("", {
                                                 text: ibas.i18n.prop("reportanalysisusers_refresh_report"),
                                                 icon: that.getIcon(bo.emReportType.REPORT),
                                                 press: function (): void {
                                                     that.fireViewEvents(that.refreshReportsEvent, bo.emReportType.REPORT);
+                                                    that.multiCombobox.destroyItems();
+                                                }
+                                            }),
+                                            new sap.m.MenuItem("", {
+                                                text: ibas.i18n.prop("reportanalysisusers_refresh_service"),
+                                                icon: that.getIcon(bo.emReportType.SERVICE),
+                                                press: function (): void {
+                                                    that.fireViewEvents(that.refreshReportsEvent, bo.emReportType.SERVICE);
+                                                    that.multiCombobox.destroyItems();
+                                                }
+                                            }),
+                                            new sap.m.MenuItem("", {
+                                                text: ibas.i18n.prop("reportanalysisusers_refresh_file"),
+                                                icon: that.getIcon(bo.emReportType.FILE),
+                                                press: function (): void {
+                                                    that.fireViewEvents(that.refreshReportsEvent, bo.emReportType.FILE);
                                                     that.multiCombobox.destroyItems();
                                                 }
                                             }),
@@ -134,9 +134,9 @@ namespace reportanalysis {
                     }
                 }
                 private getIcon(type: bo.emReportType): string {
-                    if (type === bo.emReportType.BOE) {
+                    if (type === bo.emReportType.REPORT) {
                         return "sap-icon://bbyd-dashboard";
-                    } else if (type === bo.emReportType.KPI) {
+                    } else if (type === bo.emReportType.SERVICE) {
                         return "sap-icon://kpi-corporate-performance";
                     }
                     return "sap-icon://pie-chart";

@@ -34,9 +34,9 @@
   "reportanalysisusers": "我的报表",
   "reportanalysisusers_icon": "sap-icon://opportunity",
   "reportanalysisusers_refresh_all": "全部",
-  "reportanalysisusers_refresh_kpi": "KPI",
-  "reportanalysisusers_refresh_boe": "BOE报表",
   "reportanalysisusers_refresh_report": "系统报表",
+  "reportanalysisusers_refresh_service": "报表服务",
+  "reportanalysisusers_refresh_file": "报表文件",
   "reportanalysisusers_filter_report_by_groups": "筛选报表组",
   "reportanalysis_closing_delimiter": "----结束----"
 }

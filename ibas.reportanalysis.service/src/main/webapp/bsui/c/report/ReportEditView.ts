@@ -90,7 +90,20 @@ namespace reportanalysis {
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("reportanalysis_title_content") }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_report_category") }),
                             new sap.m.Select("", {
-                                items: openui5.utils.createComboBoxItems(bo.emReportType)
+                                items: [
+                                    new sap.ui.core.ListItem("", {
+                                        key: bo.emReportType.REPORT,
+                                        text: ibas.enums.toString(bo.emReportType, bo.emReportType.REPORT),
+                                    }),
+                                    new sap.ui.core.ListItem("", {
+                                        key: bo.emReportType.SERVICE,
+                                        text: ibas.enums.toString(bo.emReportType, bo.emReportType.SERVICE),
+                                    }),
+                                    new sap.ui.core.ListItem("", {
+                                        key: bo.emReportType.FILE,
+                                        text: ibas.enums.toString(bo.emReportType, bo.emReportType.FILE),
+                                    }),
+                                ]
                             }).bindProperty("selectedKey", {
                                 path: "/category",
                                 type: "sap.ui.model.type.Integer"
@@ -105,8 +118,6 @@ namespace reportanalysis {
                                 formatter(data: bo.emReportType): any {
                                     if (data === bo.emReportType.REPORT) {
                                         return true;
-                                    } else if (data === bo.emReportType.KPI) {
-                                        return true;
                                     }
                                     return false;
                                 }
@@ -118,7 +129,7 @@ namespace reportanalysis {
                             }).bindProperty("editable", {
                                 path: "/category",
                                 formatter(data: bo.emReportType): any {
-                                    if (data === bo.emReportType.BOE) {
+                                    if (data === bo.emReportType.SERVICE) {
                                         return true;
                                     }
                                     return false;
@@ -131,7 +142,7 @@ namespace reportanalysis {
                             }).bindProperty("editable", {
                                 path: "/category",
                                 formatter(data: bo.emReportType): any {
-                                    if (data === bo.emReportType.BOE) {
+                                    if (data === bo.emReportType.SERVICE) {
                                         return true;
                                     }
                                     return false;
@@ -145,7 +156,7 @@ namespace reportanalysis {
                             }).bindProperty("editable", {
                                 path: "/category",
                                 formatter(data: bo.emReportType): any {
-                                    if (data === bo.emReportType.BOE) {
+                                    if (data === bo.emReportType.SERVICE) {
                                         return true;
                                     }
                                     return false;
@@ -158,7 +169,7 @@ namespace reportanalysis {
                             }).bindProperty("editable", {
                                 path: "/category",
                                 formatter(data: bo.emReportType): any {
-                                    if (data === bo.emReportType.BOE) {
+                                    if (data === bo.emReportType.SERVICE) {
                                         return true;
                                     }
                                     return false;

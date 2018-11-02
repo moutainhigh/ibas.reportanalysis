@@ -93,14 +93,13 @@ namespace reportanalysis {
                 }
                 this.close();
                 let that: this = this;
-                let app: SystemReportDialogViewApp = new SystemReportDialogViewApp();
+                let app: ReportDataChooseApp = new ReportDataChooseApp();
                 app.navigation = this.navigation;
                 app.viewShower = this.viewShower;
-                app.report = bo.UserReport.create(report);
                 app.onChoosedData = function (table: ibas.DataTable): void {
                     that.fireCompleted(table);
                 };
-                app.run();
+                app.run(report);
             }
             /** 查询数据 */
             protected fetchData(criteria: ibas.ICriteria): void {

@@ -45,10 +45,10 @@ namespace reportanalysis {
             private report: bo.UserReport;
             /** 默认功能 */
             default(): ibas.IApplication<ibas.IView> {
-                let app: IReportViewer = reportFactory.createTabViewer(this.report);
+                let app: ReportTabViewerApp = new ReportTabViewerApp();
                 app.navigation = this.navigation;
-                app.report = this.report;
-                app.description = this.report.name;
+                app.viewShower = this.viewShower;
+                app.useReport(this.report);
                 return app;
             }
         }

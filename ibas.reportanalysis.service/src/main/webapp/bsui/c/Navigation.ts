@@ -45,26 +45,14 @@ namespace reportanalysis {
                     case app.UserReportPageApp.APPLICATION_ID:
                         view = new c.UserReportPageView();
                         break;
-                    case app.BOEReportViewApp.APPLICATION_ID:
-                        view = new c.BOEReportViewView();
+                    case app.ReportViewerApp.APPLICATION_ID:
+                        view = new c.ReportViewerView();
                         break;
-                    case app.BOEReportTabViewApp.APPLICATION_ID:
-                        view = new c.BOEReportViewTabView();
+                    case app.ReportTabViewerApp.APPLICATION_ID:
+                        view = new c.ReportTabViewerView();
                         break;
-                    case app.SystemReportViewApp.APPLICATION_ID:
-                        view = new c.SystemReportViewView();
-                        break;
-                    case app.SystemReportTabViewApp.APPLICATION_ID:
-                        view = new c.SystemReportViewTabView();
-                        break;
-                    case app.SystemReportDialogViewApp.APPLICATION_ID:
-                        view = new c.SystemReportViewDialogView();
-                        break;
-                    case app.FileReportViewApp.APPLICATION_ID:
-                        view = new c.FileReportViewView();
-                        break;
-                    case app.FileReportTabViewApp.APPLICATION_ID:
-                        view = new c.FileReportViewTabView();
+                    case app.ReportDataChooseApp.APPLICATION_ID:
+                        view = new c.ReportDataChooseView();
                         break;
                     case app.ReportDataService.APPLICATION_ID:
                         view = new c.ReporDataServiceView();
