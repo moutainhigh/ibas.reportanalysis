@@ -1,11 +1,40 @@
 package org.colorcoding.ibas.reportanalysis.reporter;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.Base64;
+import java.util.Base64.Encoder;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
+import org.colorcoding.ibas.bobas.common.OperationResult;
+import org.colorcoding.ibas.bobas.data.ArrayList;
+import org.colorcoding.ibas.bobas.data.DataTable;
 import org.colorcoding.ibas.bobas.data.IDataTable;
-import org.colorcoding.ibas.bobas.data.KeyText;
 import org.colorcoding.ibas.bobas.i18n.I18N;
+import org.colorcoding.ibas.bobas.message.Logger;
+import org.colorcoding.ibas.bobas.message.MessageLevel;
+import org.colorcoding.ibas.bobas.serialization.ISerializer;
+import org.colorcoding.ibas.bobas.serialization.ISerializerManager;
+import org.colorcoding.ibas.bobas.serialization.SerializerFactory;
+import org.colorcoding.ibas.bobas.serialization.SerializerManager;
 import org.colorcoding.ibas.reportanalysis.MyConfiguration;
 import org.colorcoding.ibas.reportanalysis.bo.report.Report;
-import org.colorcoding.ibas.reportanalysis.data.DataConvert;
+import org.xml.sax.InputSource;
 
 /**
  * 文件报表者
@@ -15,8 +44,8 @@ import org.colorcoding.ibas.reportanalysis.data.DataConvert;
  */
 public class RemoteReporter extends Reporter {
 
+	protected static final String MSG_REPORTER_CONNECT_URL = "reporter: connect [%s].";
 	public static final String PARAMETER_NAME_URL = "${Url}";
-
 	public static final String PARAMETER_NAME_SERVER = String.format(MyConfiguration.VARIABLE_NAMING_TEMPLATE,
 			Report.PROPERTY_SERVER.getName());
 	public static final String PARAMETER_NAME_USER = String.format(MyConfiguration.VARIABLE_NAMING_TEMPLATE,
@@ -25,6 +54,37 @@ public class RemoteReporter extends Reporter {
 			Report.PROPERTY_PASSWORD.getName());
 	public static final String PARAMETER_NAME_ADDRESS = String.format(MyConfiguration.VARIABLE_NAMING_TEMPLATE,
 			Report.PROPERTY_ADDRESS.getName());
+	/**
+	 * 忽视证书HostName
+	 */
+	private static HostnameVerifier ignoreHostnameVerifier = new HostnameVerifier() {
+		public boolean verify(String s, SSLSession sslsession) {
+			return true;
+		}
+	};
+
+	/**
+	 * 忽视证书
+	 */
+	private static TrustManager ignoreCertificationTrustManger = new X509TrustManager() {
+		private X509Certificate[] certificates;
+
+		public void checkClientTrusted(X509Certificate certificates[], String authType) throws CertificateException {
+			if (this.certificates == null) {
+				this.certificates = certificates;
+			}
+		}
+
+		public void checkServerTrusted(X509Certificate[] ax509certificate, String s) throws CertificateException {
+			if (this.certificates == null) {
+				this.certificates = ax509certificate;
+			}
+		}
+
+		public X509Certificate[] getAcceptedIssuers() {
+			return null;
+		}
+	};
 
 	public String getServer() throws ReporterException {
 		return this.getParameterValue(PARAMETER_NAME_SERVER);
@@ -42,45 +102,106 @@ public class RemoteReporter extends Reporter {
 		return this.getParameterValue(PARAMETER_NAME_ADDRESS);
 	}
 
+	protected String getAuthorization(String user, String password) {
+		if (user == null) {
+			user = "";
+		}
+		if (password == null) {
+			password = "";
+		}
+		Encoder encoder = Base64.getEncoder();
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("Basic");
+		stringBuilder.append(" ");
+		stringBuilder.append(encoder.encode(user.getBytes()));
+		stringBuilder.append(";  ");
+		stringBuilder.append(encoder.encode(password.getBytes()));
+		return stringBuilder.toString();
+	}
+
+	protected URLConnection openConnection(URL url)
+			throws IOException, NoSuchAlgorithmException, NoSuchProviderException, KeyManagementException {
+		if (url.getProtocol().equalsIgnoreCase("https")) {
+			HttpsURLConnection.setDefaultHostnameVerifier(ignoreHostnameVerifier);
+			HttpsURLConnection httpsConnection = (HttpsURLConnection) url.openConnection();
+			// Prepare SSL Context
+			TrustManager[] tm = { ignoreCertificationTrustManger };
+			SSLContext sslContext = SSLContext.getInstance("SSL", "SunJSSE");
+			sslContext.init(null, tm, new java.security.SecureRandom());
+			// 从上述SSLContext对象中得到SSLSocketFactory对象
+			SSLSocketFactory ssf = sslContext.getSocketFactory();
+			httpsConnection.setSSLSocketFactory(ssf);
+			return httpsConnection;
+		} else {
+			return url.openConnection();
+		}
+	}
+
 	@Override
 	protected IDataTable run() throws ReporterException {
 		try {
+			// 创建连接地址
+			String value = this.getServer();
 			StringBuilder stringBuilder = new StringBuilder();
-			try {
-				stringBuilder.append(this.getServer());
-			} catch (Exception e) {
+			stringBuilder.append(value);
+			if (value != null && !value.endsWith("/")) {
+				stringBuilder.append("/");
 			}
-			stringBuilder.append(this.getAddress());
-			int length = stringBuilder.length();
+			stringBuilder.append("runReport");
+			// 创建报表数据
+			ReportData reportData = new ReportData();
+			reportData.setName(this.getReport().getName());
+			reportData.setId(this.getAddress());
+			ArrayList<ReportDataParameter> parameters = new ArrayList<>();
 			for (ExecuteReportParameter item : this.getReport().getParameters()) {
-				if (item.getName().equalsIgnoreCase(PARAMETER_NAME_USER)
+				if (item.getName().equalsIgnoreCase(PARAMETER_NAME_SERVER)
+						|| item.getName().equalsIgnoreCase(PARAMETER_NAME_USER)
 						|| item.getName().equalsIgnoreCase(PARAMETER_NAME_PASSWORD)
-						|| item.getName().equalsIgnoreCase(PARAMETER_NAME_ADDRESS)
-						|| item.getName().equalsIgnoreCase(PARAMETER_NAME_URL)
-						|| item.getName().equalsIgnoreCase(PARAMETER_NAME_SERVER)) {
+						|| item.getName().equalsIgnoreCase(PARAMETER_NAME_ADDRESS)) {
 					// 跳过已使用变量
 					continue;
 				}
-				if (length == stringBuilder.length()) {
-					stringBuilder.append("?");
-				} else {
-					stringBuilder.append("&");
+				parameters.add(new ReportDataParameter(item.getName(), item.getValue()));
+			}
+			reportData.setParameters(parameters.toArray(new ReportDataParameter[] {}));
+			// 连接远程服务
+			URL url = new URL(stringBuilder.toString());
+			Logger.log(MessageLevel.DEBUG, MSG_REPORTER_CONNECT_URL, url.toString());
+			URLConnection connection = this.openConnection(url);
+			// 设置通用的请求属性
+			connection.setRequestProperty("accept", "*/*");
+			connection.setRequestProperty("connection", "Keep-Alive");
+			connection.setRequestProperty("content-Type", "application/json; charset=utf-8");
+			connection.setRequestProperty("charset", "utf-8");
+			connection.setRequestProperty("accept-charset", "utf-8");
+			connection.setRequestProperty("authorization", this.getAuthorization(this.getUser(), this.getPassword()));
+			connection.setDoOutput(true);
+			connection.setDoInput(true);
+			connection.setUseCaches(false);
+			// 处理请求
+			ISerializerManager serializerManager = SerializerFactory.create().createManager();
+			OutputStream outputStream = connection.getOutputStream();
+			ISerializer<?> serializer = serializerManager.create(SerializerManager.TYPE_JSON);
+			serializer.serialize(reportData, outputStream);
+			outputStream.flush();
+			outputStream.close();
+			outputStream = null;
+			// 处理返回
+			InputStreamReader streamReader = new InputStreamReader(connection.getInputStream(), "utf-8");
+			serializer = serializerManager.create(SerializerManager.TYPE_JSON);
+			Object data = serializer.deserialize(new InputSource(streamReader), OperationResult.class, DataTable.class);
+			streamReader.close();
+			streamReader = null;
+			if (data instanceof OperationResult) {
+				OperationResult<?> operationResult = (OperationResult<?>) data;
+				data = operationResult.getResultObjects().firstOrDefault();
+				if (data instanceof DataTable) {
+					return (DataTable) data;
 				}
-				stringBuilder.append(item.getName().replace("${", "").replace("}", ""));
-				stringBuilder.append("=");
-				stringBuilder.append(item.getValue());
 			}
-			String url = stringBuilder.toString();
-			if (url == null || url.isEmpty()) {
-				throw new ReporterException(I18N.prop("msg_ra_invaild_report_url",
-						this.getReport().getName() != null ? this.getReport().getName() : this.getReport().getId()));
-			}
-
-			KeyText keyText = new KeyText();
-			keyText.setKey(PARAMETER_NAME_URL);
-			keyText.setText(stringBuilder.toString());
-			return DataConvert.toDataTable(new KeyText[] { keyText });
-
+			throw new ReporterException(I18N.prop("msg_ra_invaild_reponse_data"));
+		} catch (ReporterException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new ReporterException(e);
 		}

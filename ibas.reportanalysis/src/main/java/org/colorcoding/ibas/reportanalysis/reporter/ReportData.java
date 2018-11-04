@@ -3,6 +3,7 @@ package org.colorcoding.ibas.reportanalysis.reporter;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -38,17 +39,6 @@ public class ReportData extends Serializable {
 		this.name = name;
 	}
 
-	private String description;
-
-	@XmlElement(name = "Description")
-	public final String getDescription() {
-		return description;
-	}
-
-	public final void setDescription(String description) {
-		this.description = description;
-	}
-
 	private String group;
 
 	@XmlElement(name = "Group")
@@ -69,6 +59,18 @@ public class ReportData extends Serializable {
 
 	public final void setRemarks(String remarks) {
 		this.remarks = remarks;
+	}
+
+	@XmlElementWrapper(name = "Parameters")
+	@XmlElement(name = "Parameter", type = ReportDataParameter.class)
+	private ReportDataParameter[] parameters;
+
+	public final ReportDataParameter[] getParameters() {
+		return parameters;
+	}
+
+	public final void setParameters(ReportDataParameter[] parameters) {
+		this.parameters = parameters;
 	}
 
 	public String toString() {

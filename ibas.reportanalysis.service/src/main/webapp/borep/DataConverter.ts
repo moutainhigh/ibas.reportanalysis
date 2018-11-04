@@ -49,6 +49,41 @@ namespace reportanalysis {
                         Value: newData.value
                     };
                     return remote;
+                } else if (ibas.objects.instanceOf(data, bo.ReportData)) {
+                    let newData: bo.ReportData = data;
+                    let parameters: Array<ibas4j.IReportDataParameter> = [];
+                    if (newData.parameters instanceof Array) {
+                        for (let item of newData.parameters) {
+                            parameters.push(this.convert(item, sign));
+                        }
+                    }
+                    let remote: ibas4j.IReportData = {
+                        type: data.constructor.name,
+                        Id: newData.id,
+                        Name: newData.name,
+                        Group: newData.group,
+                        Remarks: newData.remarks,
+                        Parameters: parameters,
+                    };
+                    return remote;
+                } else if (ibas.objects.instanceOf(data, bo.ReportDataParameter)) {
+                    let newData: bo.ReportDataParameter = data;
+                    let remote: ibas4j.IReportDataParameter = {
+                        type: data.constructor.name,
+                        Name: newData.name,
+                        Value: newData.value
+                    };
+                    return remote;
+                } else if (ibas.objects.instanceOf(data, bo.ReportGroup)) {
+                    let newData: bo.ReportGroup = data;
+                    let remote: ibas4j.IReportGroup = {
+                        type: data.constructor.name,
+                        ParentId: newData.parentId,
+                        Id: newData.id,
+                        Name: newData.name,
+                        Remarks: newData.remarks,
+                    };
+                    return remote;
                 } else {
                     return super.convert(data, sign);
                 }
@@ -79,6 +114,37 @@ namespace reportanalysis {
                     newData.category = ibas.enums.valueOf(bo.emReportParameterType, remote.Category);
                     newData.description = remote.Description;
                     newData.value = remote.Value;
+                    return newData;
+                } else if (data.type === bo.ReportData.name) {
+                    let remote: ibas4j.IReportData = data;
+                    let newData: bo.ReportData = new bo.ReportData();
+                    newData.id = remote.Id;
+                    newData.name = remote.Name;
+                    newData.group = remote.Group;
+                    newData.remarks = remote.Remarks;
+                    if (remote.Parameters instanceof Array) {
+                        for (let item of remote.Parameters) {
+                            item.type = bo.ReportDataParameter.name;
+                            if (!(newData.parameters instanceof Array)) {
+                                newData.parameters = [];
+                            }
+                            newData.parameters.push(this.parsing(item, null));
+                        }
+                    }
+                    return newData;
+                } else if (data.type === bo.ReportDataParameter.name) {
+                    let remote: ibas4j.IReportDataParameter = data;
+                    let newData: bo.ReportDataParameter = new bo.ReportDataParameter();
+                    newData.name = remote.Name;
+                    newData.value = remote.Value;
+                    return newData;
+                } else if (data.type === bo.ReportGroup.name) {
+                    let remote: ibas4j.IReportGroup = data;
+                    let newData: bo.ReportGroup = new bo.ReportGroup();
+                    newData.parentId = remote.ParentId;
+                    newData.id = remote.Id;
+                    newData.name = remote.Name;
+                    newData.remarks = remote.Remarks;
                     return newData;
                 } else {
                     return super.parsing(data, sign);
@@ -136,7 +202,6 @@ namespace reportanalysis {
              * @returns 解析的值
              */
             protected parsingData(boName: string, property: string, value: any): any {
-
                 if (boName === bo.Report.name) {
                     if (property === bo.Report.PROPERTY_CATEGORY_NAME) {
                         return ibas.enums.valueOf(bo.emReportType, value);

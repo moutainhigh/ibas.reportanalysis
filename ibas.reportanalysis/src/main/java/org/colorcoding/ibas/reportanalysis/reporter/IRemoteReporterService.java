@@ -18,7 +18,7 @@ public interface IRemoteReporterService {
 	 * @param criteria 查询条件
 	 * @return 操作结果
 	 */
-	OperationResult<ReportData> fetchReport(Criteria criteria);
+	OperationResult<ReportData> fetchReportData(Criteria criteria);
 
 	/**
 	 * 查询报表组
@@ -34,5 +34,5 @@ public interface IRemoteReporterService {
 	 * @param report 报表
 	 * @return 操作结果
 	 */
-	OperationResult<DataTable> runReport(ExecuteReport report);
+	OperationResult<DataTable> runReport(ReportData report);
 }

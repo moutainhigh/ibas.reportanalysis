@@ -16,7 +16,7 @@ namespace reportanalysis {
                 /** 数据类型 */
                 type: string;
             }
-            /** 用户 */
+            /** 用户报表 */
             export interface IUserReport extends IDataDeclaration {
                 /** 标识 */
                 Id: string;
@@ -29,7 +29,7 @@ namespace reportanalysis {
                 /** 报表参数 */
                 Parameters: IUserReportParameter[];
             }
-            /** 用户应用模块 */
+            /** 用户报表参数 */
             export interface IUserReportParameter extends IDataDeclaration {
                 /** 参数名称 */
                 Name: string;
@@ -39,6 +39,37 @@ namespace reportanalysis {
                 Description: string;
                 /** 参数值 */
                 Value: string;
+            }
+            /** 报表数据 */
+            export interface IReportData extends IDataDeclaration {
+                /** 标识 */
+                Id: string;
+                /** 名称 */
+                Name: string;
+                /** 组 */
+                Group: string;
+                /** 备注 */
+                Remarks: string;
+                /** 参数 */
+                Parameters: IReportDataParameter[];
+            }
+            /** 报表参数 */
+            export interface IReportDataParameter extends IDataDeclaration {
+                /** 名称 */
+                Name: string;
+                /** 值 */
+                Value: string;
+            }
+            /** 报表数据 */
+            export interface IReportGroup extends IDataDeclaration {
+                /** 父项标识 */
+                ParentId: string;
+                /** 标识 */
+                Id: string;
+                /** 名称 */
+                Name: string;
+                /** 备注 */
+                Remarks: string;
             }
         }
     }

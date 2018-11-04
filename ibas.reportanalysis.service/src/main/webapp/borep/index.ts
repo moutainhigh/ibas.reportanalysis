@@ -10,6 +10,7 @@
 /// <reference path="../api/index.ts" />
 /// <reference path="./bo/Report.ts" />
 /// <reference path="./bo/ReportBook.ts" />
+/// <reference path="./bo/ReportData.ts" />
 /// <reference path="./bo/UserReport.ts" />
 /// <reference path="./DataConverter.ts" />
 /// <reference path="./BORepository.ts" />

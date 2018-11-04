@@ -126,6 +126,7 @@ public class BORepositoryReportAnalysis extends BORepositoryServiceApplication
 			}
 		} catch (Exception e) {
 			opRslt.setError(e);
+			Logger.log(e);
 		}
 		return opRslt;
 	}
@@ -196,6 +197,7 @@ public class BORepositoryReportAnalysis extends BORepositoryServiceApplication
 			opRslt.addResultObjects(reporter.run(exeReport));
 		} catch (Exception e) {
 			opRslt.setError(e);
+			Logger.log(e);
 		}
 		return opRslt;
 	}

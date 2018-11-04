@@ -14,25 +14,25 @@ public class ReportGroup extends Serializable {
 
 	private static final long serialVersionUID = 5648690702888716667L;
 
-	private int id;
+	private String id;
 
 	@XmlElement(name = "Id")
-	public final int getId() {
+	public final String getId() {
 		return id;
 	}
 
-	public final void setId(int id) {
+	public final void setId(String id) {
 		this.id = id;
 	}
 
-	private int parentId;
+	private String parentId;
 
 	@XmlElement(name = "ParentId")
-	public final int getParentId() {
+	public final String getParentId() {
 		return parentId;
 	}
 
-	public final void setParentId(int parentId) {
+	public final void setParentId(String parentId) {
 		this.parentId = parentId;
 	}
 
@@ -45,6 +45,17 @@ public class ReportGroup extends Serializable {
 
 	public final void setName(String name) {
 		this.name = name;
+	}
+
+	private String remarks;
+
+	@XmlElement(name = "Remarks")
+	public final String getRemarks() {
+		return remarks;
+	}
+
+	public final void setRemarks(String remarks) {
+		this.remarks = remarks;
 	}
 
 	public String toString() {

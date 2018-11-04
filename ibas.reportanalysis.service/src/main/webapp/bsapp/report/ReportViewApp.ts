@@ -43,7 +43,9 @@ namespace reportanalysis {
                     // 设置系统变量值
                     for (let item of this.report.parameters) {
                         if (item.category === bo.emReportParameterType.SYSTEM) {
-                            item.value = ibas.variablesManager.getValue(item.value);
+                            if (ibas.strings.isWith(item.value, "${", "}")) {
+                                item.value = ibas.variablesManager.getValue(item.value);
+                            }
                         }
                     }
                     // 显示信息

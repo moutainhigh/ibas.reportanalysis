@@ -9,6 +9,7 @@
 /// <reference path="../../3rdparty/openui5/index.d.ts" />
 /// <reference path="../../index.d.ts" />
 /// <reference path="./report/index.ts" />
+/// <reference path="./tools/index.ts" />
 /// <reference path="./users/index.ts" />
 /// <reference path="./reportbook/index.ts" />
 namespace reportanalysis {
@@ -56,6 +57,9 @@ namespace reportanalysis {
                         break;
                     case app.ReportDataService.APPLICATION_ID:
                         view = new c.ReporDataServiceView();
+                        break;
+                    case app.ReportImportApp.APPLICATION_ID:
+                        view = new c.ReportImportView();
                         break;
                     default:
                         break;

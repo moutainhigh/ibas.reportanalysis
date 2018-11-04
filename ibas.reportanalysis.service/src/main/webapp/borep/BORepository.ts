@@ -7,10 +7,8 @@
  */
 namespace reportanalysis {
     export namespace bo {
-
         /** ReportAnalysis 业务仓库 */
         export class BORepositoryReportAnalysis extends ibas.BORepositoryApplication implements IBORepositoryReportAnalysis {
-
             /** 创建此模块的后端与前端数据的转换者 */
             protected createConverter(): ibas.IDataConverter {
                 return new DataConverter;
@@ -123,6 +121,27 @@ namespace reportanalysis {
         export interface IRunUserReportCaller extends ibas.IMethodCaller<ibas.DataTable> {
             /** 用户 */
             report: bo.UserReport;
+        }
+        /** 远程报表服务 */
+        export class RemoteReporterService extends ibas.BORepositoryApplication {
+            /** 创建此模块的后端与前端数据的转换者 */
+            protected createConverter(): ibas.IDataConverter {
+                return new DataConverter;
+            }
+            /**
+             * 查询 报表数据
+             * @param fetcher 查询者
+             */
+            fetchReportData(fetcher: ibas.IFetchCaller<bo.ReportData>): void {
+                super.fetch(bo.ReportData.name, fetcher);
+            }
+            /**
+             * 查询 报表组
+             * @param fetcher 查询者
+             */
+            fetchReportGroup(fetcher: ibas.IFetchCaller<bo.ReportGroup>): void {
+                super.fetch(bo.ReportGroup.name, fetcher);
+            }
         }
     }
 }

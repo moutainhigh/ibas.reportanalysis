@@ -90,6 +90,22 @@
         "bo_reportbook_closing_delimiter": "----结束----"
     },
     {
+        "bo_reportgroup": "报表组",
+        "bo_reportgroup_id": "编号",
+        "bo_reportgroup_parentid": "父项编号",
+        "bo_reportgroup_name": "文件夹名称",
+        "bo_reportgroup_remarks": "备注",
+        "bo_reportgroup_closing_delimiter": "----结束----"
+    },
+    {
+        "bo_reportdata": "报表数据",
+        "bo_reportdata_id": "编号",
+        "bo_reportdata_name": "报表名称",
+        "bo_reportdata_group": "报表组别",
+        "bo_reportdata_remarks": "备注",
+        "bo_reportdata_closing_delimiter": "----结束----"
+    },
+    {
         "em_text": "文本",
         "em_datetime": "日期",
         "em_system": "系统变量",

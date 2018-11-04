@@ -9,6 +9,7 @@
 /// <reference path="../borep/index.ts" />
 /// <reference path="./report/index.ts" />
 /// <reference path="./reportbook/index.ts" />
+/// <reference path="./tools/index.ts" />
 /// <reference path="./users/index.ts" />
 
 namespace reportanalysis {
@@ -34,6 +35,7 @@ namespace reportanalysis {
                 // 注册功能
                 this.register(new ReportFunc());
                 this.register(new ReportBookFunc());
+                this.register(new ReportImportFunc());
                 // 注册服务应用
                 this.register(new ReportChooseServiceMapping());
                 this.register(new ReportBookChooseServiceMapping());

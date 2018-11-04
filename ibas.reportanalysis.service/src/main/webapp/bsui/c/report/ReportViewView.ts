@@ -292,6 +292,7 @@ namespace reportanalysis {
                 constructor(parent: ReportViewerView | ReportTabViewerView | ReportDialogViewerView) {
                     this.parent = parent;
                 }
+                private valuesMap: Map<bo.UserReportParameter, string[]> = new Map<bo.UserReportParameter, string[]>();
                 private parent: ReportViewerView | ReportTabViewerView | ReportDialogViewerView;
                 dataTable: ibas.DataTable;
                 /** 显示报表 */
@@ -359,19 +360,23 @@ namespace reportanalysis {
                                 path: "/value"
                             });
                         } else if (item.category === bo.emReportParameterType.RANGE) {
-                            let values: Array<sap.ui.core.Item> = new Array<sap.ui.core.Item>();
-                            for (let value of item.value.split(";")) {
-                                if (ibas.strings.isEmpty(value)) {
-                                    continue;
+                            let values: string[] = this.valuesMap.get(item);
+                            if (ibas.objects.isNull(values)) {
+                                this.valuesMap.set(item, item.value.split(";"));
+                                values = this.valuesMap.get(item);
+                            }
+                            let items: Array<sap.ui.core.Item> = new Array<sap.ui.core.Item>();
+                            if (values instanceof Array) {
+                                for (let value of values) {
+                                    items.push(new sap.ui.core.Item("", {
+                                        key: value,
+                                        text: value
+                                    }));
                                 }
-                                values.push(new sap.ui.core.Item("", {
-                                    key: value,
-                                    text: value
-                                }));
                             }
                             input = new sap.m.Select("", {
                                 width: "260px",
-                                items: values
+                                items: items
                             });
                             input.bindProperty("selectedKey", {
                                 path: "/value"
@@ -551,7 +556,9 @@ namespace reportanalysis {
                                 new sap.ui.table.Column("", {
                                     label: ibas.strings.isEmpty(col.description) ? col.name : col.description,
                                     width: "100px",
-                                    autoResizable: false,
+                                    autoResizable: true,
+                                    sortProperty: index.toString(),
+                                    filterProperty: index.toString(),
                                     template: new sap.m.Text("", {
                                         wrapping: false
                                     }).bindProperty("text", {
@@ -567,7 +574,9 @@ namespace reportanalysis {
                                 new sap.ui.table.Column("", {
                                     label: ibas.strings.isEmpty(col.description) ? col.name : col.description,
                                     width: "100px",
-                                    autoResizable: false,
+                                    autoResizable: true,
+                                    sortProperty: index.toString(),
+                                    filterProperty: index.toString(),
                                     template: new sap.m.Text("", {
                                         wrapping: false
                                     }).bindProperty("text", {
