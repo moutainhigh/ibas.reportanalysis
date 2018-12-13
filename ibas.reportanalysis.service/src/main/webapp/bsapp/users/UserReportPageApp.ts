@@ -42,6 +42,7 @@ namespace reportanalysis {
                 this.refreshReports(type);
             }
             private activeReport(report: bo.UserReport): void {
+                report = ibas.objects.clone(report);
                 let app: ReportViewerApp = new ReportViewerApp();
                 app.navigation = this.navigation;
                 app.viewShower = this.viewShower;

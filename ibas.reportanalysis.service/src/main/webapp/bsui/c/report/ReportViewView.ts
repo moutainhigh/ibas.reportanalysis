@@ -292,7 +292,7 @@ namespace reportanalysis {
                 constructor(parent: ReportViewerView | ReportTabViewerView | ReportDialogViewerView) {
                     this.parent = parent;
                 }
-                private valuesMap: Map<bo.UserReportParameter, string[]> = new Map<bo.UserReportParameter, string[]>();
+                private valuesMap: Map<bo.UserReportParameter, string>;
                 private parent: ReportViewerView | ReportTabViewerView | ReportDialogViewerView;
                 dataTable: ibas.DataTable;
                 /** 显示报表 */
@@ -332,6 +332,14 @@ namespace reportanalysis {
                             // 预设的不显示
                             continue;
                         }
+                        // 记录参数值，避免重置丢失
+                        if (ibas.objects.isNull(this.valuesMap)) {
+                            this.valuesMap = new Map<bo.UserReportParameter, string>();
+                        }
+                        if (!this.valuesMap.has(item)) {
+                            this.valuesMap.set(item, item.value);
+                        }
+                        let value: string = this.valuesMap.get(item);
                         this.form.addItem(
                             new sap.m.Title("", {
                                 width: "260px",
@@ -360,17 +368,12 @@ namespace reportanalysis {
                                 path: "/value"
                             });
                         } else if (item.category === bo.emReportParameterType.RANGE) {
-                            let values: string[] = this.valuesMap.get(item);
-                            if (ibas.objects.isNull(values)) {
-                                this.valuesMap.set(item, item.value.split(";"));
-                                values = this.valuesMap.get(item);
-                            }
                             let items: Array<sap.ui.core.Item> = new Array<sap.ui.core.Item>();
-                            if (values instanceof Array) {
-                                for (let value of values) {
+                            if (!ibas.strings.isEmpty(value)) {
+                                for (let item of value.split(";")) {
                                     items.push(new sap.ui.core.Item("", {
-                                        key: value,
-                                        text: value
+                                        key: item,
+                                        text: item
                                     }));
                                 }
                             }
@@ -381,12 +384,12 @@ namespace reportanalysis {
                             input.bindProperty("selectedKey", {
                                 path: "/value"
                             });
-                        } else if (item.category === bo.emReportParameterType.CHOOSE_LIST && !ibas.strings.isEmpty(item.value)) {
-                            let boCode: string = item.value;
+                        } else if (item.category === bo.emReportParameterType.CHOOSE_LIST && !ibas.strings.isEmpty(value)) {
+                            let boCode: string = value;
                             let property: string = null;
                             if (boCode.indexOf(".") > 0) {
-                                boCode = item.value.split(".")[0];
-                                property = item.value.split(".")[1];
+                                boCode = value.split(".")[0];
+                                property = value.split(".")[1];
                             }
                             item.value = null;
                             input = new sap.m.Input("", {
