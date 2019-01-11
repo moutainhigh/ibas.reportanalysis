@@ -197,7 +197,7 @@ namespace reportanalysis {
             /**
              * 视图-报表查看-对话框，需要与上保持同步
              */
-            export class ReportDialogViewerView extends ibas.BODialogView implements app.IReportViewView {
+            export class ReportDialogViewerView extends ibas.DialogView implements app.IReportViewView {
                 /** 运行报表 */
                 runReportEvent: Function;
                 /** 重置报表 */
