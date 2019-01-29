@@ -145,7 +145,7 @@ namespace reportanalysis {
                                                     placement: sap.m.PlacementType.Bottom,
                                                 });
                                                 for (let service of services) {
-                                                    popover.addContent(new sap.m.Button({
+                                                    popover.addContent(new sap.m.Button("", {
                                                         text: ibas.i18n.prop(service.name),
                                                         type: sap.m.ButtonType.Transparent,
                                                         icon: service.icon,
