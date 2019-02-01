@@ -520,7 +520,7 @@ namespace reportanalysis {
                         html.append(" ");
                         html.append("scrolling=\"no\"");
                         html.append(" ");
-                        html.append("border=\"0\"");
+                        html.append("style=\"border:0px;\"");
                         html.append(">");
                         html.append("</iframe>");
                     }

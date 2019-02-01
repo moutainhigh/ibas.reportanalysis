@@ -115,48 +115,40 @@ namespace reportanalysis {
                     }
                     reports.add(report);
                 }
-                let index: number = 0;
                 let boRepository: bo.BORepositoryReportAnalysis = new bo.BORepositoryReportAnalysis();
-                let saver: Function = function (): void {
-                    if (index < reports.length) {
-                        // 数据未处理完成
-                        boRepository.saveReport({
-                            beSaved: reports[index],
-                            onCompleted(opRslt: ibas.IOperationResult<bo.IReport>): void {
-                                try {
-                                    if (opRslt.resultCode === 0) {
-                                        // 成功，继续下一个
-                                        let report: bo.IReport = opRslt.resultObjects.firstOrDefault();
-                                        if (!ibas.objects.isNull(report)) {
-                                            that.proceeding(ibas.emMessageType.SUCCESS,
-                                                ibas.i18n.prop("reportanalysis_import_successful", report.objectKey, report.name));
-                                        }
-                                        index++;
-                                        saver();
-                                    } else {
-                                        // 失败，询问是否继续
-                                        that.messages({
-                                            type: ibas.emMessageType.ERROR,
-                                            message: ibas.i18n.prop("reportanalysis_import_faild",
-                                                reports[index].name, opRslt.message),
-                                            actions: [ibas.emMessageAction.YES, ibas.emMessageAction.NO],
-                                            onCompleted(action: ibas.emMessageAction): void {
-                                                if (action === ibas.emMessageAction.YES) {
-                                                    index++;
-                                                    saver();
-                                                }
-                                            }
-                                        });
-                                    }
-                                } catch (error) {
-                                    that.messages(error);
+                ibas.queues.execute(reports, (data, next) => {
+                    boRepository.saveReport({
+                        beSaved: data,
+                        onCompleted(opRslt: ibas.IOperationResult<bo.IReport>): void {
+                            if (opRslt.resultCode === 0) {
+                                // 成功，继续下一个
+                                let report: bo.IReport = opRslt.resultObjects.firstOrDefault();
+                                if (!ibas.objects.isNull(report)) {
+                                    that.proceeding(ibas.emMessageType.SUCCESS,
+                                        ibas.i18n.prop("reportanalysis_import_successful", report.objectKey, report.name));
                                 }
+                                next();
+                            } else {
+                                // 失败，询问是否继续
+                                that.messages({
+                                    type: ibas.emMessageType.ERROR,
+                                    message: ibas.i18n.prop("reportanalysis_import_faild", data.name, opRslt.message),
+                                    actions: [ibas.emMessageAction.YES, ibas.emMessageAction.NO],
+                                    onCompleted(action: ibas.emMessageAction): void {
+                                        if (action === ibas.emMessageAction.YES) {
+                                            next();
+                                        }
+                                    }
+                                });
+
                             }
-                        });
+                        }
+                    });
+                }, (error) => {
+                    if (error instanceof Error) {
+                        that.messages(error);
                     }
-                };
-                // 调用保存
-                saver();
+                });
             }
         }
         /** 视图-BOE报表 */
