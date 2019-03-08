@@ -10,10 +10,10 @@
 /// <reference path="./reportbook/index.ts" />
 /// <reference path="./tools/index.ts" />
 /// <reference path="./users/index.ts" />
-
 namespace reportanalysis {
     export namespace app {
-
+        /** 属性-导航 */
+        const PROPERTY_NAVIGATION: symbol = Symbol("navigation");
         /** 模块控制台 */
         export class Console extends ibas.ModuleConsole {
             /** 构造函数 */
@@ -24,10 +24,9 @@ namespace reportanalysis {
                 this.version = CONSOLE_VERSION;
                 this.copyright = ibas.i18n.prop("shell_license");
             }
-            private _navigation: ibas.IViewNavigation;
             /** 创建视图导航 */
             navigation(): ibas.IViewNavigation {
-                return this._navigation;
+                return this[PROPERTY_NAVIGATION];
             }
             /** 初始化 */
             protected registers(): void {
@@ -63,12 +62,12 @@ namespace reportanalysis {
                     // 使用c类型视图
                     uiModules.push("index.ui.c");
                 }
-                let that: this = this;
-                this.loadUI(uiModules, function (ui: any): void {
+                // 加载视图库
+                this.loadUI(uiModules, (ui) => {
                     // 设置导航
-                    that._navigation = new ui.Navigation();
+                    this[PROPERTY_NAVIGATION] = new ui.Navigation();
                     // 调用初始化
-                    that.initialize();
+                    this.initialize();
                 });
                 // 保留基类方法
                 super.run();
@@ -93,10 +92,9 @@ namespace reportanalysis {
                 this.version = ConsoleUsers.CONSOLE_VERSION;
                 this.copyright = ibas.i18n.prop("shell_license");
             }
-            private _navigation: ibas.IViewNavigation;
             /** 创建视图导航 */
             navigation(): ibas.IViewNavigation {
-                return this._navigation;
+                return this[PROPERTY_NAVIGATION];
             }
             /** 初始化 */
             protected registers(): void {
@@ -123,33 +121,33 @@ namespace reportanalysis {
                     // 使用c类型视图
                     uiModules.push("index.ui.c");
                 }
-                let that: this = this;
-                this.loadUI(uiModules, function (ui: any): void {
+                // 加载视图库
+                this.loadUI(uiModules, (ui) => {
                     // 设置导航
-                    that._navigation = new ui.Navigation();
+                    this[PROPERTY_NAVIGATION] = new ui.Navigation();
                     // 调用初始化
                     if (!ibas.config.get(CONFIG_ITEM_DISABLE_REPORT_FUNCTIONS, false)) {
                         // 加载用户报表
                         let boRepository: bo.BORepositoryReportAnalysis = new bo.BORepositoryReportAnalysis();
                         boRepository.fetchUserReports({
                             user: ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_CODE),
-                            onCompleted(opRslt: ibas.IOperationResult<bo.UserReport>): void {
+                            onCompleted: (opRslt: ibas.IOperationResult<bo.UserReport>) => {
                                 if (opRslt.resultCode !== 0) {
                                     ibas.logger.log(ibas.emMessageLevel.ERROR, opRslt.message);
                                 }
-                                that.register(new UserReportPageFunc());
+                                this.register(new UserReportPageFunc());
                                 for (let item of opRslt.resultObjects) {
-                                    that.register(new UserReportBookFunc(item));
+                                    this.register(new UserReportBookFunc(item));
                                 }
                                 // 通知初始化完成
-                                that.fireInitialized();
+                                this.fireInitialized();
                             }
                         });
                     } else {
                         // 不加载用户报表菜单
-                        that.register(new UserReportPageFunc());
+                        this.register(new UserReportPageFunc());
                         // 通知初始化完成
-                        that.fireInitialized();
+                        this.fireInitialized();
                     }
                 });
                 // 保留基类方法
