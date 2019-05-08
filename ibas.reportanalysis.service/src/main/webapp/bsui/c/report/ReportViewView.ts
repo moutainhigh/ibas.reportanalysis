@@ -72,7 +72,7 @@ namespace reportanalysis {
                                                         }
                                                     }));
                                                 }
-                                                (<any>popover).addStyleClass("sapMOTAPopover sapTntToolHeaderPopover");
+                                                popover.addStyleClass("sapMOTAPopover sapTntToolHeaderPopover");
                                                 popover.openBy(event.getSource(), true);
                                             }
                                         });
@@ -165,7 +165,7 @@ namespace reportanalysis {
                                                         }
                                                     }));
                                                 }
-                                                (<any>popover).addStyleClass("sapMOTAPopover sapTntToolHeaderPopover");
+                                                popover.addStyleClass("sapMOTAPopover sapTntToolHeaderPopover");
                                                 popover.openBy(event.getSource(), true);
                                             }
                                         });
@@ -442,6 +442,9 @@ namespace reportanalysis {
                         }
                     }
                     let uiTable: sap.ui.table.Table = this.createTable(table);
+                    if (this.parent instanceof ReportDialogViewerView) {
+                        uiTable.setVisibleRowCountMode(sap.ui.table.VisibleRowCountMode.Auto);
+                    }
                     if (this.parent instanceof ReportDataChooseView) {
                         this.parent.selectedDataTable = function (): ibas.DataTable {
                             if (ibas.objects.isNull(uiTable) || ibas.objects.isNull(table)) {

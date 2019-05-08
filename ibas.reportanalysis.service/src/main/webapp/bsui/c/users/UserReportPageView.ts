@@ -45,12 +45,11 @@ namespace reportanalysis {
                             }
                         },
                     });
-                    this.container = new sap.m.TileContainer("", {
-                    });
                     return new sap.m.Page("", {
                         showHeader: false,
                         content: [
-                            this.container,
+                            this.container = new sap.m.TileContainer("", {
+                            })
                         ],
                         footer: new sap.m.Toolbar("", {
                             content: [

@@ -28,99 +28,170 @@ namespace reportanalysis {
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;
-                    this.form = new sap.ui.layout.form.SimpleForm("", {
+                    let formTop: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
                         editable: true,
                         content: [
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("reportanalysis_title_general") }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_reportbook_name") }),
-                            new sap.m.Input("", {
-                                type: sap.m.InputType.Text
-                            }).bindProperty("value", {
-                                path: "/name"
+                            new sap.extension.m.Input("", {
+                            }).bindProperty("bindingValue", {
+                                path: "name",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 50
+                                })
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_reportbook_activated") }),
-                            new sap.m.Select("", {
-                                items: openui5.utils.createComboBoxItems(ibas.emYesNo)
-                            }).bindProperty("selectedKey", {
-                                path: "/activated",
-                                type: "sap.ui.model.type.Integer"
+                            new sap.extension.m.EnumSelect("", {
+                                enumType: ibas.emYesNo
+                            }).bindProperty("bindingValue", {
+                                path: "activated",
+                                type: new sap.extension.data.YesNo()
                             }),
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("reportanalysis_title_others") }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_reportbook_assignedtype") }),
-                            new sap.m.Select("", {
-                                items: openui5.utils.createComboBoxItems(bo.emAssignedType)
-                            }).bindProperty("selectedKey", {
-                                path: "/assignedType",
-                                type: "sap.ui.model.type.Integer"
+                            new sap.extension.m.EnumSelect("", {
+                                enumType: bo.emAssignedType
+                            }).bindProperty("bindingValue", {
+                                path: "assignedType",
+                                type: new sap.extension.data.Enum({
+                                    enumType: bo.emAssignedType
+                                })
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_reportbook_assigned") }),
-                            new sap.m.Input("", {
-                                showValueHelp: true,
-                                valueHelpRequest: function (): void {
-                                    that.fireViewEvents(that.chooseUserRoleEvent);
-                                }
-                            }).bindProperty("value", {
-                                path: "/assigned"
-                            })
-                        ]
-                    });
-                    this.form.addContent(new sap.ui.core.Title("", { text: ibas.i18n.prop("bo_reportbookitem") }));
-                    this.tableReportBookItem = new sap.ui.table.Table("", {
-                        toolbar: new sap.m.Toolbar("", {
-                            content: [
-                                new sap.m.Button("", {
-                                    text: ibas.i18n.prop("shell_data_add"),
-                                    type: sap.m.ButtonType.Transparent,
-                                    icon: "sap-icon://add",
-                                    press: function (): void {
-                                        that.fireViewEvents(that.addReportBookItemEvent);
-                                    }
-                                }),
-                                new sap.m.Button("", {
-                                    text: ibas.i18n.prop("shell_data_remove"),
-                                    type: sap.m.ButtonType.Transparent,
-                                    icon: "sap-icon://less",
-                                    press: function (): void {
-                                        that.fireViewEvents(that.removeReportBookItemEvent,
-                                            // 获取表格选中的对象
-                                            openui5.utils.getSelecteds<bo.ReportBookItem>(that.tableReportBookItem)
-                                        );
-                                    }
-                                })
-                            ]
-                        }),
-                        enableSelectAll: false,
-                        selectionBehavior: sap.ui.table.SelectionBehavior.Row,
-                        visibleRowCount: ibas.config.get(openui5.utils.CONFIG_ITEM_LIST_TABLE_VISIBLE_ROW_COUNT, 10),
-                        rows: "{/rows}",
-                        columns: [
-                            new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_reportbookitem_report"),
-                                template: new sap.m.Input("", {
-                                    showValueHelp: true,
-                                    valueHelpRequest: function (): void {
-                                        that.fireViewEvents(that.chooseReportBookItemReportEvent,
-                                            // 获取当前对象
-                                            this.getBindingContext().getObject()
-                                        );
-                                    }
-                                }).bindProperty("value", {
-                                    path: "report"
-                                })
+                            new sap.m.FlexBox("", {
+                                items: [
+                                    new sap.extension.m.RepositoryInput("", {
+                                        showValueHelp: true,
+                                        width: "100%",
+                                        layoutData: new sap.m.FlexItemData("", {
+                                            growFactor: 1,
+                                        }),
+                                        repository: initialfantasy.bo.BORepositoryInitialFantasy,
+                                        dataInfo: {
+                                            type: initialfantasy.bo.User,
+                                            key: "Code",
+                                            text: "Name"
+                                        },
+                                        valueHelpRequest: function (): void {
+                                            that.fireViewEvents(that.chooseUserRoleEvent);
+                                        }
+                                    }).bindProperty("visible", {
+                                        path: "assignedType",
+                                        formatter(data: any): any {
+                                            if (data === bo.emAssignedType.USER) {
+                                                return true;
+                                            } else if (data === bo.emAssignedType.ROLE) {
+                                                return false;
+                                            }
+                                            return false;
+                                        }
+                                    }).bindProperty("bindingValue", {
+                                        path: "assigned",
+                                        type: new sap.extension.data.Alphanumeric({
+                                            maxLength: 20
+                                        })
+                                    }),
+                                    new sap.extension.m.RepositoryInput("", {
+                                        showValueHelp: true,
+                                        width: "100%",
+                                        layoutData: new sap.m.FlexItemData("", {
+                                            growFactor: 1,
+                                        }),
+                                        repository: initialfantasy.bo.BORepositoryInitialFantasy,
+                                        dataInfo: {
+                                            type: initialfantasy.bo.Organization,
+                                            key: "Code",
+                                            text: "Name"
+                                        },
+                                        valueHelpRequest: function (): void {
+                                            that.fireViewEvents(that.chooseUserRoleEvent);
+                                        }
+                                    }).bindProperty("visible", {
+                                        path: "assignedType",
+                                        formatter(data: any): any {
+                                            if (data === bo.emAssignedType.USER) {
+                                                return false;
+                                            } else if (data === bo.emAssignedType.ROLE) {
+                                                return true;
+                                            }
+                                            return false;
+                                        }
+                                    }).bindProperty("bindingValue", {
+                                        path: "assigned",
+                                        type: new sap.extension.data.Alphanumeric({
+                                            maxLength: 20
+                                        })
+                                    }),
+                                ]
                             }),
-                            new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_reportbookitem_name"),
-                                template: new sap.m.Text("", {
-                                    wrapping: false
-                                }).bindProperty("text", {
-                                    path: "name"
-                                })
+                        ]
+                    });
+                    let formReportBookItem: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
+                        editable: true,
+                        content: [
+                            new sap.ui.core.Title("", { text: ibas.i18n.prop("bo_reportbookitem") }),
+                            this.tableReportBookItem = new sap.extension.table.DataTable("", {
+                                enableSelectAll: false,
+                                visibleRowCount: sap.extension.table.visibleRowCount(8),
+                                dataInfo: {
+                                    code: bo.ReportBook.BUSINESS_OBJECT_CODE,
+                                    name: bo.ReportBookItem.name
+                                },
+                                toolbar: new sap.m.Toolbar("", {
+                                    content: [
+                                        new sap.m.Button("", {
+                                            text: ibas.i18n.prop("shell_data_add"),
+                                            type: sap.m.ButtonType.Transparent,
+                                            icon: "sap-icon://add",
+                                            press: function (): void {
+                                                that.fireViewEvents(that.addReportBookItemEvent);
+                                            }
+                                        }),
+                                        new sap.m.Button("", {
+                                            text: ibas.i18n.prop("shell_data_remove"),
+                                            type: sap.m.ButtonType.Transparent,
+                                            icon: "sap-icon://less",
+                                            press: function (): void {
+                                                that.fireViewEvents(that.removeReportBookItemEvent, that.tableReportBookItem.getSelecteds());
+                                            }
+                                        })
+                                    ]
+                                }),
+                                rows: "{/rows}",
+                                columns: [
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_reportbookitem_report"),
+                                        template: new sap.extension.m.Input("", {
+                                            showValueHelp: true,
+                                            valueHelpRequest: function (): void {
+                                                that.fireViewEvents(that.chooseReportBookItemReportEvent,
+                                                    // 获取当前对象
+                                                    this.getBindingContext().getObject()
+                                                );
+                                            }
+                                        }).bindProperty("value", {
+                                            path: "report"
+                                        })
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_reportbookitem_name"),
+                                        template: new sap.extension.m.Input("", {
+                                        }).bindProperty("bindingValue", {
+                                            path: "name",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 100
+                                            })
+                                        }),
+                                    }),
+                                ]
                             })
                         ]
                     });
-                    this.form.addContent(this.tableReportBookItem);
-                    this.page = new sap.m.Page("", {
+                    return this.page = new sap.extension.m.DataPage("", {
                         showHeader: false,
+                        dataInfo: {
+                            code: bo.ReportBook.BUSINESS_OBJECT_CODE,
+                        },
                         subHeader: new sap.m.Toolbar("", {
                             content: [
                                 new sap.m.Button("", {
@@ -168,41 +239,24 @@ namespace reportanalysis {
                                 }),
                             ]
                         }),
-                        content: [this.form]
+                        content: [
+                            formTop,
+                            formReportBookItem,
+                        ]
                     });
-                    this.id = this.page.getId();
-                    return this.page;
                 }
-                private page: sap.m.Page;
-                private form: sap.ui.layout.form.SimpleForm;
-                /** 改变视图状态 */
-                private changeViewStatus(data: bo.ReportBook): void {
-                    if (ibas.objects.isNull(data)) {
-                        return;
-                    }
-                    // 新建时：禁用删除，
-                    if (data.isNew) {
-                        if (this.page.getSubHeader() instanceof sap.m.Toolbar) {
-                            openui5.utils.changeToolbarSavable(<sap.m.Toolbar>this.page.getSubHeader(), true);
-                            openui5.utils.changeToolbarDeletable(<sap.m.Toolbar>this.page.getSubHeader(), false);
-                        }
-                    }
-                }
-                private tableReportBookItem: sap.ui.table.Table;
+                private page: sap.extension.m.Page;
+                private tableReportBookItem: sap.extension.table.Table;
 
                 /** 显示数据 */
                 showReportBook(data: bo.ReportBook): void {
-                    this.form.setModel(new sap.ui.model.json.JSONModel(data));
-                    // 监听属性改变，并更新控件
-                    openui5.utils.refreshModelChanged(this.form, data);
-                    // 改变视图状态
-                    this.changeViewStatus(data);
+                    this.page.setModel(new sap.extension.model.JSONModel(data));
+                    // 改变页面状态
+                    sap.extension.pages.changeStatus(this.page);
                 }
-                /** 显示数据 */
+                /** 显示数据-报表簿-项目 */
                 showReportBookItems(datas: bo.ReportBookItem[]): void {
-                    this.tableReportBookItem.setModel(new sap.ui.model.json.JSONModel({ rows: datas }));
-                    // 监听属性改变，并更新控件
-                    openui5.utils.refreshModelChanged(this.tableReportBookItem, datas);
+                    this.tableReportBookItem.setModel(new sap.extension.model.JSONModel({ rows: datas }));
                 }
             }
         }

@@ -34,87 +34,109 @@ namespace reportanalysis {
                 /** 绘制视图 */
                 draw(): any {
                     let that: this = this;
-                    this.form = new sap.ui.layout.form.SimpleForm("", {
+                    let formTop: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
                         editable: true,
                         content: [
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("reportanalysis_title_basic") }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_report_name") }),
-                            new sap.m.Input("", {
-                            }).bindProperty("value", {
-                                path: "/name"
+                            new sap.extension.m.Input("", {
+                            }).bindProperty("bindingValue", {
+                                path: "name",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 60
+                                })
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_report_group") }),
-                            new sap.m.Input("", {
-                            }).bindProperty("value", {
-                                path: "/group"
+                            new sap.extension.m.Input("", {
+                            }).bindProperty("bindingValue", {
+                                path: "group",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 30
+                                })
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_report_activated") }),
-                            new sap.m.Select("", {
-                                items: openui5.utils.createComboBoxItems(ibas.emYesNo)
-                            }).bindProperty("selectedKey", {
-                                path: "/activated",
-                                type: "sap.ui.model.type.Integer"
+                            new sap.extension.m.EnumSelect("", {
+                                enumType: ibas.emYesNo
+                            }).bindProperty("bindingValue", {
+                                path: "activated",
+                                type: new sap.extension.data.YesNo()
                             }),
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("reportanalysis_title_associated") }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_report_bocode") }),
-                            new sap.m.Input("", {
+                            new sap.extension.m.RepositoryInput("", {
                                 showValueHelp: true,
+                                repository: initialfantasy.bo.BO_REPOSITORY_INITIALFANTASY,
+                                dataInfo: {
+                                    type: ibas.boFactory.classOf(initialfantasy.bo.BO_CODE_BOINFORMATION),
+                                    key: "Code",
+                                    text: "Description"
+                                },
                                 valueHelpRequest: function (): void {
                                     that.fireViewEvents(that.chooseReportBusinessObjectEvent);
                                 }
-                            }).bindProperty("value", {
-                                path: "/boCode"
+                            }).bindProperty("bindingValue", {
+                                path: "boCode",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 30
+                                })
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_report_applicationid") }),
-                            new sap.m.Input("", {
+                            new sap.extension.m.RepositoryInput("", {
                                 showValueHelp: true,
+                                repository: initialfantasy.bo.BO_REPOSITORY_INITIALFANTASY,
+                                dataInfo: {
+                                    type: ibas.boFactory.classOf(initialfantasy.bo.BO_CODE_APPLICATIONELEMENT),
+                                    key: "ElementId",
+                                    text: "ElementName"
+                                },
                                 valueHelpRequest: function (): void {
                                     that.fireViewEvents(that.chooseReportApplicationEvent);
                                 }
-                            }).bindProperty("value", {
-                                path: "/applicationId"
+                            }).bindProperty("bindingValue", {
+                                path: "applicationId",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 36
+                                })
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_report_associatedreport") }),
-                            new sap.m.ex.BOInput("", {
-                                boText: "name",
-                                boKey: "objectKey",
-                                boCode: ibas.config.applyVariables(bo.BO_CODE_REPORT),
-                                repositoryName: bo.BO_REPOSITORY_REPORTANALYSIS,
+                            new sap.extension.m.RepositoryInput("", {
+                                showValueHelp: true,
+                                repository: bo.BORepositoryReportAnalysis,
+                                dataInfo: {
+                                    type: bo.Report,
+                                    key: "ObjectKey",
+                                    text: "Name"
+                                },
                                 valueHelpRequest: function (): void {
                                     that.fireViewEvents(that.chooseReportAssociatedReportEvent);
                                 },
-                                bindingValue: {
-                                    path: "/associatedReport"
-                                }
+                            }).bindProperty("bindingValue", {
+                                path: "associatedReport",
+                                type: new sap.extension.data.Numeric()
                             }),
+                        ]
+                    });
+                    let formBottom: sap.ui.layout.form.SimpleForm = new sap.ui.layout.form.SimpleForm("", {
+                        editable: true,
+                        content: [
                             new sap.ui.core.Title("", { text: ibas.i18n.prop("reportanalysis_title_content") }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_report_category") }),
-                            new sap.m.Select("", {
-                                items: [
-                                    new sap.ui.core.ListItem("", {
-                                        key: bo.emReportType.REPORT,
-                                        text: ibas.enums.toString(bo.emReportType, bo.emReportType.REPORT),
-                                    }),
-                                    new sap.ui.core.ListItem("", {
-                                        key: bo.emReportType.SERVICE,
-                                        text: ibas.enums.toString(bo.emReportType, bo.emReportType.SERVICE),
-                                    }),
-                                    new sap.ui.core.ListItem("", {
-                                        key: bo.emReportType.FILE,
-                                        text: ibas.enums.toString(bo.emReportType, bo.emReportType.FILE),
-                                    }),
-                                ]
-                            }).bindProperty("selectedKey", {
-                                path: "/category",
-                                type: "sap.ui.model.type.Integer"
+                            new sap.extension.m.EnumSelect("", {
+                                enumType: bo.emReportType
+                            }).bindProperty("bindingValue", {
+                                path: "category",
+                                type: new sap.extension.data.Enum({
+                                    enumType: bo.emReportType
+                                })
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_report_sqlstring") }),
-                            new sap.m.TextArea("", {
+                            new sap.extension.m.TextArea("", {
                                 rows: 9
-                            }).bindProperty("value", {
-                                path: "/sqlString"
+                            }).bindProperty("bindingValue", {
+                                path: "sqlString",
+                                type: new sap.extension.data.Alphanumeric()
                             }).bindProperty("editable", {
-                                path: "/category",
+                                path: "category",
                                 formatter(data: bo.emReportType): any {
                                     if (data === bo.emReportType.REPORT) {
                                         return true;
@@ -123,11 +145,14 @@ namespace reportanalysis {
                                 }
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_report_server") }),
-                            new sap.m.Input("", {
-                            }).bindProperty("value", {
-                                path: "/server"
+                            new sap.extension.m.Input("", {
+                            }).bindProperty("bindingValue", {
+                                path: "server",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 200
+                                })
                             }).bindProperty("editable", {
-                                path: "/category",
+                                path: "category",
                                 formatter(data: bo.emReportType): any {
                                     if (data === bo.emReportType.SERVICE) {
                                         return true;
@@ -136,11 +161,14 @@ namespace reportanalysis {
                                 }
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_report_user") }),
-                            new sap.m.Input("", {
-                            }).bindProperty("value", {
-                                path: "/user"
+                            new sap.extension.m.Input("", {
+                            }).bindProperty("bindingValue", {
+                                path: "user",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 30
+                                })
                             }).bindProperty("editable", {
-                                path: "/category",
+                                path: "category",
                                 formatter(data: bo.emReportType): any {
                                     if (data === bo.emReportType.SERVICE) {
                                         return true;
@@ -149,12 +177,15 @@ namespace reportanalysis {
                                 }
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_report_password") }),
-                            new sap.m.Input("", {
+                            new sap.extension.m.Input("", {
                                 type: sap.m.InputType.Password
-                            }).bindProperty("value", {
-                                path: "/password"
+                            }).bindProperty("bindingValue", {
+                                path: "password",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 30
+                                })
                             }).bindProperty("editable", {
-                                path: "/category",
+                                path: "category",
                                 formatter(data: bo.emReportType): any {
                                     if (data === bo.emReportType.SERVICE) {
                                         return true;
@@ -163,11 +194,14 @@ namespace reportanalysis {
                                 }
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_report_address") }),
-                            new sap.m.Input("", {
-                            }).bindProperty("value", {
-                                path: "/address"
+                            new sap.extension.m.Input("", {
+                            }).bindProperty("bindingValue", {
+                                path: "address",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 250
+                                })
                             }).bindProperty("editable", {
-                                path: "/category",
+                                path: "category",
                                 formatter(data: bo.emReportType): any {
                                     if (data === bo.emReportType.SERVICE) {
                                         return true;
@@ -204,7 +238,7 @@ namespace reportanalysis {
                                     });
                                 }
                             }).bindProperty("enabled", {
-                                path: "/category",
+                                path: "category",
                                 formatter(data: bo.emReportType): any {
                                     if (data === bo.emReportType.FILE) {
                                         return true;
@@ -212,84 +246,93 @@ namespace reportanalysis {
                                     return false;
                                 }
                             }),
-                        ]
-                    });
-                    this.form.addContent(new sap.ui.core.Title("", { text: ibas.i18n.prop("reportanalysis_title_parameters") }));
-                    this.tableReportParameter = new sap.ui.table.Table("", {
-                        toolbar: new sap.m.Toolbar("", {
-                            content: [
-                                new sap.m.Button("", {
-                                    text: ibas.i18n.prop("shell_data_add"),
-                                    type: sap.m.ButtonType.Transparent,
-                                    icon: "sap-icon://add",
-                                    press: function (): void {
-                                        that.fireViewEvents(that.addReportParameterEvent);
-                                    }
+                            new sap.ui.core.Title("", { text: ibas.i18n.prop("reportanalysis_title_parameters") }),
+                            this.tableReportParameter = new sap.extension.table.DataTable("", {
+                                enableSelectAll: false,
+                                visibleRowCount: sap.extension.table.visibleRowCount(6),
+                                dataInfo: {
+                                    code: bo.Report.BUSINESS_OBJECT_CODE,
+                                    name: bo.ReportParameter.name
+                                },
+                                toolbar: new sap.m.Toolbar("", {
+                                    content: [
+                                        new sap.m.Button("", {
+                                            text: ibas.i18n.prop("shell_data_add"),
+                                            type: sap.m.ButtonType.Transparent,
+                                            icon: "sap-icon://add",
+                                            press: function (): void {
+                                                that.fireViewEvents(that.addReportParameterEvent);
+                                            }
+                                        }),
+                                        new sap.m.Button("", {
+                                            text: ibas.i18n.prop("shell_data_remove"),
+                                            type: sap.m.ButtonType.Transparent,
+                                            icon: "sap-icon://less",
+                                            press: function (): void {
+                                                that.fireViewEvents(that.removeReportParameterEvent, that.tableReportParameter.getSelecteds());
+                                            }
+                                        })
+                                    ]
                                 }),
-                                new sap.m.Button("", {
-                                    text: ibas.i18n.prop("shell_data_remove"),
-                                    type: sap.m.ButtonType.Transparent,
-                                    icon: "sap-icon://less",
-                                    press: function (): void {
-                                        that.fireViewEvents(that.removeReportParameterEvent,
-                                            // 获取表格选中的对象
-                                            openui5.utils.getSelecteds<bo.ReportParameter>(that.tableReportParameter)
-                                        );
-                                    }
-                                })
-                            ]
-                        }),
-                        enableSelectAll: false,
-                        selectionBehavior: sap.ui.table.SelectionBehavior.Row,
-                        visibleRowCount: 6,
-                        rows: "{/rows}",
-                        columns: [
-                            new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_reportparameter_name"),
-                                template: new sap.m.Input("", {
-                                    width: "100%",
-                                }).bindProperty("value", {
-                                    path: "name",
-                                })
-                            }),
-                            new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_reportparameter_description"),
-                                template: new sap.m.Input("", {
-                                    width: "100%",
-                                }).bindProperty("value", {
-                                    path: "description",
-                                })
-                            }),
-                            new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_reportparameter_category"),
-                                template: new sap.m.Select("", {
-                                    width: "100%",
-                                    items: openui5.utils.createComboBoxItems(bo.emReportParameterType)
-                                }).bindProperty("selectedKey", {
-                                    path: "category",
-                                    type: "sap.ui.model.type.Integer"
-                                })
-                            }),
-                            new sap.ui.table.Column("", {
-                                label: ibas.i18n.prop("bo_reportparameter_value"),
-                                template: new sap.m.Input("", {
-                                    width: "100%",
-                                    showValueHelp: true,
-                                    valueHelpRequest: function (): void {
-                                        that.fireViewEvents(that.chooseReportParameterVariableEvent,
-                                            // 获取当前对象
-                                            this.getBindingContext().getObject()
-                                        );
-                                    }
-                                }).bindProperty("value", {
-                                    path: "value",
-                                })
-                            }),
+                                rows: "{/rows}",
+                                columns: [
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_reportparameter_name"),
+                                        template: new sap.extension.m.Input("", {
+                                        }).bindProperty("bindingValue", {
+                                            path: "name",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 30
+                                            })
+                                        }),
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_reportparameter_description"),
+                                        template: new sap.extension.m.Input("", {
+                                        }).bindProperty("bindingValue", {
+                                            path: "description",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 60
+                                            })
+                                        }),
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_reportparameter_category"),
+                                        template: new sap.extension.m.EnumSelect("", {
+                                            enumType: bo.emReportParameterType
+                                        }).bindProperty("bindingValue", {
+                                            path: "category",
+                                            type: new sap.extension.data.Enum({
+                                                enumType: bo.emReportParameterType
+                                            })
+                                        }),
+                                    }),
+                                    new sap.extension.table.DataColumn("", {
+                                        label: ibas.i18n.prop("bo_reportparameter_value"),
+                                        template: new sap.extension.m.Input("", {
+                                            showValueHelp: true,
+                                            valueHelpRequest: function (): void {
+                                                that.fireViewEvents(that.chooseReportParameterVariableEvent,
+                                                    // 获取当前对象
+                                                    this.getBindingContext().getObject()
+                                                );
+                                            }
+                                        }).bindProperty("bindingValue", {
+                                            path: "value",
+                                            type: new sap.extension.data.Alphanumeric({
+                                                maxLength: 200
+                                            })
+                                        }),
+                                    }),
+                                ]
+                            })
                         ]
                     });
-                    this.form.addContent(this.tableReportParameter);
-                    this.page = new sap.m.Page("", {
+                    return this.page = new sap.extension.m.DataPage("", {
                         showHeader: false,
+                        dataInfo: {
+                            code: bo.Report.BUSINESS_OBJECT_CODE,
+                        },
                         subHeader: new sap.m.Toolbar("", {
                             content: [
                                 new sap.m.Button("", {
@@ -337,51 +380,24 @@ namespace reportanalysis {
                                 }),
                             ]
                         }),
-                        content: [this.form]
+                        content: [
+                            formTop,
+                            formBottom,
+                        ]
                     });
-                    this.id = this.page.getId();
-                    return this.page;
                 }
-                private page: sap.m.Page;
-                private form: sap.ui.layout.form.SimpleForm;
-                /** 改变视图状态 */
-                private changeViewStatus(data: bo.Report): void {
-                    if (ibas.objects.isNull(data)) {
-                        return;
-                    }
-                    // 新建时：禁用删除，
-                    if (data.isNew) {
-                        if (this.page.getSubHeader() instanceof sap.m.Toolbar) {
-                            openui5.utils.changeToolbarSavable(<sap.m.Toolbar>this.page.getSubHeader(), true);
-                            openui5.utils.changeToolbarDeletable(<sap.m.Toolbar>this.page.getSubHeader(), false);
-                        }
-                    }
-                    // 不可编辑：已批准，
-                    /*
-                    if (data.approvalStatus === ibas.emApprovalStatus.APPROVED) {
-                        if (this.page.getSubHeader() instanceof sap.m.Toolbar) {
-                            openui5.utils.changeToolbarSavable(<sap.m.Toolbar>this.page.getSubHeader(), false);
-                            openui5.utils.changeToolbarDeletable(<sap.m.Toolbar>this.page.getSubHeader(), false);
-                        }
-                        openui5.utils.changeFormEditable(this.form, false);
-                    }
-                    */
-                }
-                private tableReportParameter: sap.ui.table.Table;
+                private page: sap.extension.m.Page;
+                private tableReportParameter: sap.extension.table.Table;
 
                 /** 显示数据 */
                 showReport(data: bo.Report): void {
-                    this.form.setModel(new sap.ui.model.json.JSONModel(data));
-                    // 监听属性改变，并更新控件
-                    openui5.utils.refreshModelChanged(this.form, data);
-                    // 改变视图状态
-                    this.changeViewStatus(data);
+                    this.page.setModel(new sap.extension.model.JSONModel(data));
+                    // 改变页面状态
+                    sap.extension.pages.changeStatus(this.page);
                 }
-                /** 显示数据 */
+                /** 显示数据-报表参数 */
                 showReportParameters(datas: bo.ReportParameter[]): void {
-                    this.tableReportParameter.setModel(new sap.ui.model.json.JSONModel({ rows: datas }));
-                    // 监听属性改变，并更新控件
-                    openui5.utils.refreshModelChanged(this.tableReportParameter, datas);
+                    this.tableReportParameter.setModel(new sap.extension.model.JSONModel({ rows: datas }));
                 }
             }
         }

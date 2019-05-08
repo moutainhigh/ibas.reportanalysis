@@ -106,12 +106,17 @@
         "bo_reportdata_closing_delimiter": "----结束----"
     },
     {
-        "em_text": "文本",
-        "em_datetime": "日期",
-        "em_system": "系统变量",
-        "em_range": "范围值",
-        "em_sql": "查询结果",
-        "em_preset": "预置值",
-        "em_choose_list": "选择列表"
+        "em_reportparametertype_text": "文本",
+        "em_reportparametertype_datetime": "日期",
+        "em_reportparametertype_system": "系统变量",
+        "em_reportparametertype_range": "范围值",
+        "em_reportparametertype_sql": "查询结果",
+        "em_reportparametertype_preset": "预置值",
+        "em_reportparametertype_choose_list": "选择列表"
+    },
+    {
+        "em_reporttype_report": "系统报表",
+        "em_reporttype_service": "服务报表",
+        "em_reporttype_file": "报表文件"
     }
 ]
