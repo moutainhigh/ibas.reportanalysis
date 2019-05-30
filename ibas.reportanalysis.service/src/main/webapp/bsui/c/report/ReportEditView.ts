@@ -311,6 +311,7 @@ namespace reportanalysis {
                                         label: ibas.i18n.prop("bo_reportparameter_value"),
                                         template: new sap.extension.m.Input("", {
                                             showValueHelp: true,
+                                            valueHelpOnly: false,
                                             valueHelpRequest: function (): void {
                                                 that.fireViewEvents(that.chooseReportParameterVariableEvent,
                                                     // 获取当前对象

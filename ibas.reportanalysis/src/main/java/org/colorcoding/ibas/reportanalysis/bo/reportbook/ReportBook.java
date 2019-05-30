@@ -11,7 +11,7 @@ import org.colorcoding.ibas.bobas.bo.BusinessObject;
 import org.colorcoding.ibas.bobas.core.IPropertyInfo;
 import org.colorcoding.ibas.bobas.data.DateTime;
 import org.colorcoding.ibas.bobas.data.emYesNo;
-import org.colorcoding.ibas.bobas.mapping.BOCode;
+import org.colorcoding.ibas.bobas.mapping.BusinessObjectUnit;
 import org.colorcoding.ibas.bobas.mapping.DbField;
 import org.colorcoding.ibas.bobas.mapping.DbFieldType;
 import org.colorcoding.ibas.bobas.ownership.IDataOwnership;
@@ -25,7 +25,7 @@ import org.colorcoding.ibas.reportanalysis.data.emAssignedType;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = ReportBook.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
 @XmlRootElement(name = ReportBook.BUSINESS_OBJECT_NAME, namespace = MyConfiguration.NAMESPACE_BO)
-@BOCode(ReportBook.BUSINESS_OBJECT_CODE)
+@BusinessObjectUnit(code = ReportBook.BUSINESS_OBJECT_CODE)
 public class ReportBook extends BusinessObject<ReportBook> implements IReportBook, IDataOwnership {
 
 	/**
