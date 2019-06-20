@@ -44,33 +44,36 @@ namespace reportanalysis {
             /** 运行 */
             run(): void {
                 // 加载语言-框架默认
-                ibas.i18n.load(this.rootUrl + "resources/languages/reportanalysis.json");
-                ibas.i18n.load(this.rootUrl + "resources/languages/bos.json");
-                // 设置资源属性
-                this.description = ibas.i18n.prop(this.name.toLowerCase());
-                this.icon = ibas.i18n.prop(this.name.toLowerCase() + "_icon");
-                // 先加载ui导航
-                let uiModules: string[] = [];
-                if (!ibas.config.get(ibas.CONFIG_ITEM_DISABLE_PLATFORM_VIEW, false)) {
-                    if (this.plantform === ibas.emPlantform.PHONE) {
-                        // 使用m类型视图
-                        uiModules.push("index.ui.m");
+                ibas.i18n.load([
+                    this.rootUrl + "resources/languages/reportanalysis.json",
+                    this.rootUrl + "resources/languages/bos.json"
+                ], () => {
+                    // 设置资源属性
+                    this.description = ibas.i18n.prop(this.name.toLowerCase());
+                    this.icon = ibas.i18n.prop(this.name.toLowerCase() + "_icon");
+                    // 先加载ui导航
+                    let uiModules: string[] = [];
+                    if (!ibas.config.get(ibas.CONFIG_ITEM_DISABLE_PLATFORM_VIEW, false)) {
+                        if (this.plantform === ibas.emPlantform.PHONE) {
+                            // 使用m类型视图
+                            uiModules.push("index.ui.m");
+                        }
                     }
-                }
-                // 默认使用视图
-                if (uiModules.length === 0) {
-                    // 使用c类型视图
-                    uiModules.push("index.ui.c");
-                }
-                // 加载视图库
-                this.loadUI(uiModules, (ui) => {
-                    // 设置导航
-                    this[PROPERTY_NAVIGATION] = new ui.Navigation();
-                    // 调用初始化
-                    this.initialize();
+                    // 默认使用视图
+                    if (uiModules.length === 0) {
+                        // 使用c类型视图
+                        uiModules.push("index.ui.c");
+                    }
+                    // 加载视图库
+                    this.loadUI(uiModules, (ui) => {
+                        // 设置导航
+                        this[PROPERTY_NAVIGATION] = new ui.Navigation();
+                        // 调用初始化
+                        this.initialize();
+                    });
+                    // 保留基类方法
+                    super.run();
                 });
-                // 保留基类方法
-                super.run();
             }
         }
 
@@ -103,55 +106,58 @@ namespace reportanalysis {
             /** 运行 */
             run(): void {
                 // 加载语言-框架默认
-                ibas.i18n.load(this.rootUrl + "resources/languages/reportanalysis.json");
-                ibas.i18n.load(this.rootUrl + "resources/languages/bos.json");
-                // 设置资源属性
-                this.description = ibas.i18n.prop(this.name.toLowerCase());
-                this.icon = ibas.i18n.prop(this.name.toLowerCase() + "_icon");
-                // 先加载ui导航
-                let uiModules: string[] = [];
-                if (!ibas.config.get(ibas.CONFIG_ITEM_DISABLE_PLATFORM_VIEW, false)) {
-                    if (this.plantform === ibas.emPlantform.PHONE) {
-                        // 使用m类型视图
-                        uiModules.push("index.ui.m");
+                ibas.i18n.load([
+                    this.rootUrl + "resources/languages/reportanalysis.json",
+                    this.rootUrl + "resources/languages/bos.json"
+                ], () => {
+                    // 设置资源属性
+                    this.description = ibas.i18n.prop(this.name.toLowerCase());
+                    this.icon = ibas.i18n.prop(this.name.toLowerCase() + "_icon");
+                    // 先加载ui导航
+                    let uiModules: string[] = [];
+                    if (!ibas.config.get(ibas.CONFIG_ITEM_DISABLE_PLATFORM_VIEW, false)) {
+                        if (this.plantform === ibas.emPlantform.PHONE) {
+                            // 使用m类型视图
+                            uiModules.push("index.ui.m");
+                        }
                     }
-                }
-                // 默认使用视图
-                if (uiModules.length === 0) {
-                    // 使用c类型视图
-                    uiModules.push("index.ui.c");
-                }
-                // 加载视图库
-                this.loadUI(uiModules, (ui) => {
-                    // 设置导航
-                    this[PROPERTY_NAVIGATION] = new ui.Navigation();
-                    // 调用初始化
-                    if (!ibas.config.get(CONFIG_ITEM_DISABLE_REPORT_FUNCTIONS, false)) {
-                        // 加载用户报表
-                        let boRepository: bo.BORepositoryReportAnalysis = new bo.BORepositoryReportAnalysis();
-                        boRepository.fetchUserReports({
-                            user: ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_CODE),
-                            onCompleted: (opRslt: ibas.IOperationResult<bo.UserReport>) => {
-                                if (opRslt.resultCode !== 0) {
-                                    ibas.logger.log(ibas.emMessageLevel.ERROR, opRslt.message);
-                                }
-                                this.register(new UserReportPageFunc());
-                                for (let item of opRslt.resultObjects) {
-                                    this.register(new UserReportBookFunc(item));
-                                }
-                                // 通知初始化完成
-                                this.fireInitialized();
-                            }
-                        });
-                    } else {
-                        // 不加载用户报表菜单
-                        this.register(new UserReportPageFunc());
-                        // 通知初始化完成
-                        this.fireInitialized();
+                    // 默认使用视图
+                    if (uiModules.length === 0) {
+                        // 使用c类型视图
+                        uiModules.push("index.ui.c");
                     }
+                    // 加载视图库
+                    this.loadUI(uiModules, (ui) => {
+                        // 设置导航
+                        this[PROPERTY_NAVIGATION] = new ui.Navigation();
+                        // 调用初始化
+                        if (!ibas.config.get(CONFIG_ITEM_DISABLE_REPORT_FUNCTIONS, false)) {
+                            // 加载用户报表
+                            let boRepository: bo.BORepositoryReportAnalysis = new bo.BORepositoryReportAnalysis();
+                            boRepository.fetchUserReports({
+                                user: ibas.variablesManager.getValue(ibas.VARIABLE_NAME_USER_CODE),
+                                onCompleted: (opRslt: ibas.IOperationResult<bo.UserReport>) => {
+                                    if (opRslt.resultCode !== 0) {
+                                        ibas.logger.log(ibas.emMessageLevel.ERROR, opRslt.message);
+                                    }
+                                    this.register(new UserReportPageFunc());
+                                    for (let item of opRslt.resultObjects) {
+                                        this.register(new UserReportBookFunc(item));
+                                    }
+                                    // 通知初始化完成
+                                    this.fireInitialized();
+                                }
+                            });
+                        } else {
+                            // 不加载用户报表菜单
+                            this.register(new UserReportPageFunc());
+                            // 通知初始化完成
+                            this.fireInitialized();
+                        }
+                    });
+                    // 保留基类方法
+                    super.run();
                 });
-                // 保留基类方法
-                super.run();
             }
             /** 设置报表仓库地址 */
             setRepository(address: string): boolean {
