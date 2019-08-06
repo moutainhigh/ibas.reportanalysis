@@ -79,7 +79,12 @@ public class SystemReporter extends Reporter {
 		if (opRslt.getResultCode() != 0) {
 			throw new ReporterException(opRslt.getMessage());
 		}
-		return opRslt.getResultObjects().firstOrDefault();
+		IDataTable dataTable = opRslt.getResultObjects().firstOrDefault();
+		if (dataTable != null) {
+			dataTable.setName(this.getReport().getId());
+			dataTable.setDescription(this.getReport().getName());
+		}
+		return dataTable;
 	}
 
 }

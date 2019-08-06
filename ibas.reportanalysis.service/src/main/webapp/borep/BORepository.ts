@@ -124,6 +124,23 @@ namespace reportanalysis {
         }
         /** 远程报表服务 */
         export class RemoteReporterService extends ibas.BORepositoryApplication {
+            get token(): string {
+                return super.token;
+            }
+            set token(value: string) {
+                // 跳过基类调用报错
+                if (!ibas.objects.isNull(value)) {
+                    throw new Error("please using setToken.");
+                }
+                super.token = value;
+            }
+            setToken(user: string, password: string): void {
+                let builder: ibas.StringBuilder = new ibas.StringBuilder();
+                builder.append(ibas.HTTP_HEADER_TOKEN_AUTHORIZATION);
+                builder.append("Basic ");
+                builder.append(window.btoa(ibas.strings.format("{0}:{1}", user, password)));
+                super.token = builder.toString();
+            }
             /** 创建此模块的后端与前端数据的转换者 */
             protected createConverter(): ibas.IDataConverter {
                 return new DataConverter;

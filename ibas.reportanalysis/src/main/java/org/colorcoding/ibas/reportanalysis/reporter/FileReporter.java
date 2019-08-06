@@ -46,7 +46,10 @@ public class FileReporter extends Reporter {
 			KeyText keyText = new KeyText();
 			keyText.setKey(PARAMETER_NAME_URL);
 			keyText.setText(stringBuilder.toString());
-			return DataConvert.toDataTable(new KeyText[] { keyText });
+			IDataTable dataTable = DataConvert.toDataTable(new KeyText[] { keyText });
+			dataTable.setName(this.getReport().getId());
+			dataTable.setDescription(this.getReport().getName());
+			return dataTable;
 		} catch (Exception e) {
 			throw new ReporterException(e);
 		}

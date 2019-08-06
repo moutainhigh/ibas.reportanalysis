@@ -3,6 +3,7 @@ package org.colorcoding.ibas.reportanalysis.reporter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.KeyManagementException;
@@ -21,7 +22,9 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import org.colorcoding.ibas.bobas.common.OperationMessage;
 import org.colorcoding.ibas.bobas.common.OperationResult;
+import org.colorcoding.ibas.bobas.common.Result;
 import org.colorcoding.ibas.bobas.data.ArrayList;
 import org.colorcoding.ibas.bobas.data.DataTable;
 import org.colorcoding.ibas.bobas.data.IDataTable;
@@ -45,6 +48,7 @@ import org.xml.sax.InputSource;
 public class RemoteReporter extends Reporter {
 
 	protected static final String MSG_REPORTER_CONNECT_URL = "reporter: connect [%s].";
+	protected static final String MSG_REPORTER_CONNECTED = "reporter: connected [%s] and got data [%s].";
 	public static final String PARAMETER_NAME_URL = "${Url}";
 	public static final String PARAMETER_NAME_SERVER = String.format(MyConfiguration.VARIABLE_NAMING_TEMPLATE,
 			Report.PROPERTY_SERVER.getName());
@@ -102,7 +106,7 @@ public class RemoteReporter extends Reporter {
 		return this.getParameterValue(PARAMETER_NAME_ADDRESS);
 	}
 
-	protected String getAuthorization(String user, String password) {
+	protected String getAuthorization(String user, String password) throws UnsupportedEncodingException {
 		if (user == null) {
 			user = "";
 		}
@@ -113,9 +117,8 @@ public class RemoteReporter extends Reporter {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("Basic");
 		stringBuilder.append(" ");
-		stringBuilder.append(encoder.encode(user.getBytes()));
-		stringBuilder.append(";  ");
-		stringBuilder.append(encoder.encode(password.getBytes()));
+		stringBuilder
+				.append(new String(encoder.encode(String.format("%s:%s", user, password).getBytes("utf-8")), "utf-8"));
 		return stringBuilder.toString();
 	}
 
@@ -180,23 +183,30 @@ public class RemoteReporter extends Reporter {
 			connection.setUseCaches(false);
 			// 处理请求
 			ISerializerManager serializerManager = SerializerFactory.create().createManager();
-			OutputStream outputStream = connection.getOutputStream();
-			ISerializer<?> serializer = serializerManager.create(SerializerManager.TYPE_JSON);
-			serializer.serialize(reportData, outputStream);
-			outputStream.flush();
-			outputStream.close();
-			outputStream = null;
+			try (OutputStream outputStream = connection.getOutputStream()) {
+				ISerializer<?> serializer = serializerManager.create(SerializerManager.TYPE_JSON);
+				serializer.serialize(reportData, outputStream);
+				outputStream.flush();
+			}
 			// 处理返回
-			InputStreamReader streamReader = new InputStreamReader(connection.getInputStream(), "utf-8");
-			serializer = serializerManager.create(SerializerManager.TYPE_JSON);
-			Object data = serializer.deserialize(new InputSource(streamReader), OperationResult.class, DataTable.class);
-			streamReader.close();
-			streamReader = null;
-			if (data instanceof OperationResult) {
-				OperationResult<?> operationResult = (OperationResult<?>) data;
-				data = operationResult.getResultObjects().firstOrDefault();
-				if (data instanceof DataTable) {
-					return (DataTable) data;
+			try (InputStreamReader streamReader = new InputStreamReader(connection.getInputStream(), "utf-8")) {
+				ISerializer<?> serializer = serializerManager.create(SerializerManager.TYPE_JSON);
+				Object data = serializer.deserialize(new InputSource(streamReader), OperationResult.class,
+						OperationMessage.class, Result.class, String.class, DataTable.class);
+				if (data instanceof OperationResult) {
+					OperationResult<?> operationResult = (OperationResult<?>) data;
+					data = operationResult.getResultObjects().firstOrDefault();
+					if (data instanceof DataTable) {
+						IDataTable dataTable = (DataTable) data;
+						if (dataTable != null) {
+							dataTable.setName(this.getReport().getId());
+							dataTable.setDescription(this.getReport().getName());
+						}
+						return dataTable;
+					} else if (operationResult.getResultCode() != 0) {
+						throw new ReporterException(
+								operationResult.getMessage() != null ? operationResult.getMessage() : "Unknown");
+					}
 				}
 			}
 			throw new ReporterException(I18N.prop("msg_ra_invaild_reponse_data"));

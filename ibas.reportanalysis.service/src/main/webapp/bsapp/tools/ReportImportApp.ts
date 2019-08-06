@@ -42,6 +42,7 @@ namespace reportanalysis {
                 let criteria: ibas.ICriteria = new ibas.Criteria();
                 let boRepository: bo.RemoteReporterService = new bo.RemoteReporterService();
                 boRepository.address = this.view.server;
+                boRepository.setToken(this.view.user, this.view.password);
                 boRepository.fetchReportGroup({
                     criteria: criteria,
                     onCompleted(opRslt: ibas.IOperationResult<bo.ReportGroup>): void {
@@ -73,6 +74,7 @@ namespace reportanalysis {
                 }
                 let boRepository: bo.RemoteReporterService = new bo.RemoteReporterService();
                 boRepository.address = this.view.server;
+                boRepository.setToken(this.view.user, this.view.password);
                 boRepository.fetchReportData({
                     criteria: criteria,
                     onCompleted(opRslt: ibas.IOperationResult<bo.ReportData>): void {

@@ -265,6 +265,10 @@ namespace reportanalysis {
                         new sap.ui.core.Item("", {
                             key: "boe",
                             text: "http://ibas-demo-boe:8080/businessobjectsenterprise/services/rest/data",
+                        }),
+                        new sap.ui.core.Item("", {
+                            key: "ibas",
+                            text: "http://localhost:8080/reportanalysis/services/rest/data",
                         })
                     ];
                     if (ibas.config.get(ibas.CONFIG_ITEM_DEBUG_MODE) === true) {
