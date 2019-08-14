@@ -65,11 +65,11 @@ namespace reportanalysis {
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_report_bocode") }),
                             new sap.extension.m.RepositoryInput("", {
                                 showValueHelp: true,
-                                repository: initialfantasy.bo.BO_REPOSITORY_INITIALFANTASY,
+                                repository: initialfantasy.bo.BORepositoryInitialFantasy,
                                 dataInfo: {
-                                    type: ibas.boFactory.classOf(initialfantasy.bo.BO_CODE_BOINFORMATION),
-                                    key: "Code",
-                                    text: "Description"
+                                    type: initialfantasy.bo.BOInformation,
+                                    key: initialfantasy.bo.BOInformation.PROPERTY_CODE_NAME,
+                                    text: initialfantasy.bo.BOInformation.PROPERTY_DESCRIPTION_NAME
                                 },
                                 valueHelpRequest: function (): void {
                                     that.fireViewEvents(that.chooseReportBusinessObjectEvent);
@@ -83,11 +83,11 @@ namespace reportanalysis {
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_report_applicationid") }),
                             new sap.extension.m.RepositoryInput("", {
                                 showValueHelp: true,
-                                repository: initialfantasy.bo.BO_REPOSITORY_INITIALFANTASY,
+                                repository: initialfantasy.bo.BORepositoryInitialFantasy,
                                 dataInfo: {
-                                    type: ibas.boFactory.classOf(initialfantasy.bo.BO_CODE_APPLICATIONELEMENT),
-                                    key: "ElementId",
-                                    text: "ElementName"
+                                    type: initialfantasy.bo.ApplicationElement,
+                                    key: initialfantasy.bo.ApplicationElement.PROPERTY_ELEMENTID_NAME,
+                                    text: initialfantasy.bo.ApplicationElement.PROPERTY_ELEMENTNAME_NAME
                                 },
                                 valueHelpRequest: function (): void {
                                     that.fireViewEvents(that.chooseReportApplicationEvent);
@@ -104,8 +104,8 @@ namespace reportanalysis {
                                 repository: bo.BORepositoryReportAnalysis,
                                 dataInfo: {
                                     type: bo.Report,
-                                    key: "ObjectKey",
-                                    text: "Name"
+                                    key: bo.Report.PROPERTY_OBJECTKEY_NAME,
+                                    text: bo.Report.PROPERTY_NAME_NAME
                                 },
                                 valueHelpRequest: function (): void {
                                     that.fireViewEvents(that.chooseReportAssociatedReportEvent);
@@ -136,6 +136,70 @@ namespace reportanalysis {
                                 path: "sqlString",
                                 type: new sap.extension.data.Alphanumeric()
                             }).bindProperty("editable", {
+                                path: "category",
+                                formatter(data: bo.emReportType): any {
+                                    if (data === bo.emReportType.REPORT) {
+                                        return true;
+                                    }
+                                    return false;
+                                }
+                            }),
+                            new sap.m.Label("", {
+                            }),
+                            new sap.m.Button("", {
+                                text: ibas.i18n.prop("reportanalysis_sql_code_edit"),
+                                type: sap.m.ButtonType.Accept,
+                                press: function (): void {
+                                    let data: bo.Report = that.page.getModel().getData();
+                                    if (ibas.objects.isNull(data)) {
+                                        return;
+                                    }
+                                    jQuery.sap.require("sap.ui.codeeditor.CodeEditor");
+                                    let dialog: sap.m.Dialog = new sap.m.Dialog("", {
+                                        title: ibas.i18n.prop("reportanalysis_sql_code_edit"),
+                                        type: sap.m.DialogType.Standard,
+                                        state: sap.ui.core.ValueState.None,
+                                        content: [
+                                            new sap.ui.codeeditor.CodeEditor("", {
+                                                height: ibas.strings.format("{0}px", window.innerHeight * 0.6),
+                                                width: ibas.strings.format("{0}px", window.innerWidth * 0.6),
+                                                type: "sqlserver",
+                                                colorTheme: "sqlserver",
+                                                value: {
+                                                    path: "/sqlString"
+                                                }
+                                            })
+                                        ],
+                                        buttons: [
+                                            new sap.m.Button("", {
+                                                text: ibas.i18n.prop("reportanalysis_sql_code_pretty"),
+                                                type: sap.m.ButtonType.Transparent,
+                                                icon: "sap-icon://text-formatting",
+                                                press: function (): void {
+                                                    let content: any = dialog.getContent()[0];
+                                                    if (content instanceof sap.ui.codeeditor.CodeEditor) {
+                                                        content.prettyPrint();
+                                                    }
+                                                }
+                                            }),
+                                            new sap.m.Button("", {
+                                                text: ibas.i18n.prop("shell_exit"),
+                                                type: sap.m.ButtonType.Transparent,
+                                                icon: "sap-icon://inspect-down",
+                                                press: function (): void {
+                                                    dialog.close();
+                                                    dialog = null;
+                                                }
+                                            }),
+                                        ]
+                                    });
+                                    if (ibas.config.get(openui5.CONFIG_ITEM_COMPACT_SCREEN, false)) {
+                                        dialog.addStyleClass("sapUiSizeCompact");
+                                    }
+                                    dialog.setModel(new sap.extension.model.JSONModel(data));
+                                    dialog.open();
+                                }
+                            }).bindProperty("enabled", {
                                 path: "category",
                                 formatter(data: bo.emReportType): any {
                                     if (data === bo.emReportType.REPORT) {

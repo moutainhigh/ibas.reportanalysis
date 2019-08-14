@@ -69,8 +69,8 @@ namespace reportanalysis {
                                         repository: initialfantasy.bo.BORepositoryInitialFantasy,
                                         dataInfo: {
                                             type: initialfantasy.bo.User,
-                                            key: "Code",
-                                            text: "Name"
+                                            key: initialfantasy.bo.User.PROPERTY_CODE_NAME,
+                                            text: initialfantasy.bo.User.PROPERTY_NAME_NAME
                                         },
                                         valueHelpRequest: function (): void {
                                             that.fireViewEvents(that.chooseUserRoleEvent);
@@ -100,8 +100,8 @@ namespace reportanalysis {
                                         repository: initialfantasy.bo.BORepositoryInitialFantasy,
                                         dataInfo: {
                                             type: initialfantasy.bo.Organization,
-                                            key: "Code",
-                                            text: "Name"
+                                            key: initialfantasy.bo.Organization.PROPERTY_CODE_NAME,
+                                            text: initialfantasy.bo.Organization.PROPERTY_NAME_NAME
                                         },
                                         valueHelpRequest: function (): void {
                                             that.fireViewEvents(that.chooseUserRoleEvent);
