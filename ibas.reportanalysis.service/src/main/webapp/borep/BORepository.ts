@@ -66,7 +66,9 @@ namespace reportanalysis {
                 let method: string =
                     ibas.strings.format("fetchUserReports?user={0}&token={1}",
                         caller.user, this.token);
-                boRepository.callRemoteMethod(method, undefined, caller);
+                boRepository.callRemoteMethod(method, undefined, (opRslt) => {
+                    caller.onCompleted.call(ibas.objects.isNull(caller.caller) ? caller : caller.caller, opRslt);
+                });
             }
             /**
              * 运行用户报表
@@ -83,7 +85,9 @@ namespace reportanalysis {
                 let method: string =
                     ibas.strings.format("runUserReport?token={0}", this.token);
                 let data: string = JSON.stringify(this.createConverter().convert(caller.report, method));
-                boRepository.callRemoteMethod(method, data, caller);
+                boRepository.callRemoteMethod(method, data, (opRslt) => {
+                    caller.onCompleted.call(ibas.objects.isNull(caller.caller) ? caller : caller.caller, opRslt);
+                });
             }
             /**
              * 查询 报表
