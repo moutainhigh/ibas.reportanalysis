@@ -328,10 +328,6 @@ namespace reportanalysis {
                             }
                         }
                     });
-                    // 设置视图紧凑
-                    if (ibas.config.get(openui5.CONFIG_ITEM_COMPACT_SCREEN, false)) {
-                        dialog.addStyleClass("sapUiSizeCompact");
-                    }
                     dialog.setModel(new sap.ui.model.json.JSONModel(serverInfo));
                     dialog.open();
                 }

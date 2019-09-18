@@ -193,9 +193,6 @@ namespace reportanalysis {
                                             }),
                                         ]
                                     });
-                                    if (ibas.config.get(openui5.CONFIG_ITEM_COMPACT_SCREEN, false)) {
-                                        dialog.addStyleClass("sapUiSizeCompact");
-                                    }
                                     dialog.setModel(new sap.extension.model.JSONModel(data));
                                     dialog.open();
                                 }
