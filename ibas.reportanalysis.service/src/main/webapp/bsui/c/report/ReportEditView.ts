@@ -155,7 +155,7 @@ namespace reportanalysis {
                                         return;
                                     }
                                     jQuery.sap.require("sap.ui.codeeditor.CodeEditor");
-                                    let dialog: sap.m.Dialog = new sap.m.Dialog("", {
+                                    let dialog: sap.m.Dialog = new sap.extension.m.Dialog("", {
                                         title: ibas.i18n.prop("reportanalysis_sql_code_edit"),
                                         type: sap.m.DialogType.Standard,
                                         state: sap.ui.core.ValueState.None,
@@ -163,8 +163,8 @@ namespace reportanalysis {
                                             new sap.ui.codeeditor.CodeEditor("", {
                                                 height: ibas.strings.format("{0}px", window.innerHeight * 0.6),
                                                 width: ibas.strings.format("{0}px", window.innerWidth * 0.6),
-                                                type: "sqlserver",
-                                                colorTheme: "sqlserver",
+                                                type: "sql",
+                                                colorTheme: "eclipse",
                                                 value: {
                                                     path: "/sqlString"
                                                 }

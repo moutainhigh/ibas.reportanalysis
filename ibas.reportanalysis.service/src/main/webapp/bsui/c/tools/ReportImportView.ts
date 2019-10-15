@@ -275,37 +275,39 @@ namespace reportanalysis {
                         serverInfo.user = "admin";
                         serverInfo.password = "1q2w3e";
                     }
-                    let dialog: sap.m.Dialog = new sap.m.Dialog("", {
+                    let dialog: sap.m.Dialog = new sap.extension.m.Dialog("", {
                         title: ibas.i18n.prop("reportanalysis_remote_service"),
                         type: sap.m.DialogType.Standard,
                         state: sap.ui.core.ValueState.None,
-                        stretchOnPhone: true,
-                        horizontalScrolling: true,
-                        verticalScrolling: true,
                         content: [
-                            new sap.m.Label("", {
-                                text: ibas.i18n.prop("reportanalysis_server")
-                            }),
-                            new sap.m.ComboBox("", {
-                                width: "100%",
-                                items: ibas.config.get(ibas.CONFIG_ITEM_DEBUG_MODE) === true ? servers : null,
-                            }).bindProperty("value", {
-                                path: "/server"
-                            }),
-                            new sap.m.Label("", {
-                                text: ibas.i18n.prop("reportanalysis_user")
-                            }),
-                            new sap.m.Input("", {
-                            }).bindProperty("value", {
-                                path: "/user"
-                            }),
-                            new sap.m.Label("", {
-                                text: ibas.i18n.prop("reportanalysis_password")
-                            }),
-                            new sap.m.Input("", {
-                                type: "Password",
-                            }).bindProperty("value", {
-                                path: "/password"
+                            new sap.ui.layout.form.SimpleForm("", {
+                                editable: true,
+                                content: [
+                                    new sap.m.Label("", {
+                                        text: ibas.i18n.prop("reportanalysis_server")
+                                    }),
+                                    new sap.m.ComboBox("", {
+                                        width: "100%",
+                                        items: ibas.config.get(ibas.CONFIG_ITEM_DEBUG_MODE) === true ? servers : null,
+                                    }).bindProperty("value", {
+                                        path: "/server"
+                                    }),
+                                    new sap.m.Label("", {
+                                        text: ibas.i18n.prop("reportanalysis_user")
+                                    }),
+                                    new sap.m.Input("", {
+                                    }).bindProperty("value", {
+                                        path: "/user"
+                                    }),
+                                    new sap.m.Label("", {
+                                        text: ibas.i18n.prop("reportanalysis_password")
+                                    }),
+                                    new sap.m.Input("", {
+                                        type: "Password",
+                                    }).bindProperty("value", {
+                                        path: "/password"
+                                    })
+                                ]
                             })
                         ],
                         buttons: [
