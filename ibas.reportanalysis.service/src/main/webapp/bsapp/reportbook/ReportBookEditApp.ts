@@ -178,9 +178,7 @@ namespace reportanalysis {
             }
             /** 添加报表簿-项目事件 */
             addReportBookItem(): void {
-                this.editData.reportBookItems.create();
-                // 仅显示没有标记删除的
-                this.view.showReportBookItems(this.editData.reportBookItems.filterDeleted());
+                this.chooseReportBookItemReport(undefined);
             }
             /** 删除报表簿-项目事件 */
             removeReportBookItem(items: bo.ReportBookItem[]): void {
