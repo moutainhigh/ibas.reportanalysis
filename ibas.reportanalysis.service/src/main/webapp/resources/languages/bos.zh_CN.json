@@ -86,7 +86,7 @@
         "bo_reportbookitem_createactionid": "创建动作标识",
         "bo_reportbookitem_updateactionid": "更新动作标识",
         "bo_reportbookitem_report": "报表编号",
-        "bo_reportbookitem_name": "项目名称",
+        "bo_reportbookitem_name": "报表名称",
         "bo_reportbook_closing_delimiter": "----结束----"
     },
     {

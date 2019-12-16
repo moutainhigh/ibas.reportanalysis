@@ -37,7 +37,7 @@ namespace reportanalysis {
                             }).bindProperty("bindingValue", {
                                 path: "name",
                                 type: new sap.extension.data.Alphanumeric({
-                                    maxLength: 50
+                                    maxLength: 200
                                 })
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_reportbook_activated") }),
@@ -179,7 +179,7 @@ namespace reportanalysis {
                                         }).bindProperty("bindingValue", {
                                             path: "name",
                                             type: new sap.extension.data.Alphanumeric({
-                                                maxLength: 100
+                                                maxLength: 200
                                             })
                                         }),
                                     }),

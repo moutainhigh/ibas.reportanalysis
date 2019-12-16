@@ -40,6 +40,7 @@ namespace reportanalysis {
                                     path: "name",
                                     type: new sap.extension.data.Alphanumeric()
                                 }),
+                                width: "20rem",
                             }),
                             new sap.extension.table.DataColumn("", {
                                 label: ibas.i18n.prop("bo_report_activated"),
