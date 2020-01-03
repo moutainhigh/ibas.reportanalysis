@@ -75,7 +75,7 @@ public class ReportParameters extends BusinessObjects<IReportParameter, IReport>
 	}
 
 	@Override
-	public void onParentPropertyChanged(PropertyChangeEvent evt) {
+	protected void onParentPropertyChanged(PropertyChangeEvent evt) {
 		super.onParentPropertyChanged(evt);
 	}
 }

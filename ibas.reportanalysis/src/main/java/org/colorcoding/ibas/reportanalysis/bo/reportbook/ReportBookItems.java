@@ -75,7 +75,7 @@ public class ReportBookItems extends BusinessObjects<IReportBookItem, IReportBoo
 	}
 
 	@Override
-	public void onParentPropertyChanged(PropertyChangeEvent evt) {
+	protected void onParentPropertyChanged(PropertyChangeEvent evt) {
 		super.onParentPropertyChanged(evt);
 	}
 }

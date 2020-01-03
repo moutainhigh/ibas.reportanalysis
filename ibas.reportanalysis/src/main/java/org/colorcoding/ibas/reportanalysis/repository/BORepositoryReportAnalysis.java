@@ -12,8 +12,6 @@ import org.colorcoding.ibas.bobas.data.emYesNo;
 import org.colorcoding.ibas.bobas.i18n.I18N;
 import org.colorcoding.ibas.bobas.message.Logger;
 import org.colorcoding.ibas.bobas.message.MessageLevel;
-import org.colorcoding.ibas.bobas.organization.IOrganizationManager;
-import org.colorcoding.ibas.bobas.organization.OrganizationFactory;
 import org.colorcoding.ibas.bobas.repository.BORepositoryServiceApplication;
 import org.colorcoding.ibas.reportanalysis.bo.report.IReport;
 import org.colorcoding.ibas.reportanalysis.bo.report.Report;
@@ -61,8 +59,7 @@ public class BORepositoryReportAnalysis extends BORepositoryServiceApplication
 			condition.setValue(user);
 			condition.setBracketClose(1);
 			// 所属角色的查询
-			IOrganizationManager orgManager = OrganizationFactory.create().createManager();
-			for (String role : orgManager.getRoles(this.getCurrentUser())) {
+			if (this.getCurrentUser().getBelong() != null && !this.getCurrentUser().getBelong().isEmpty()) {
 				condition = criteria.getConditions().create();
 				condition.setRelationship(ConditionRelationship.OR);
 				condition.setBracketOpen(1);
@@ -70,7 +67,7 @@ public class BORepositoryReportAnalysis extends BORepositoryServiceApplication
 				condition.setValue(emAssignedType.ROLE);
 				condition = criteria.getConditions().create();
 				condition.setAlias(ReportBook.PROPERTY_ASSIGNED.getName());
-				condition.setValue(role);
+				condition.setValue(this.getCurrentUser().getBelong());
 				condition.setBracketClose(1);
 			}
 			condition.setBracketClose(2);

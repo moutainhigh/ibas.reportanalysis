@@ -96,6 +96,20 @@ namespace reportanalysis {
                                         ],
                                     })
                                 }),
+                                this.button = new sap.m.Button("", {
+                                    type: sap.m.ButtonType.Emphasized,
+                                    icon: "sap-icon://alphabetical-order",
+                                    press(event: sap.ui.base.Event): void {
+                                        let source: any = event.getSource();
+                                        if (source instanceof sap.m.Button) {
+                                            if (source.getType() === sap.m.ButtonType.Transparent) {
+                                                source.setType(sap.m.ButtonType.Emphasized);
+                                            } else if (source.getType() === sap.m.ButtonType.Emphasized) {
+                                                source.setType(sap.m.ButtonType.Transparent);
+                                            }
+                                        }
+                                    }
+                                }),
                             ]
                         })
                     });
@@ -103,9 +117,21 @@ namespace reportanalysis {
                 private container: sap.m.TileContainer;
                 /** 报表筛选条件下拉菜单 */
                 private multiCombobox: sap.m.MultiComboBox;
+                /** 排序钮 */
+                private button: sap.m.Button;
                 /** 显示数据 */
                 showReports(reports: bo.UserReport[]): void {
                     this.container.destroyTiles();
+                    if (this.button.getType() === sap.m.ButtonType.Emphasized && reports.length > 0) {
+                        reports.sort((a, b) => {
+                            if (a.name > b.name) {
+                                return 1;
+                            } else if (a.name < b.name) {
+                                return -1;
+                            }
+                            return 0;
+                        });
+                    }
                     let groups: ibas.IList<string> = new ibas.ArrayList<string>();
                     let that: this = this;
                     for (let item of reports) {
