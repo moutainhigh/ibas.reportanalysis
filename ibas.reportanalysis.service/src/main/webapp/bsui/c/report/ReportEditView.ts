@@ -43,7 +43,7 @@ namespace reportanalysis {
                             }).bindProperty("bindingValue", {
                                 path: "name",
                                 type: new sap.extension.data.Alphanumeric({
-                                    maxLength: 200
+                                    maxLength: 180
                                 })
                             }),
                             new sap.m.Label("", { text: ibas.i18n.prop("bo_report_group") }),
