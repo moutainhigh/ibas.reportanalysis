@@ -24,4 +24,9 @@ public enum emReportType {
 	 */
 	@Value("F")
 	FILE,
+	/**
+	 * 第三方应用
+	 */
+	@Value("A")
+	THIRD_APP,
 }

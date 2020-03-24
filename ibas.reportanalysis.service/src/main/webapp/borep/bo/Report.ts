@@ -323,6 +323,17 @@ namespace reportanalysis {
                 this.setProperty(Report.PROPERTY_ADDRESS_NAME, value);
             }
 
+            /** 映射的属性名称-第三方应用 */
+            static PROPERTY_THIRDPARTYAPP_NAME: string = "ThirdPartyApp";
+            /** 获取-第三方应用 */
+            get thirdPartyApp(): string {
+                return this.getProperty<string>(Report.PROPERTY_THIRDPARTYAPP_NAME);
+            }
+            /** 设置-第三方应用 */
+            set thirdPartyApp(value: string) {
+                this.setProperty(Report.PROPERTY_THIRDPARTYAPP_NAME, value);
+            }
+
 
             /** 映射的属性名称-报表参数集合 */
             static PROPERTY_REPORTPARAMETERS_NAME: string = "ReportParameters";

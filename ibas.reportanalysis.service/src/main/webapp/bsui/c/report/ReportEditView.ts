@@ -26,6 +26,8 @@ namespace reportanalysis {
                 chooseReportApplicationEvent: Function;
                 /** 报表-报表选择 */
                 chooseReportAssociatedReportEvent: Function;
+                /** 报表-第三方应用选择 */
+                chooseReportThirdPartyAppEvent: Function;
                 /** 报表参数-系统变量选择 */
                 chooseReportParameterVariableEvent: Function;
                 /** 上传报表文件 */
@@ -265,6 +267,34 @@ namespace reportanalysis {
                                 path: "category",
                                 formatter(data: bo.emReportType): any {
                                     if (data === bo.emReportType.SERVICE) {
+                                        return true;
+                                    } else if (data === bo.emReportType.THIRD_APP) {
+                                        return true;
+                                    }
+                                    return false;
+                                }
+                            }),
+                            new sap.m.Label("", { text: ibas.i18n.prop("bo_report_thirdpartyapp") }),
+                            new sap.extension.m.RepositoryInput("", {
+                                showValueHelp: true,
+                                repository: thirdpartyapp.bo.BORepositoryThirdPartyApp,
+                                dataInfo: {
+                                    type: thirdpartyapp.bo.Application,
+                                    key: thirdpartyapp.bo.Application.PROPERTY_CODE_NAME,
+                                    text: thirdpartyapp.bo.Application.PROPERTY_NAME_NAME
+                                },
+                                valueHelpRequest: function (): void {
+                                    that.fireViewEvents(that.chooseReportThirdPartyAppEvent);
+                                }
+                            }).bindProperty("bindingValue", {
+                                path: "thirdPartyApp",
+                                type: new sap.extension.data.Alphanumeric({
+                                    maxLength: 20
+                                })
+                            }).bindProperty("editable", {
+                                path: "category",
+                                formatter(data: bo.emReportType): any {
+                                    if (data === bo.emReportType.THIRD_APP) {
                                         return true;
                                     }
                                     return false;

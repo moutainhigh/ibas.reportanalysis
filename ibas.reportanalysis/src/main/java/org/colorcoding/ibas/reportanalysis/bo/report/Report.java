@@ -78,8 +78,7 @@ public class Report extends BusinessObject<Report> implements IReport, IDataOwne
 	/**
 	 * 设置-对象编号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setObjectKey(Integer value) {
 		this.setProperty(PROPERTY_OBJECTKEY, value);
@@ -110,8 +109,7 @@ public class Report extends BusinessObject<Report> implements IReport, IDataOwne
 	/**
 	 * 设置-对象类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setObjectCode(String value) {
 		this.setProperty(PROPERTY_OBJECTCODE, value);
@@ -142,8 +140,7 @@ public class Report extends BusinessObject<Report> implements IReport, IDataOwne
 	/**
 	 * 设置-实例号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setLogInst(Integer value) {
 		this.setProperty(PROPERTY_LOGINST, value);
@@ -174,8 +171,7 @@ public class Report extends BusinessObject<Report> implements IReport, IDataOwne
 	/**
 	 * 设置-服务系列
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setSeries(Integer value) {
 		this.setProperty(PROPERTY_SERIES, value);
@@ -206,8 +202,7 @@ public class Report extends BusinessObject<Report> implements IReport, IDataOwne
 	/**
 	 * 设置-数据源
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setDataSource(String value) {
 		this.setProperty(PROPERTY_DATASOURCE, value);
@@ -238,8 +233,7 @@ public class Report extends BusinessObject<Report> implements IReport, IDataOwne
 	/**
 	 * 设置-创建日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCreateDate(DateTime value) {
 		this.setProperty(PROPERTY_CREATEDATE, value);
@@ -270,8 +264,7 @@ public class Report extends BusinessObject<Report> implements IReport, IDataOwne
 	/**
 	 * 设置-创建时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCreateTime(Short value) {
 		this.setProperty(PROPERTY_CREATETIME, value);
@@ -302,8 +295,7 @@ public class Report extends BusinessObject<Report> implements IReport, IDataOwne
 	/**
 	 * 设置-更新日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUpdateDate(DateTime value) {
 		this.setProperty(PROPERTY_UPDATEDATE, value);
@@ -334,8 +326,7 @@ public class Report extends BusinessObject<Report> implements IReport, IDataOwne
 	/**
 	 * 设置-更新时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUpdateTime(Short value) {
 		this.setProperty(PROPERTY_UPDATETIME, value);
@@ -366,8 +357,7 @@ public class Report extends BusinessObject<Report> implements IReport, IDataOwne
 	/**
 	 * 设置-创建用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCreateUserSign(Integer value) {
 		this.setProperty(PROPERTY_CREATEUSERSIGN, value);
@@ -398,8 +388,7 @@ public class Report extends BusinessObject<Report> implements IReport, IDataOwne
 	/**
 	 * 设置-更新用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUpdateUserSign(Integer value) {
 		this.setProperty(PROPERTY_UPDATEUSERSIGN, value);
@@ -430,8 +419,7 @@ public class Report extends BusinessObject<Report> implements IReport, IDataOwne
 	/**
 	 * 设置-创建动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCreateActionId(String value) {
 		this.setProperty(PROPERTY_CREATEACTIONID, value);
@@ -462,8 +450,7 @@ public class Report extends BusinessObject<Report> implements IReport, IDataOwne
 	/**
 	 * 设置-更新动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUpdateActionId(String value) {
 		this.setProperty(PROPERTY_UPDATEACTIONID, value);
@@ -494,8 +481,7 @@ public class Report extends BusinessObject<Report> implements IReport, IDataOwne
 	/**
 	 * 设置-数据所有者
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setDataOwner(Integer value) {
 		this.setProperty(PROPERTY_DATAOWNER, value);
@@ -526,8 +512,7 @@ public class Report extends BusinessObject<Report> implements IReport, IDataOwne
 	/**
 	 * 设置-团队成员
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setTeamMembers(String value) {
 		this.setProperty(PROPERTY_TEAMMEMBERS, value);
@@ -558,8 +543,7 @@ public class Report extends BusinessObject<Report> implements IReport, IDataOwne
 	/**
 	 * 设置-数据所属组织
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setOrganization(String value) {
 		this.setProperty(PROPERTY_ORGANIZATION, value);
@@ -590,8 +574,7 @@ public class Report extends BusinessObject<Report> implements IReport, IDataOwne
 	/**
 	 * 设置-报表名称
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setName(String value) {
 		this.setProperty(PROPERTY_NAME, value);
@@ -622,8 +605,7 @@ public class Report extends BusinessObject<Report> implements IReport, IDataOwne
 	/**
 	 * 设置-激活
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setActivated(emYesNo value) {
 		this.setProperty(PROPERTY_ACTIVATED, value);
@@ -654,8 +636,7 @@ public class Report extends BusinessObject<Report> implements IReport, IDataOwne
 	/**
 	 * 设置-报表类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setCategory(emReportType value) {
 		this.setProperty(PROPERTY_CATEGORY, value);
@@ -686,8 +667,7 @@ public class Report extends BusinessObject<Report> implements IReport, IDataOwne
 	/**
 	 * 设置-报表组别
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setGroup(String value) {
 		this.setProperty(PROPERTY_GROUP, value);
@@ -718,8 +698,7 @@ public class Report extends BusinessObject<Report> implements IReport, IDataOwne
 	/**
 	 * 设置-关联的业务对象
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setBOCode(String value) {
 		this.setProperty(PROPERTY_BOCODE, value);
@@ -750,8 +729,7 @@ public class Report extends BusinessObject<Report> implements IReport, IDataOwne
 	/**
 	 * 设置-关联的应用
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setApplicationId(String value) {
 		this.setProperty(PROPERTY_APPLICATIONID, value);
@@ -782,8 +760,7 @@ public class Report extends BusinessObject<Report> implements IReport, IDataOwne
 	/**
 	 * 设置-关联的报表
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setAssociatedReport(String value) {
 		this.setProperty(PROPERTY_ASSOCIATEDREPORT, value);
@@ -814,8 +791,7 @@ public class Report extends BusinessObject<Report> implements IReport, IDataOwne
 	/**
 	 * 设置-查询语句
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setSqlString(String value) {
 		this.setProperty(PROPERTY_SQLSTRING, value);
@@ -846,8 +822,7 @@ public class Report extends BusinessObject<Report> implements IReport, IDataOwne
 	/**
 	 * 设置-服务器名称
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setServer(String value) {
 		this.setProperty(PROPERTY_SERVER, value);
@@ -878,8 +853,7 @@ public class Report extends BusinessObject<Report> implements IReport, IDataOwne
 	/**
 	 * 设置-用户名
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setUser(String value) {
 		this.setProperty(PROPERTY_USER, value);
@@ -910,8 +884,7 @@ public class Report extends BusinessObject<Report> implements IReport, IDataOwne
 	/**
 	 * 设置-密码
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setPassword(String value) {
 		this.setProperty(PROPERTY_PASSWORD, value);
@@ -942,11 +915,41 @@ public class Report extends BusinessObject<Report> implements IReport, IDataOwne
 	/**
 	 * 设置-报表地址
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setAddress(String value) {
 		this.setProperty(PROPERTY_ADDRESS, value);
+	}
+
+	/**
+	 * 属性名称-第三方应用
+	 */
+	private static final String PROPERTY_THIRDPARTYAPP_NAME = "ThirdPartyApp";
+
+	/**
+	 * 第三方应用 属性
+	 */
+	@DbField(name = "ThirdApp", type = DbFieldType.ALPHANUMERIC, table = DB_TABLE_NAME, primaryKey = false)
+	public static final IPropertyInfo<String> PROPERTY_THIRDPARTYAPP = registerProperty(PROPERTY_THIRDPARTYAPP_NAME,
+			String.class, MY_CLASS);
+
+	/**
+	 * 获取-第三方应用
+	 * 
+	 * @return 值
+	 */
+	@XmlElement(name = PROPERTY_THIRDPARTYAPP_NAME)
+	public final String getThirdPartyApp() {
+		return this.getProperty(PROPERTY_THIRDPARTYAPP);
+	}
+
+	/**
+	 * 设置-第三方应用
+	 * 
+	 * @param value 值
+	 */
+	public final void setThirdPartyApp(String value) {
+		this.setProperty(PROPERTY_THIRDPARTYAPP, value);
 	}
 
 	/**
@@ -975,8 +978,7 @@ public class Report extends BusinessObject<Report> implements IReport, IDataOwne
 	/**
 	 * 设置-报表参数集合
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	public final void setReportParameters(IReportParameters value) {
 		this.setProperty(PROPERTY_REPORTPARAMETERS, value);

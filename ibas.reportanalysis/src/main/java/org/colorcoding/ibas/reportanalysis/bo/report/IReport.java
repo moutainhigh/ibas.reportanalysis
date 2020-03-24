@@ -21,8 +21,7 @@ public interface IReport extends IBOSimple {
 	/**
 	 * 设置-对象编号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setObjectKey(Integer value);
 
@@ -36,8 +35,7 @@ public interface IReport extends IBOSimple {
 	/**
 	 * 设置-对象类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setObjectCode(String value);
 
@@ -51,8 +49,7 @@ public interface IReport extends IBOSimple {
 	/**
 	 * 设置-实例号
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setLogInst(Integer value);
 
@@ -66,8 +63,7 @@ public interface IReport extends IBOSimple {
 	/**
 	 * 设置-服务系列
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setSeries(Integer value);
 
@@ -81,8 +77,7 @@ public interface IReport extends IBOSimple {
 	/**
 	 * 设置-创建日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateDate(DateTime value);
 
@@ -96,8 +91,7 @@ public interface IReport extends IBOSimple {
 	/**
 	 * 设置-创建时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateTime(Short value);
 
@@ -111,8 +105,7 @@ public interface IReport extends IBOSimple {
 	/**
 	 * 设置-更新日期
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateDate(DateTime value);
 
@@ -126,8 +119,7 @@ public interface IReport extends IBOSimple {
 	/**
 	 * 设置-更新时间
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateTime(Short value);
 
@@ -141,8 +133,7 @@ public interface IReport extends IBOSimple {
 	/**
 	 * 设置-创建用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateUserSign(Integer value);
 
@@ -156,8 +147,7 @@ public interface IReport extends IBOSimple {
 	/**
 	 * 设置-更新用户
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateUserSign(Integer value);
 
@@ -171,8 +161,7 @@ public interface IReport extends IBOSimple {
 	/**
 	 * 设置-创建动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCreateActionId(String value);
 
@@ -186,8 +175,7 @@ public interface IReport extends IBOSimple {
 	/**
 	 * 设置-更新动作标识
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUpdateActionId(String value);
 
@@ -201,8 +189,7 @@ public interface IReport extends IBOSimple {
 	/**
 	 * 设置-数据所有者
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setDataOwner(Integer value);
 
@@ -216,8 +203,7 @@ public interface IReport extends IBOSimple {
 	/**
 	 * 设置-团队成员
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setTeamMembers(String value);
 
@@ -231,8 +217,7 @@ public interface IReport extends IBOSimple {
 	/**
 	 * 设置-数据所属组织
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setOrganization(String value);
 
@@ -246,8 +231,7 @@ public interface IReport extends IBOSimple {
 	/**
 	 * 设置-报表名称
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setName(String value);
 
@@ -261,8 +245,7 @@ public interface IReport extends IBOSimple {
 	/**
 	 * 设置-激活
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setActivated(emYesNo value);
 
@@ -276,8 +259,7 @@ public interface IReport extends IBOSimple {
 	/**
 	 * 设置-报表类型
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setCategory(emReportType value);
 
@@ -291,8 +273,7 @@ public interface IReport extends IBOSimple {
 	/**
 	 * 设置-报表组别
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setGroup(String value);
 
@@ -306,8 +287,7 @@ public interface IReport extends IBOSimple {
 	/**
 	 * 设置-关联的业务对象
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setBOCode(String value);
 
@@ -321,8 +301,7 @@ public interface IReport extends IBOSimple {
 	/**
 	 * 设置-关联的应用
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setApplicationId(String value);
 
@@ -336,8 +315,7 @@ public interface IReport extends IBOSimple {
 	/**
 	 * 设置-关联的报表
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setAssociatedReport(String value);
 
@@ -351,8 +329,7 @@ public interface IReport extends IBOSimple {
 	/**
 	 * 设置-查询语句
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setSqlString(String value);
 
@@ -366,8 +343,7 @@ public interface IReport extends IBOSimple {
 	/**
 	 * 设置-服务器名称
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setServer(String value);
 
@@ -381,8 +357,7 @@ public interface IReport extends IBOSimple {
 	/**
 	 * 设置-用户名
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setUser(String value);
 
@@ -396,8 +371,7 @@ public interface IReport extends IBOSimple {
 	/**
 	 * 设置-密码
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setPassword(String value);
 
@@ -411,10 +385,23 @@ public interface IReport extends IBOSimple {
 	/**
 	 * 设置-报表地址
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setAddress(String value);
+
+	/**
+	 * 获取-第三方应用
+	 * 
+	 * @return 值
+	 */
+	String getThirdPartyApp();
+
+	/**
+	 * 设置-第三方应用
+	 * 
+	 * @param value 值
+	 */
+	void setThirdPartyApp(String value);
 
 	/**
 	 * 获取-报表参数集合
@@ -426,8 +413,7 @@ public interface IReport extends IBOSimple {
 	/**
 	 * 设置-报表参数集合
 	 * 
-	 * @param value
-	 *            值
+	 * @param value 值
 	 */
 	void setReportParameters(IReportParameters value);
 

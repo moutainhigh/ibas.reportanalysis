@@ -34,6 +34,7 @@ namespace reportanalysis {
                 this.view.chooseReportAssociatedReportEvent = this.chooseReportAssociatedReport;
                 this.view.chooseReportParameterVariableEvent = this.chooseReportParameterVariable;
                 this.view.chooseReportBusinessObjectEvent = this.chooseReportBusinessObject;
+                this.view.chooseReportThirdPartyAppEvent = this.chooseReportThirdPartyApp;
                 this.view.uploadReportEvent = this.uploadReport;
             }
             /** 视图显示后 */
@@ -258,7 +259,7 @@ namespace reportanalysis {
                     let criteria: ibas.ICriteria = new ibas.Criteria();
                     criteria.noChilds = true;
                     let condition: ibas.ICondition = criteria.conditions.create();
-                    condition.alias =initialfantasy.bo.BOInformation.PROPERTY_CODE_NAME;
+                    condition.alias = initialfantasy.bo.BOInformation.PROPERTY_CODE_NAME;
                     condition.value = ".";
                     condition.operation = ibas.emConditionOperation.NOT_CONTAIN;
                     ibas.servicesManager.runChooseService<initialfantasy.bo.IBOInformation>({
@@ -308,7 +309,7 @@ namespace reportanalysis {
                 let criteria: ibas.ICriteria = new ibas.Criteria();
                 criteria.noChilds = true;
                 let condition: ibas.ICondition = criteria.conditions.create();
-                condition.alias =initialfantasy.bo.BOInformation.PROPERTY_CODE_NAME;
+                condition.alias = initialfantasy.bo.BOInformation.PROPERTY_CODE_NAME;
                 condition.value = ".";
                 condition.operation = ibas.emConditionOperation.NOT_CONTAIN;
                 ibas.servicesManager.runChooseService<initialfantasy.bo.IBOInformation>({
@@ -317,6 +318,23 @@ namespace reportanalysis {
                     onCompleted(selecteds: ibas.IList<initialfantasy.bo.IBOInformation>): void {
                         // 获取触发的对象
                         that.editData.boCode = selecteds.firstOrDefault().code;
+                    }
+                });
+            }
+            /** 选择第三方应用 */
+            private chooseReportThirdPartyApp(): void {
+                let that: this = this;
+                let criteria: ibas.ICriteria = new ibas.Criteria();
+                criteria.noChilds = true;
+                let condition: ibas.ICondition = criteria.conditions.create();
+                condition.alias = thirdpartyapp.bo.Application.PROPERTY_ACTIVATED_NAME;
+                condition.value = ibas.emYesNo.YES.toString();
+                ibas.servicesManager.runChooseService<thirdpartyapp.bo.IApplication>({
+                    boCode: thirdpartyapp.bo.Application.BUSINESS_OBJECT_CODE,
+                    criteria: criteria,
+                    onCompleted(selecteds: ibas.IList<thirdpartyapp.bo.IApplication>): void {
+                        // 获取触发的对象
+                        that.editData.thirdPartyApp = selecteds.firstOrDefault().code;
                     }
                 });
             }
@@ -365,6 +383,8 @@ namespace reportanalysis {
             chooseReportBusinessObjectEvent: Function;
             /** 报表-应用选择 */
             chooseReportApplicationEvent: Function;
+            /** 报表-第三方应用选择 */
+            chooseReportThirdPartyAppEvent: Function;
             /** 报表-报表选择 */
             chooseReportAssociatedReportEvent: Function;
             /** 报表参数-系统变量选择 */

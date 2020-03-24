@@ -59,6 +59,13 @@ public class ExecuteReportParameter extends Serializable {
 			parameter.setValue(bo.getAddress());
 			parameters.add(parameter);
 		}
+		if (bo.getThirdPartyApp() != null && bo.getThirdPartyApp().length() > 0) {
+			parameter = new ExecuteReportParameter();
+			parameter.setName(
+					String.format(MyConfiguration.VARIABLE_NAMING_TEMPLATE, Report.PROPERTY_THIRDPARTYAPP.getName()));
+			parameter.setValue(bo.getThirdPartyApp());
+			parameters.add(parameter);
+		}
 		if (bo.getCategory() == emReportType.REPORT) {
 			// 系统报表
 			if (bo.getSqlString() != null && bo.getSqlString().length() > 0) {

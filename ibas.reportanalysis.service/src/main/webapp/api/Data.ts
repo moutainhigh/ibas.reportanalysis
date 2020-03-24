@@ -30,6 +30,8 @@ namespace reportanalysis {
             SERVICE,
             /** 报表文件 */
             FILE,
+            /** 第三方应用 */
+            THIRD_APP,
         }
         /**
          * 报表参数类型

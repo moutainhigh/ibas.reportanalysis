@@ -30,6 +30,7 @@
     <Property Name="User" Description="用户名" DataType="Alphanumeric" DataSubType="Default" EditSize="30" Mapped="User"/>
     <Property Name="Password" Description="密码" DataType="Alphanumeric" DataSubType="Default" EditSize="30" Mapped="Password"/>
     <Property Name="Address" Description="报表地址" DataType="Alphanumeric" DataSubType="Default" EditSize="250" Mapped="Address"/>
+    <Property Name="ThirdPartyApp" Description="第三方应用" DataType="Alphanumeric" DataSubType="Default" EditSize="20" Mapped="ThirdApp"/>
   </Model>
   <Model Name="ReportParameter" Description="报表参数" ModelType="SimpleLine" Mapped="${Company}_RA_RPT1">
     <Property Name="ObjectKey" Description="对象编号" DataType="Numeric" DataSubType="Default" EditSize="8" Mapped="ObjectKey" PrimaryKey="Yes"/>
