@@ -12,6 +12,14 @@ declare namespace thirdpartyapp {
     const CONSOLE_NAME: string;
     /** 模块-版本 */
     const CONSOLE_VERSION: string;
+    namespace config {
+        /**
+         * 获取此模块配置
+         * @param key 配置项
+         * @param defalut 默认值
+         */
+        function get<T>(key: string, defalut?: T): T;
+    }
     namespace bo {
         /** 业务仓库名称 */
         const BO_REPOSITORY_THIRDPARTYAPP: string;
@@ -1163,8 +1171,6 @@ declare namespace thirdpartyapp {
             protected viewShowed(): void;
             run(): void;
             run(data: bo.Application): void;
-            /** 待编辑的数据 */
-            protected editData: bo.Application;
             /** 保存数据 */
             protected saveData(formData?: FormData): void;
             /** 删除数据 */
@@ -1328,8 +1334,6 @@ declare namespace thirdpartyapp {
             protected viewShowed(): void;
             run(): void;
             run(data: bo.ApplicationConfig): void;
-            /** 待编辑的数据 */
-            protected editData: bo.ApplicationConfig;
             /** 保存数据 */
             protected saveData(): void;
             /** 删除数据 */
@@ -1498,8 +1502,6 @@ declare namespace thirdpartyapp {
             protected viewShowed(): void;
             run(): void;
             run(data: bo.User): void;
-            /** 待编辑的数据 */
-            protected editData: bo.User;
             /** 保存数据 */
             protected saveData(): void;
             /** 删除数据 */
