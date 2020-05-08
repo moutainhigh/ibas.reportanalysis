@@ -30,5 +30,7 @@
         <add key="OrgManagerExpiry" value="-1" />
         <!-- 配置项目-权限过期时间（建议120） -->
         <add key="OwnJudgerExpiry" value="-1" />
+        <!-- 配置项目-应用客户端-报表&分析模块 -->
+        <add key="ApplicationClient|AO-RPLYS" value="ReportAnalysis" />
     </appSettings>
 </ns2:configuration>
