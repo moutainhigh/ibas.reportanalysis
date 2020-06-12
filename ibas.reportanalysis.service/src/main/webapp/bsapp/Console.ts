@@ -131,7 +131,7 @@ namespace reportanalysis {
                         // 设置导航
                         this[PROPERTY_NAVIGATION] = new ui.Navigation();
                         // 调用初始化
-                        if (!ibas.config.get(CONFIG_ITEM_DISABLE_REPORT_FUNCTIONS, false)) {
+                        if (!config.get(CONFIG_ITEM_DISABLE_REPORT_FUNCTIONS, true)) {
                             // 加载用户报表
                             let boRepository: bo.BORepositoryReportAnalysis = new bo.BORepositoryReportAnalysis();
                             boRepository.fetchUserReports({
