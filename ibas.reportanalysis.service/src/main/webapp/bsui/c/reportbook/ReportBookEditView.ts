@@ -170,7 +170,8 @@ namespace reportanalysis {
                                                 );
                                             }
                                         }).bindProperty("value", {
-                                            path: "report"
+                                            path: "report",
+                                            type: new sap.extension.data.Numeric()
                                         })
                                     }),
                                     new sap.extension.table.DataColumn("", {
@@ -182,6 +183,7 @@ namespace reportanalysis {
                                                 maxLength: 200
                                             })
                                         }),
+                                        width: "20rem",
                                     }),
                                 ]
                             })
