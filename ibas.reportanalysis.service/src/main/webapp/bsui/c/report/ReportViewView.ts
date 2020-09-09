@@ -33,6 +33,7 @@ namespace reportanalysis {
                                     type: sap.m.ButtonType.Transparent,
                                     icon: "sap-icon://begin",
                                     press: function (): void {
+                                        (<any>that.page.getFooter()).setVisible(false);
                                         that.fireViewEvents(that.runReportEvent);
                                     }
                                 }),
@@ -41,6 +42,12 @@ namespace reportanalysis {
                                     type: sap.m.ButtonType.Transparent,
                                     icon: "sap-icon://reset",
                                     press: function (): void {
+                                        (<any>that.page.getFooter()).setVisible(false);
+                                        for (let item of (<any>that.page.getFooter()).getContent()) {
+                                            if (item instanceof sap.m.Input) {
+                                                item.setValue(null);
+                                            }
+                                        }
                                         that.fireViewEvents(that.resetReportEvent);
                                     }
                                 }),
@@ -82,7 +89,121 @@ namespace reportanalysis {
                         }),
                         content: [
                             this.myView.draw()
-                        ]
+                        ],
+                        floatingFooter: true,
+                        footer: new sap.m.Toolbar("", {
+                            visible: false,
+                            content: [
+                                new sap.m.MenuButton("", {
+                                    text: ibas.i18n.prop("shell_data_choose"),
+                                    icon: "sap-icon://bullet-text",
+                                    type: sap.m.ButtonType.Transparent,
+                                    menu: new sap.m.Menu("", {
+                                        items: [
+                                            new sap.m.MenuItem("", {
+                                                text: ibas.i18n.prop("shell_all"),
+                                                icon: "sap-icon://multiselect-all",
+                                                press: function (): void {
+                                                    let table: sap.ui.table.Table = (<any>that.page.getContent()[0])?.getItems()[0];
+                                                    if (table instanceof sap.ui.table.Table) {
+                                                        let model: any = table.getModel();
+                                                        if (model instanceof sap.extension.model.JSONModel) {
+                                                            for (let index: number = 0; index < model.size(); index++) {
+                                                                if (!table.isIndexSelected(index)) {
+                                                                    table.addSelectionInterval(index, index);
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }),
+                                            new sap.m.MenuItem("", {
+                                                text: ibas.i18n.prop("shell_reverse"),
+                                                icon: "sap-icon://multi-select",
+                                                press: function (): void {
+                                                    let table: sap.ui.table.Table = (<any>that.page.getContent()[0])?.getItems()[0];
+                                                    if (table instanceof sap.ui.table.Table) {
+                                                        let model: any = table.getModel();
+                                                        if (model instanceof sap.extension.model.JSONModel) {
+                                                            let selects: ibas.IList<number> = ibas.arrays.create(table.getSelectedIndices());
+                                                            table.clearSelection();
+                                                            for (let index: number = 0; index < model.size(); index++) {
+                                                                if (!selects.contain(index)) {
+                                                                    table.addSelectionInterval(index, index);
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }),
+                                            new sap.m.MenuItem("", {
+                                                text: ibas.enums.describe(ibas.emAuthoriseType, ibas.emAuthoriseType.NONE),
+                                                icon: "sap-icon://multiselect-none",
+                                                press: function (): void {
+                                                    let table: sap.ui.table.Table = (<any>that.page.getContent()[0])?.getItems()[0];
+                                                    if (table instanceof sap.ui.table.Table) {
+                                                        table.clearSelection();
+                                                    }
+                                                }
+                                            }),
+                                        ],
+                                    })
+                                }),
+                                new sap.m.ToolbarSpacer(""),
+                                new sap.m.ToolbarSeparator(""),
+                                new sap.m.Label("", {
+                                    width: "auto",
+                                    text: ibas.i18n.prop("reportanalysis_fixed_table"),
+                                }),
+                                new sap.m.Input("", {
+                                    width: "3rem",
+                                    type: sap.m.InputType.Number,
+                                    textAlign: sap.ui.core.TextAlign.Right,
+                                }),
+                                new sap.m.Input("", {
+                                    width: "3rem",
+                                    type: sap.m.InputType.Number,
+                                    textAlign: sap.ui.core.TextAlign.Right,
+                                }),
+                                new sap.m.Input("", {
+                                    width: "3rem",
+                                    type: sap.m.InputType.Number,
+                                    textAlign: sap.ui.core.TextAlign.Right,
+                                }),
+                                new sap.m.Button("", {
+                                    text: ibas.i18n.prop("shell_apply"),
+                                    type: sap.m.ButtonType.Success,
+                                    press: function (event: sap.ui.base.Event): void {
+                                        let table: sap.ui.table.Table = (<any>that.page.getContent()[0])?.getItems()[0];
+                                        if (table instanceof sap.ui.table.Table) {
+                                            let source: any = event.getSource();
+                                            if (source instanceof sap.m.Button) {
+                                                let toolBar: any = source.getParent();
+                                                if (toolBar instanceof sap.m.Toolbar) {
+                                                    let count: number = 0;
+                                                    for (let item of toolBar.getContent()) {
+                                                        if (item instanceof sap.m.Input) {
+                                                            let value: number = ibas.numbers.valueOf(item.getValue());
+                                                            if (count === 0) {
+                                                                table.setFixedColumnCount(value > 0 && value < table.getColumns().length ? value : 0);
+                                                                count++;
+                                                            } else if (count === 1) {
+                                                                table.setFixedRowCount(value > 0 && value < table.getRows().length ? value : 0);
+                                                                count++;
+                                                            } else if (count === 2) {
+                                                                table.setFixedBottomRowCount(value > 0 && value < table.getRows().length ? value : 0);
+                                                                count++;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }),
+                                new sap.m.ToolbarSeparator(""),
+                            ]
+                        }),
                     });
                     return this.page;
                 }
@@ -98,6 +219,7 @@ namespace reportanalysis {
                         this.page.setShowSubHeader(false);
                     } else {
                         this.page.setShowSubHeader(true);
+                        (<any>this.page.getFooter()).setVisible(true);
                     }
                 }
             }
@@ -191,6 +313,7 @@ namespace reportanalysis {
                         this.page.setShowSubHeader(false);
                     } else {
                         this.page.setShowSubHeader(true);
+                        (<any>this.page.getFooter()).setVisible(true);
                     }
                 }
             }
@@ -385,27 +508,48 @@ namespace reportanalysis {
                                 path: "/value"
                             });
                         } else if (item.category === bo.emReportParameterType.CHOOSE_LIST && !ibas.strings.isEmpty(value)) {
-                            let boCode: string = value;
-                            let property: string = null;
-                            if (boCode.indexOf(".") > 0) {
-                                boCode = value.split(".")[0];
+                            value = ibas.config.applyVariables(value);
+                            if (ibas.strings.isWith(value, "#{", "}")) {
+                                value = ibas.strings.remove(value, "#", "{", "}")
+                            }
+                            let criteria: ibas.ICriteria, property: string;
+                            if (ibas.strings.isWith(value, "{", "}")) {
+                                criteria = ibas.criterias.valueOf(value);
+                                if (ibas.strings.isEmpty(criteria.businessObject)) {
+                                    criteria = null;
+                                }
+                                if (criteria.businessObject.indexOf(".") > 0) {
+                                    property = criteria.businessObject.split(".")[1];
+                                    criteria.businessObject = criteria.businessObject.split(".")[0];
+                                }
+                            } else if (value.indexOf(".") > 0) {
+                                criteria = new ibas.Criteria();
+                                criteria.businessObject = value.split(".")[0];
                                 property = value.split(".")[1];
                             }
                             item.value = null;
                             input = new sap.m.Input("", {
                                 width: "260px",
-                                showValueHelp: true,
+                                showValueHelp: criteria && criteria.businessObject ? true : false,
                                 valueHelpRequest: function (): void {
                                     ibas.servicesManager.runChooseService<any>({
-                                        chooseType: ibas.emChooseType.SINGLE,
-                                        boCode: boCode,
-                                        criteria: [],
+                                        criteria: criteria,
+                                        boCode: criteria.businessObject,
+                                        chooseType: ibas.emChooseType.MULTIPLE,
                                         onCompleted(selecteds: ibas.IList<any>): void {
-                                            let selected: any = selecteds.firstOrDefault();
-                                            if (!ibas.strings.isEmpty(property)) {
-                                                (<sap.m.Input>input).setValue(selected[property]);
-                                            } else {
-                                                (<sap.m.Input>input).setValue(selected.toString());
+                                            let builder: ibas.StringBuilder = new ibas.StringBuilder();
+                                            for (let item of selecteds) {
+                                                if (builder.length > 0) {
+                                                    builder.append(ibas.DATA_SEPARATOR);
+                                                }
+                                                if (ibas.strings.isEmpty(property)) {
+                                                    builder.append(item);
+                                                } else {
+                                                    builder.append(item[property]);
+                                                }
+                                            }
+                                            if (input instanceof sap.m.InputBase) {
+                                                input.setValue(builder.toString());
                                             }
                                         }
                                     });
@@ -590,94 +734,88 @@ namespace reportanalysis {
                                     filterProperty: index.toString(),
                                     columnMenuOpen(e: sap.ui.base.Event): boolean {
                                         let column: sap.ui.table.Column = this;
-                                        if (col.definedDataType() === ibas.emTableDataType.NUMERIC
-                                            || col.definedDataType() === ibas.emTableDataType.DECIMAL) {
-                                            let menu: sap.ui.unified.Menu = e.getParameter("menu");
-                                            if (!!menu) {
-                                                let totalItem: sap.ui.unified.MenuItemBase = null;
-                                                let hideTotalItem: sap.ui.unified.MenuItemBase = null;
-                                                for (let menuItem of menu.getItems()) {
-                                                    if (ibas.strings.equals(menuItem.getId(), menu.getId() + "-total")) {
-                                                        totalItem = menuItem;
-                                                    }
-                                                    if (ibas.strings.equals(menuItem.getId(), menu.getId() + "-hideTotal")) {
-                                                        hideTotalItem = menuItem;
+                                        let menu: sap.ui.unified.Menu = e.getParameter("menu");
+                                        if (!!menu) {
+                                            let totalItem: sap.ui.unified.MenuItemBase = null;
+                                            let hideTotalItem: sap.ui.unified.MenuItemBase = null;
+                                            for (let menuItem of menu.getItems()) {
+                                                if (ibas.strings.equals(menuItem.getId(), menu.getId() + "-total")) {
+                                                    totalItem = menuItem;
+                                                }
+                                                if (ibas.strings.equals(menuItem.getId(), menu.getId() + "-hideTotal")) {
+                                                    hideTotalItem = menuItem;
+                                                }
+                                            }
+                                            // 显示合计时,监听Binding的变化,变化后刷新合计值
+                                            let refreshBinding: Function = () => {
+                                                let total: number = 0;
+                                                let decimalPlaces: number = ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES, 6);
+                                                let binding: sap.ui.model.Binding = tableResult.getBinding(undefined);
+                                                if (binding instanceof sap.ui.model.json.JSONListBinding) {
+                                                    for (let context of (<any>binding).getContexts()) {
+                                                        let data: any = context.getObject();
+                                                        total += ibas.numbers.valueOf(data[index.toString()]);
                                                     }
                                                 }
-                                                // 显示合计时,监听Binding的变化,变化后刷新合计值
-                                                let refreshBinding: Function = () => {
-                                                    let total: number = 0;
-                                                    let decimalPlaces: number =
-                                                        col.definedDataType() === ibas.emTableDataType.NUMERIC ? 0 : ibas.config.get(ibas.CONFIG_ITEM_DECIMAL_PLACES, 6);
-                                                    let binding: sap.ui.model.Binding = tableResult.getBinding(undefined);
-                                                    if (binding instanceof sap.ui.model.json.JSONListBinding) {
-                                                        for (let context of (<any>binding).getContexts()) {
-                                                            let data: any = context.getObject();
-                                                            if (!!data[index.toString()] && typeof data[index.toString()] === "number") {
-                                                                total += data[index.toString()];
-                                                            }
-                                                        }
-                                                    }
-                                                    let multiLabels: sap.ui.core.Control[] = column.getMultiLabels();
-                                                    let totalLabel: sap.m.Label = null;
-                                                    if (multiLabels.length > 1 && multiLabels[1] instanceof sap.m.Label) {
-                                                        totalLabel = <sap.m.Label>multiLabels[1];
-                                                        totalLabel.setText(ibas.i18n.prop("reportanalysis_ui_total", total.toFixed(decimalPlaces)));
-                                                    }
-                                                };
-                                                if (!totalItem) {
-                                                    // 添加合计菜单项
-                                                    totalItem = new sap.ui.unified.MenuItem(menu.getId() + "-total", {
-                                                        icon: "sap-icon://collections-management",
-                                                        text: ibas.i18n.prop("reportanalysis_ui_calculation_total"),
-                                                        select(): void {
-                                                            let multiLabels: sap.ui.core.Control[] = column.getMultiLabels();
-                                                            let totalLabel: sap.m.Label = null;
-                                                            if (multiLabels.length > 1 && multiLabels[1] instanceof sap.m.Label) {
-                                                                totalLabel = <sap.m.Label>multiLabels[1];
-                                                            } else {
-                                                                totalLabel = new sap.m.Label("", {
-                                                                });
-                                                                column.addMultiLabel(totalLabel);
-                                                            }
-                                                            let binding: sap.ui.model.Binding = tableResult.getBinding(undefined);
-                                                            if (!!binding) {
-                                                                binding.attachChange(refreshBinding);
-                                                            }
-                                                            // 立即刷新
-                                                            refreshBinding();
-                                                            menu.close();
-                                                            totalItem.setVisible(false);
-                                                            hideTotalItem.setVisible(true);
-                                                        }
-                                                    });
-                                                    setTimeout(() => {
-                                                        menu.addItem(totalItem);
-                                                    }, 100);
+                                                let multiLabels: sap.ui.core.Control[] = column.getMultiLabels();
+                                                let totalLabel: sap.m.Label = null;
+                                                if (multiLabels.length > 1 && multiLabels[1] instanceof sap.m.Label) {
+                                                    totalLabel = <sap.m.Label>multiLabels[1];
+                                                    totalLabel.setText(ibas.i18n.prop("reportanalysis_ui_total", total.toFixed(decimalPlaces)));
                                                 }
-                                                if (!hideTotalItem) {
-                                                    // 添加隐藏合计菜单项
-                                                    hideTotalItem = new sap.ui.unified.MenuItem(menu.getId() + "-hideTotal", {
-                                                        icon: "sap-icon://hide",
-                                                        text: ibas.i18n.prop("reportanalysis_ui_hide_total"),
-                                                        visible: false,
-                                                        select(): void {
-                                                            column.removeAllMultiLabels();
-                                                            column.addMultiLabel(new sap.m.Label("", {
-                                                                text: ibas.strings.isEmpty(col.description) ? col.name : col.description
-                                                            }));
-                                                            let binding: sap.ui.model.Binding = tableResult.getBinding(undefined);
-                                                            if (!!binding) {
-                                                                binding.detachChange(refreshBinding);
-                                                            }
-                                                            totalItem.setVisible(true);
-                                                            hideTotalItem.setVisible(false);
+                                            };
+                                            if (!totalItem) {
+                                                // 添加合计菜单项
+                                                totalItem = new sap.ui.unified.MenuItem(menu.getId() + "-total", {
+                                                    icon: "sap-icon://collections-management",
+                                                    text: ibas.i18n.prop("reportanalysis_ui_calculation_total"),
+                                                    select(): void {
+                                                        let multiLabels: sap.ui.core.Control[] = column.getMultiLabels();
+                                                        let totalLabel: sap.m.Label = null;
+                                                        if (multiLabels.length > 1 && multiLabels[1] instanceof sap.m.Label) {
+                                                            totalLabel = <sap.m.Label>multiLabels[1];
+                                                        } else {
+                                                            totalLabel = new sap.m.Label("", {
+                                                            });
+                                                            column.addMultiLabel(totalLabel);
                                                         }
-                                                    });
-                                                    setTimeout(() => {
-                                                        menu.addItem(hideTotalItem);
-                                                    }, 100);
-                                                }
+                                                        let binding: sap.ui.model.Binding = tableResult.getBinding(undefined);
+                                                        if (!!binding) {
+                                                            binding.attachChange(refreshBinding);
+                                                        }
+                                                        // 立即刷新
+                                                        refreshBinding();
+                                                        menu.close();
+                                                        totalItem.setVisible(false);
+                                                        hideTotalItem.setVisible(true);
+                                                    }
+                                                });
+                                                setTimeout(() => {
+                                                    menu.addItem(totalItem);
+                                                }, 100);
+                                            }
+                                            if (!hideTotalItem) {
+                                                // 添加隐藏合计菜单项
+                                                hideTotalItem = new sap.ui.unified.MenuItem(menu.getId() + "-hideTotal", {
+                                                    icon: "sap-icon://hide",
+                                                    text: ibas.i18n.prop("reportanalysis_ui_hide_total"),
+                                                    visible: false,
+                                                    select(): void {
+                                                        column.removeAllMultiLabels();
+                                                        column.addMultiLabel(new sap.m.Label("", {
+                                                            text: ibas.strings.isEmpty(col.description) ? col.name : col.description
+                                                        }));
+                                                        let binding: sap.ui.model.Binding = tableResult.getBinding(undefined);
+                                                        if (!!binding) {
+                                                            binding.detachChange(refreshBinding);
+                                                        }
+                                                        totalItem.setVisible(true);
+                                                        hideTotalItem.setVisible(false);
+                                                    }
+                                                });
+                                                setTimeout(() => {
+                                                    menu.addItem(hideTotalItem);
+                                                }, 100);
                                             }
                                         }
                                         return true;
@@ -692,7 +830,7 @@ namespace reportanalysis {
                         }
                     }
                     let modelData: any[] = table.convert({ format: true, nameAs: "index" });
-                    let model: sap.ui.model.json.JSONModel = new sap.ui.model.json.JSONModel({ rows: modelData });
+                    let model: sap.ui.model.json.JSONModel = new sap.extension.model.JSONModel({ rows: modelData });
                     // 设置集合长度限制,默认100
                     model.setSizeLimit(modelData.length);
                     tableResult.setModel(model);

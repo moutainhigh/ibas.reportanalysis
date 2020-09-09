@@ -415,6 +415,7 @@ namespace reportanalysis {
                                                 maxLength: 200
                                             })
                                         }),
+                                        width: "20rem",
                                     }),
                                 ]
                             })
