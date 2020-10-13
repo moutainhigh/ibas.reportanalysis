@@ -417,39 +417,31 @@ namespace reportanalysis {
                 }
                 private valuesMap: Map<bo.UserReportParameter, string>;
                 private parent: ReportViewerView | ReportTabViewerView | ReportDialogViewerView;
-                dataTable: ibas.DataTable;
                 /** 显示报表 */
                 showReport(report: bo.UserReport): void {
+                    let form: sap.ui.layout.form.SimpleForm;
                     this.form.destroyItems();
+                    this.form.setGridTemplateColumns("35% 30% 35%");
+                    this.form.addItem(new sap.ui.layout.form.SimpleForm("", {
+                    }));
+                    this.form.addItem(form = new sap.ui.layout.form.SimpleForm("", {
+                        editable: true,
+                        content: [
+                        ]
+                    }));
+                    this.form.addItem(new sap.ui.layout.form.SimpleForm("", {
+                    }));
                     this.dataTable = undefined;
                     // 显示报表参数
                     if (ibas.objects.isNull(report.parameters) || report.parameters.length === 0) {
                         return;
                     }
-                    this.form.addItem(
-                        new sap.m.Title("", {
-                            level: sap.ui.core.TitleLevel.H2,
-                            titleStyle: sap.ui.core.TitleLevel.H2,
-                            textAlign: sap.ui.core.TextAlign.Center,
-                            text: "",
-                        })
-                    );
-                    this.form.addItem(
-                        new sap.m.Title("", {
-                            level: sap.ui.core.TitleLevel.H3,
-                            titleStyle: sap.ui.core.TitleLevel.H3,
-                            textAlign: sap.ui.core.TextAlign.Center,
-                            text: ibas.i18n.prop("reportanalysis_running_parameters"),
-                        })
-                    );
-                    this.form.addItem(
-                        new sap.m.Title("", {
-                            level: sap.ui.core.TitleLevel.H4,
-                            titleStyle: sap.ui.core.TitleLevel.H4,
-                            textAlign: sap.ui.core.TextAlign.Center,
-                            text: "",
-                        })
-                    );
+                    form.addContent(new sap.m.Title("", {
+                        level: sap.ui.core.TitleLevel.H3,
+                        titleStyle: sap.ui.core.TitleLevel.H3,
+                        textAlign: sap.ui.core.TextAlign.Center,
+                        text: ibas.i18n.prop("reportanalysis_running_parameters"),
+                    }));
                     for (let item of report.parameters) {
                         if (item.category === bo.emReportParameterType.PRESET) {
                             // 预设的不显示
@@ -463,32 +455,27 @@ namespace reportanalysis {
                             this.valuesMap.set(item, item.value);
                         }
                         let value: string = this.valuesMap.get(item);
-                        this.form.addItem(
-                            new sap.m.Title("", {
-                                width: "260px",
-                                level: sap.ui.core.TitleLevel.H5,
-                                titleStyle: sap.ui.core.TitleLevel.H5,
-                                textAlign: sap.ui.core.TextAlign.Left,
-                                text: ibas.strings.isEmpty(item.description) ? item.name.replace("\$\{", "").replace("\}", "") : item.description
-                            })
-                        );
+                        form.addContent(new sap.m.Label("", {
+                            text: ibas.strings.isEmpty(item.description) ? item.name.replace("\$\{", "").replace("\}", "") : item.description
+                        }));
                         let input: sap.ui.core.Control;
                         if (item.category === bo.emReportParameterType.DATETIME) {
                             input = new sap.m.DatePicker("", {
-                                width: "260px",
                                 valueFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
                                 displayFormat: ibas.config.get(ibas.CONFIG_ITEM_FORMAT_DATE),
+                                value: {
+                                    path: "/value"
+                                }
                             });
-                            input.bindProperty("value", {
-                                path: "/value"
-                            });
+                            if (ibas.strings.equalsIgnoreCase(item.value, "today")) {
+                                item.value = ibas.dates.toString(ibas.dates.today(), "yyyyMMdd");
+                            }
                         } else if (item.category === bo.emReportParameterType.SYSTEM) {
                             input = new sap.m.Input("", {
-                                width: "260px",
                                 editable: false,
-                            });
-                            input.bindProperty("value", {
-                                path: "/value"
+                                value: {
+                                    path: "/value"
+                                }
                             });
                         } else if (item.category === bo.emReportParameterType.RANGE) {
                             let items: Array<sap.ui.core.Item> = new Array<sap.ui.core.Item>();
@@ -501,16 +488,15 @@ namespace reportanalysis {
                                 }
                             }
                             input = new sap.m.Select("", {
-                                width: "260px",
-                                items: items
-                            });
-                            input.bindProperty("selectedKey", {
-                                path: "/value"
+                                items: items,
+                                selectedKey: {
+                                    path: "/value"
+                                }
                             });
                         } else if (item.category === bo.emReportParameterType.CHOOSE_LIST && !ibas.strings.isEmpty(value)) {
                             value = ibas.config.applyVariables(value);
                             if (ibas.strings.isWith(value, "#{", "}")) {
-                                value = ibas.strings.remove(value, "#", "{", "}")
+                                value = ibas.strings.remove(value, "#", "{", "}");
                             }
                             let criteria: ibas.ICriteria, property: string;
                             if (ibas.strings.isWith(value, "{", "}")) {
@@ -529,7 +515,6 @@ namespace reportanalysis {
                             }
                             item.value = null;
                             input = new sap.m.Input("", {
-                                width: "260px",
                                 showValueHelp: criteria && criteria.businessObject ? true : false,
                                 valueHelpRequest: function (): void {
                                     ibas.servicesManager.runChooseService<any>({
@@ -553,26 +538,26 @@ namespace reportanalysis {
                                             }
                                         }
                                     });
+                                },
+                                value: {
+                                    path: "/value"
                                 }
-                            });
-                            input.bindProperty("value", {
-                                path: "/value"
                             });
                         } else {
                             input = new sap.m.Input("", {
-                                width: "260px",
-                            });
-                            input.bindProperty("value", {
-                                path: "/value"
+                                value: {
+                                    path: "/value"
+                                }
                             });
                         }
                         input.setModel(new sap.ui.model.json.JSONModel(item));
-                        this.form.addItem(input);
+                        form.addContent(input);
                     }
                 }
                 /** 显示报表结果 */
                 showResults(table: ibas.DataTable): emResultType {
                     this.form.destroyItems();
+                    this.form.setGridTemplateColumns("100%");
                     this.dataTable = table;
                     if (table.rows.length === 1 && table.columns.length === 2) {
                         let data: ibas4j.IKeyValue = table.convert()[0];
@@ -836,14 +821,16 @@ namespace reportanalysis {
                     tableResult.setModel(model);
                     return tableResult;
                 }
-                private form: sap.m.VBox;
+                private form: sap.ui.layout.cssgrid.CSSGrid;
+                public dataTable: ibas.DataTable;
                 /** 绘制视图 */
                 draw(): any {
-                    this.form = new sap.m.VBox("", {
-                        justifyContent: sap.m.FlexJustifyContent.Center,
-                        alignItems: sap.m.FlexAlignItems.Center,
+                    return this.form = new sap.ui.layout.cssgrid.CSSGrid("", {
+                        gridTemplateRows: "1fr",
+                        gridGap: "1rem",
+                        items: [
+                        ]
                     });
-                    return this.form;
                 }
             }
         }
